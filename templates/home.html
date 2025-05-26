@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="mb-4">Welcome to Flask App</h1>
+            <p class="lead">This is a sample Flask application with user authentication and database integration.</p>
+            <hr>
+            
+            <!-- YouTube URL Input Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">YouTube Video Information</h5>
+                    <form id="youtubeForm" class="mb-3">
+                        <div class="mb-3">
+                            <label for="video_url" class="form-label">Enter YouTube Video URL</label>
+                            <input type="url" class="form-control" id="video_url" name="video_url" 
+                                   placeholder="https://www.youtube.com/watch?v=..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Get Video Information
+                        </button>
+                    </form>
+                    <div id="result" class="mt-3" style="display: none;">
+                        <div class="alert alert-info">
+                            <strong>Video Title:</strong> <span id="video_title"></span>
+                        </div>
+                    </div>
+                    <div id="error" class="mt-3" style="display: none;">
+                        <div class="alert alert-danger">
+                            <span id="error_message"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transcript Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Video Transcript</h5>
+                        <div class="transcript-controls" style="display: none;">
+                            <button class="btn btn-sm btn-outline-primary" id="copyTranscript">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" id="downloadTranscript">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                    <div id="transcript-container" style="display: none;">
+                        <div class="transcript-content">
+                            <pre id="transcript"></pre>
+                        </div>
+                    </div>
+                    <div id="transcript-loading" class="text-center" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading transcript...</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Features</h2>
+            <ul>
+                <li>User Authentication</li>
+                <li>Database Integration</li>
+                <li>Responsive Design</li>
+                <li>Flash Messages</li>
+                <li>YouTube Video Title Fetcher</li>
+                <li>Video Transcript Viewer</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('login') }}" class="card-link">Login</a></li>
+                        <li><a href="{{ url_for('register') }}" class="card-link">Register</a></li>
+                        <li><a href="{{ url_for('about') }}" class="card-link">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script>
+        document.getElementById('youtubeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const videoUrl = document.getElementById('video_url').value;
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const videoTitleSpan = document.getElementById('video_title');
+            const errorMessageSpan = document.getElementById('error_message');
+            const transcriptContainer = document.getElementById('transcript-container');
+            const transcriptElement = document.getElementById('transcript');
+            const transcriptLoading = document.getElementById('transcript-loading');
+            const transcriptControls = document.querySelector('.transcript-controls');
+            
+            // Show loading state
+            transcriptLoading.style.display = 'block';
+            transcriptContainer.style.display = 'none';
+            transcriptControls.style.display = 'none';
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/get_video_info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `video_url=${encodeURIComponent(videoUrl)}`
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    videoTitleSpan.textContent = data.title;
+                    resultDiv.style.display = 'block';
+                    errorDiv.style.display = 'none';
+                    
+                    // Display transcript
+                    transcriptElement.textContent = data.transcript;
+                    transcriptContainer.style.display = 'block';
+                    transcriptControls.style.display = 'flex';
+                } else {
+                    errorMessageSpan.textContent = data.error;
+                    errorDiv.style.display = 'block';
+                    resultDiv.style.display = 'none';
+                    transcriptContainer.style.display = 'none';
+                    transcriptControls.style.display = 'none';
+                }
+            } catch (error) {
+                errorMessageSpan.textContent = 'An error occurred while fetching the video information.';
+                errorDiv.style.display = 'block';
+                resultDiv.style.display = 'none';
+                transcriptContainer.style.display = 'none';
+                transcriptControls.style.display = 'none';
+            } finally {
+                transcriptLoading.style.display = 'none';
+            }
+        });
+
+        // Copy transcript functionality
+        document.getElementById('copyTranscript').addEventListener('click', function() {
+            const transcript = document.getElementById('transcript').textContent;
+            navigator.clipboard.writeText(transcript).then(() => {
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            });
+        });
+
+        // Download transcript functionality
+        document.getElementById('downloadTranscript').addEventListener('click', function() {
+            const transcript = document.getElementById('transcript').textContent;
+            const videoTitle = document.getElementById('video_title').textContent;
+            const blob = new Blob([transcript], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${videoTitle} - Transcript.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+    </script>
+{% endblock %} 
