@@ -55,7 +55,7 @@
 <p><i>Watch this space!</i> A live demo link and sample output will be added shortly.</p>
 
 <h2>📬 Contribute / Collaborate</h2>
-<p>Want to contribute or join the project? Feel free to <a href="mailto:your-email@example.com">reach out</a> or fork the repo and raise a pull request.</p>
+<p>Want to contribute or join the project? Feel free to <a href="gouravyadav200220@gmail.com">reach out</a> or fork the repo and raise a pull request.</p>
 
 <hr/>
 

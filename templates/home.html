@@ -3,8 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-8">
-            <h1 class="mb-4">Welcome to Flask App</h1>
-            <p class="lead">This is a sample Flask application with user authentication and database integration.</p>
+            <h1 class="mb-4">Get clips just in a single click!</h1>
             <hr>
             
             <!-- YouTube URL Input Section -->
@@ -66,34 +65,109 @@
                 </div>
             </div>
 
-            <div class="card mb-4" id="transcriptCard">
+            <!-- Highlight Clips -->
+            <div class="card mb-4 yt-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0">Video Results</h5>
-                        <div class="transcript-controls" style="display: none;">
-                            <button id="expandTranscript" class="btn btn-sm btn-outline-secondary" style="display: none;">
-                                <i class="fas fa-expand"></i>
+                        <h5 class="card-title mb-0">Highlight Clip</h5>
+                        <div class="yt-controls">
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="copyLink(this)">
+                                <i class="fas fa-link"></i> Copy Link
+                            </button>
+                            <button class="btn btn-sm btn-outline-success me-2" onclick="downloadClip(this)">
+                                <i class="fas fa-download"></i> Download
                             </button>
                         </div>
                     </div>
+                    <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="video-wrapper mb-3">
+                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="clip-info">
+                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    </div>
+                </div>
                 </div>
             </div>
-
-
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url_for('login') }}" class="card-link">Login</a></li>
-                        <li><a href="{{ url_for('register') }}" class="card-link">Register</a></li>
-                        <li><a href="{{ url_for('about') }}" class="card-link">About</a></li>
-                    </ul>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ url_for('login') }}" class="card-link">Login</a></li>
+                            <li><a href="{{ url_for('register') }}" class="card-link">Register</a></li>
+                            <li><a href="{{ url_for('about') }}" class="card-link">About</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+            
 
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

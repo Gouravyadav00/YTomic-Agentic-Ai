@@ -1,25 +1,465 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-8">
-            <h1 class="mb-4">About</h1>
-            <p class="lead">This is a Flask application built with modern web development practices.</p>
-            <hr>
-            <h2>Technologies Used</h2>
-            <ul>
-                <li>Flask - Web Framework</li>
-                <li>SQLAlchemy - Database ORM</li>
-                <li>Bootstrap 5 - Frontend Framework</li>
-                <li>Jinja2 - Template Engine</li>
-            </ul>
-            <h2>Features</h2>
-            <ul>
-                <li>User Authentication System</li>
-                <li>Database Integration</li>
-                <li>Responsive Design</li>
-                <li>Flash Messages for User Feedback</li>
-            </ul>
-        </div>
+<div class="about-container">
+  <div class="hero-section animate-fade-in">
+    <h1 class="main-title animate-slide-down">🎬 YTomic — AI-Powered YouTube Clip Extractor 🚀</h1>
+    
+    <div class="badge-container animate-slide-up">
+      <span class="badge hover-float">Made with Flask</span>
+      <span class="badge hover-float">Powered by OpenAI</span>
+      <span class="badge hover-float">Version 1.0.0</span>
     </div>
+
+    <div class="hero-description animate-fade-in">
+      <p>
+        <b>YTomic</b> transforms lengthy YouTube videos into impactful short-form content. 
+        Using advanced AI, we identify and extract the most compelling moments, 
+        creating ready-to-share clips that capture attention and drive engagement. 
+        Perfect for content creators, marketers, and social media enthusiasts. 📈🎞️
+      </p>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card animate-slide-right hover-card">
+      <h3>🎯 Core Features</h3>
+      <ul class="feature-list">
+        <li class="feature-item">🔗 Universal YouTube URL Support</li>
+        <li class="feature-item">🧠 AI-Powered Content Analysis</li>
+        <li class="feature-item">✂️ Smart Clip Extraction (8-10 highlights)</li>
+        <li class="feature-item">📝 SEO-Optimized Metadata Generation</li>
+        <li class="feature-item">📤 One-Click YouTube Upload</li>
+        <li class="feature-item">🎨 Auto-Captioning & Visual Editing</li>
+      </ul>
+    </div>
+
+    <div class="feature-card animate-slide-left hover-card">
+      <h3 >⚡ How It Works</h3>
+      <ol class="process-list">
+        <li class="process-item">Paste your YouTube URL</li>
+        <li class="process-item">AI analyzes the transcript</li>
+        <li class="process-item">Key moments are identified</li>
+        <li class="process-item">Clips are automatically trimmed</li>
+        <li class="process-item">Metadata is generated</li>
+        <li class="process-item">Ready to share or upload!</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="tech-stack animate-fade-in">
+    <h2 class="white-heading">🛠️ Built With</h2>
+    <div class="tech-grid">
+      <div class="tech-item hover-tech">🐍 Flask</div>
+      <div class="tech-item hover-tech">🎥 YouTube API</div>
+      <div class="tech-item hover-tech">🧠 OpenAI</div>
+      <div class="tech-item hover-tech">🎬 MoviePy</div>
+      <div class="tech-item hover-tech">🌐 YouTube Data API</div>
+    </div>
+  </div>
+
+  <div class="roadmap">
+    <h2 class="animate-slide-up white-heading">🚀 What's Coming Next</h2>
+    <div class="roadmap-grid">
+      <div class="roadmap-item hover-card animate-fade-in">
+        <span class="icon bounce">🎨</span>
+        <h4>Smart Thumbnails</h4>
+        <p>AI-generated thumbnails that drive clicks</p>
+      </div>
+      <div class="roadmap-item hover-card animate-fade-in">
+        <span class="icon bounce">🎙️</span>
+        <h4>Speech Recognition</h4>
+        <p>Advanced audio processing capabilities</p>
+      </div>
+      <div class="roadmap-item hover-card animate-fade-in">
+        <span class="icon bounce">📊</span>
+        <h4>Analytics Dashboard</h4>
+        <p>Track performance and engagement</p>
+      </div>
+      <div class="roadmap-item hover-card animate-fade-in">
+        <span class="icon bounce">⚡</span>
+        <h4>Auto-Scheduling</h4>
+        <p>Set and forget content distribution</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section animate-fade-in">
+    <h2>Ready to Transform Your Content?</h2>
+    <p>Join the community of creators using YTomic to maximize their content's impact.</p>
+    <div class="cta-buttons">
+      <a href="#" class="cta-button primary hover-button">Get Started</a>
+      <a href="#" class="cta-button secondary hover-button">Learn More</a>
+    </div>
+  </div>
+
+  <div class="contact-section animate-fade-in">
+    <h2>🤝 Let's Connect</h2>
+    <p>Have ideas or want to contribute? We'd love to hear from you!</p>
+    <a href="mailto:gouravyadav200220@gmail.com" class="contact-link hover-button">Get in Touch</a>
+  </div>
+</div>
+
+<style>
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-image: 
+    radial-gradient(circle at 25px 25px, rgba(0,0,0,0.02) 2%, transparent 0%),
+    radial-gradient(circle at 75px 75px, rgba(0,0,0,0.02) 2%, transparent 0%);
+  background-size: 100px 100px;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(45deg, #2196F3, #FF4081);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.badge-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: #f0f0f0;
+  font-size: 0.9rem;
+  color: black;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.white-heading{
+    color: white;
+}
+
+p:not(:nth-child(1)) {
+    color: black;
+}
+
+
+.feature-card {
+  padding: 2rem;
+  border-radius: 10px;
+  background: #f8f9fa;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.tech-item {
+  padding: 1rem;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.roadmap-item {
+  text-align: center;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.cta-section {
+  text-align: center;
+  margin: 4rem 0;
+  padding: 3rem;
+  background: white;
+  border-radius: 15px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cta-button {
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+}
+
+.primary {
+  background: #2196F3;
+  color: white;
+}
+
+.secondary {
+  background: white;
+  color: #2196F3;
+  border: 2px solid #2196F3;
+}
+
+.contact-section {
+  text-align: center;
+  margin-top: 4rem;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.contact-link {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background: #2196F3;
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background 0.2s;
+}
+
+.contact-link:hover {
+  background: #1976D2;
+}
+
+@media (max-width: 768px) {
+  .features-grid,
+  .tech-grid,
+  .roadmap-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+  }
+}
+
+/* New Animation and Interactive Styles */
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+.animate-slide-down {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideDown 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-slide-right {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideRight 0.8s ease-out forwards;
+}
+
+.animate-slide-left {
+  opacity: 0;
+  transform: translateX(20px);
+  animation: slideLeft 0.8s ease-out forwards;
+}
+
+.hover-float {
+  transition: transform 0.3s ease;
+}
+
+.hover-float:hover {
+  transform: translateY(-5px);
+}
+
+.hover-card {
+  transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.hover-tech {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-tech::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.hover-tech:hover::before {
+  left: 100%;
+}
+
+.hover-tech:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.hover-button {
+  transition: all 0.3s ease;
+}
+
+.hover-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.bounce {
+  display: inline-block;
+  animation: bounce 2s infinite;
+}
+
+.feature-item, .process-item {
+  transition: all 0.3s ease;
+  padding: 8px 0;
+}
+
+.feature-item:hover, .process-item:hover {
+  transform: translateX(10px);
+  color: #2196F3;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Add scroll-triggered animations */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+
+<script>
+// Add scroll-triggered animations
+document.addEventListener('DOMContentLoaded', function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  document.querySelectorAll('.animate-on-scroll').forEach((element) => {
+    observer.observe(element);
+  });
+});
+</script>
 {% endblock %} 
