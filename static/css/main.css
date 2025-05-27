@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    background-color: #f8f9fa;
+    height: 100vh;
 }
 
 /* Card Styles */
@@ -10,12 +10,14 @@ body {
     transition: transform 0.2s ease-in-out;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-}
 
 .card-body {
     padding: 1.5rem;
+}
+
+.card-body:hover{
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+transition:  0.2s ease-in-out;
 }
 
 /* Form Styles */
@@ -179,3 +181,65 @@ body {
 #transcript span:hover {
     background-color: rgba(0, 123, 255, 0.1);
 } 
+
+
+
+#transcriptCard {
+    height: fit-content;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,.125);
+    box-shadow: 0 2px 4px rgba(0,0,0,.05);
+}
+
+#transcriptCard:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,.1);
+    border-color: rgba(0,0,0,.2);
+}
+
+#transcriptCard.expanded {
+    height: 80vh;
+}
+
+.transcript-content {
+    height: 10vh;
+    overflow-y: auto;
+    transition: height 0.3s ease;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+#transcriptCard.expanded .transcript-content {
+    height: calc(80vh - 120px);
+}
+
+#transcript {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-align: left;
+    display: block;
+    width: 100%;
+}
+.transcript-content pre {
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 100%;
+}
+.transcript-controls {
+    gap: 0.5rem;
+}
+.card-body {
+    padding: 1.25rem;
+}
+.btn {
+    transition: all 0.2s ease;
+}
+.btn:hover {
+    transform: translateY(-1px);
+}

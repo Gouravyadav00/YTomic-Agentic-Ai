@@ -15,6 +15,7 @@
                         <div class="mb-3">
                             <label for="video_url" class="form-label">Enter YouTube Video URL</label>
                             <input type="url" class="form-control" id="video_url" name="video_url" 
+                                    value="https://youtu.be/3qHkcs3kG44?feature=shared"
                                    placeholder="https://www.youtube.com/watch?v=..." required>
                         </div>
                         <button type="submit" class="btn btn-primary">
@@ -35,16 +36,19 @@
             </div>
 
             <!-- Transcript Section -->
-            <div class="card mb-4">
+            <div class="card mb-4" id="transcriptCard">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="card-title mb-0">Video Transcript</h5>
                         <div class="transcript-controls" style="display: none;">
-                            <button class="btn btn-sm btn-outline-primary" id="copyTranscript">
+                            <button class="btn btn-sm btn-outline-primary me-2" id="copyTranscript">
                                 <i class="fas fa-copy"></i> Copy
                             </button>
-                            <button class="btn btn-sm btn-outline-primary" id="downloadTranscript">
+                            <button class="btn btn-sm btn-outline-primary me-2" id="downloadTranscript">
                                 <i class="fas fa-download"></i> Download
+                            </button>
+                            <button id="expandTranscript" class="btn btn-sm btn-outline-secondary" style="display: none;">
+                                <i class="fas fa-expand"></i>
                             </button>
                         </div>
                     </div>
@@ -62,15 +66,20 @@
                 </div>
             </div>
 
-            <h2>Features</h2>
-            <ul>
-                <li>User Authentication</li>
-                <li>Database Integration</li>
-                <li>Responsive Design</li>
-                <li>Flash Messages</li>
-                <li>YouTube Video Title Fetcher</li>
-                <li>Video Transcript Viewer</li>
-            </ul>
+            <div class="card mb-4" id="transcriptCard">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Video Results</h5>
+                        <div class="transcript-controls" style="display: none;">
+                            <button id="expandTranscript" class="btn btn-sm btn-outline-secondary" style="display: none;">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <div class="col-md-4">
             <div class="card">
@@ -102,6 +111,7 @@
             const transcriptElement = document.getElementById('transcript');
             const transcriptLoading = document.getElementById('transcript-loading');
             const transcriptControls = document.querySelector('.transcript-controls');
+            const expandButton = document.getElementById('expandTranscript');
             
             // Show loading state
             transcriptLoading.style.display = 'block';
@@ -130,12 +140,14 @@
                     transcriptElement.textContent = data.transcript;
                     transcriptContainer.style.display = 'block';
                     transcriptControls.style.display = 'flex';
+                    expandButton.style.display = 'block';
                 } else {
                     errorMessageSpan.textContent = data.error;
                     errorDiv.style.display = 'block';
                     resultDiv.style.display = 'none';
                     transcriptContainer.style.display = 'none';
                     transcriptControls.style.display = 'none';
+                    expandButton.style.display = 'none';
                 }
             } catch (error) {
                 errorMessageSpan.textContent = 'An error occurred while fetching the video information.';
@@ -143,6 +155,7 @@
                 resultDiv.style.display = 'none';
                 transcriptContainer.style.display = 'none';
                 transcriptControls.style.display = 'none';
+                expandButton.style.display = 'none';
             } finally {
                 transcriptLoading.style.display = 'none';
             }
@@ -172,6 +185,18 @@
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+        });
+
+        // Add expand functionality
+        const expandButton = document.getElementById('expandTranscript');
+        const transcriptCard = document.getElementById('transcriptCard');
+        
+        expandButton.addEventListener('click', function() {
+            transcriptCard.classList.toggle('expanded');
+            const isExpanded = transcriptCard.classList.contains('expanded');
+            this.innerHTML = isExpanded ? 
+                '<i class="fas fa-compress"></i>' : 
+                '<i class="fas fa-expand"></i>';
         });
     </script>
 {% endblock %} 
