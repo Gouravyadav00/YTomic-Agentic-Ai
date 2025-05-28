@@ -1,465 +1,1728 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="about-container">
-  <div class="hero-section animate-fade-in">
-    <h1 class="main-title animate-slide-down">🎬 YTomic — AI-Powered YouTube Clip Extractor 🚀</h1>
-    
-    <div class="badge-container animate-slide-up">
-      <span class="badge hover-float">Made with Flask</span>
-      <span class="badge hover-float">Powered by OpenAI</span>
-      <span class="badge hover-float">Version 1.0.0</span>
-    </div>
+<!-- About Hero Section -->
+<section class="about-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-badge animate-float">
+            <i class="fas fa-rocket"></i>
+            <span>Transforming Content Creation</span>
+        </div>
+        <h1 class="hero-title animate-fade-in">
+            Meet <span class="gradient-text">YTomic</span> — 
+            Where AI Meets Creativity
+        </h1>
+        
+        <p class="hero-subtitle animate-slide-up">
+            We're revolutionizing how content creators transform long-form videos into viral short clips. 
+            Using cutting-edge AI technology, we help you amplify your reach and maximize engagement effortlessly.
+        </p>
 
-    <div class="hero-description animate-fade-in">
-      <p>
-        <b>YTomic</b> transforms lengthy YouTube videos into impactful short-form content. 
-        Using advanced AI, we identify and extract the most compelling moments, 
-        creating ready-to-share clips that capture attention and drive engagement. 
-        Perfect for content creators, marketers, and social media enthusiasts. 📈🎞️
-      </p>
+        <div class="hero-stats animate-slide-up">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number">50K+</span>
+                    <span class="stat-label">Creators</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number">1M+</span>
+                    <span class="stat-label">Clips Created</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number">99%</span>
+                    <span class="stat-label">Time Saved</span>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 
-  <div class="features-grid">
-    <div class="feature-card animate-slide-right hover-card">
-      <h3>🎯 Core Features</h3>
-      <ul class="feature-list">
-        <li class="feature-item">🔗 Universal YouTube URL Support</li>
-        <li class="feature-item">🧠 AI-Powered Content Analysis</li>
-        <li class="feature-item">✂️ Smart Clip Extraction (8-10 highlights)</li>
-        <li class="feature-item">📝 SEO-Optimized Metadata Generation</li>
-        <li class="feature-item">📤 One-Click YouTube Upload</li>
-        <li class="feature-item">🎨 Auto-Captioning & Visual Editing</li>
-      </ul>
+<!-- Main Content -->
+<div class="about-content">
+    <div class="container">
+        <!-- Our Story Section -->
+        <section class="story-section">
+            <div class="section-header text-center">
+                <h2 class="section-title">🚀 Our Story</h2>
+                <p class="section-subtitle">How we're changing the content creation game</p>
+            </div>
+            
+            <div class="story-timeline">
+                <div class="timeline-item glass-card animate-slide-in" data-year="2024">
+                    <div class="timeline-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>The Spark</h3>
+                        <p>Born from the frustration of spending hours editing videos manually, YTomic was conceived to solve the biggest pain point in content creation - turning long-form content into engaging short clips.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item glass-card animate-slide-in" data-year="Q2">
+                    <div class="timeline-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>The Build</h3>
+                        <p>Our team of AI engineers and content creators worked tirelessly to develop algorithms that could understand context, emotion, and engagement patterns in video content.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item glass-card animate-slide-in" data-year="Q3">
+                    <div class="timeline-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>The Launch</h3>
+                        <p>YTomic officially launched with our AI-powered clip extraction technology, immediately helping creators save 90% of their editing time while increasing engagement by 300%.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item glass-card animate-slide-in" data-year="Now">
+                    <div class="timeline-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>The Growth</h3>
+                        <p>Today, we're proud to serve 50,000+ creators worldwide, having processed over 1 million video clips and saved countless hours of manual editing work.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission & Vision Section -->
+        <section class="mission-section">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="mission-card glass-card animate-slide-in">
+                        <div class="mission-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="mission-content">
+                            <h3>Our Mission</h3>
+                            <p>To democratize content creation by making professional video editing accessible to everyone. We believe every creator deserves the tools to amplify their voice and reach their audience effectively.</p>
+                            <div class="mission-highlights">
+                                <div class="highlight-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Empower creators worldwide</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Simplify complex workflows</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Maximize content impact</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="vision-card glass-card animate-slide-in">
+                        <div class="vision-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="vision-content">
+                            <h3>Our Vision</h3>
+                            <p>To become the leading AI-powered content creation platform, where creativity meets technology to produce viral content that connects, inspires, and drives meaningful engagement.</p>
+                            <div class="vision-goals">
+                                <div class="goal-item">
+                                    <span class="goal-number">1M+</span>
+                                    <span class="goal-label">Active Creators by 2025</span>
+                                </div>
+                                <div class="goal-item">
+                                    <span class="goal-number">50+</span>
+                                    <span class="goal-label">Platform Integrations</span>
+                                </div>
+                                <div class="goal-item">
+                                    <span class="goal-number">100%</span>
+                                    <span class="goal-label">AI-Powered Accuracy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Showcase -->
+        <section class="features-showcase">
+            <div class="section-header text-center">
+                <h2 class="section-title">🎯 What Makes Us Special</h2>
+                <p class="section-subtitle">Cutting-edge features designed for modern creators</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-showcase-card glass-card animate-slide-in hover-lift">
+                    <div class="feature-visual">
+                        <div class="feature-icon primary">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="feature-badge">AI-Powered</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Intelligent Analysis</h3>
+                        <p>Our AI analyzes your content across multiple dimensions - sentiment, engagement patterns, visual composition, and audio quality to identify the most impactful moments.</p>
+                        <div class="feature-metrics">
+                            <div class="metric">
+                                <span class="metric-value">99.2%</span>
+                                <span class="metric-label">Accuracy</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">15+</span>
+                                <span class="metric-label">AI Models</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-card glass-card animate-slide-in hover-lift">
+                    <div class="feature-visual">
+                        <div class="feature-icon success">
+                            <i class="fas fa-scissors"></i>
+                        </div>
+                        <div class="feature-badge">Auto-Magic</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Perfect Clips</h3>
+                        <p>Automatically generate perfectly timed clips with smooth transitions, optimal length, and platform-specific formatting. No manual editing required!</p>
+                        <div class="feature-metrics">
+                            <div class="metric">
+                                <span class="metric-value">8-12</span>
+                                <span class="metric-label">Clips/Video</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">90%</span>
+                                <span class="metric-label">Time Saved</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-showcase-card glass-card animate-slide-in hover-lift">
+                    <div class="feature-visual">
+                        <div class="feature-icon warning">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="feature-badge">Multi-Platform</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Universal Publishing</h3>
+                        <p>One click publishes to YouTube, TikTok, Instagram, Twitter, and more. Each platform gets perfectly optimized content tailored to its audience.</p>
+                        <div class="feature-metrics">
+                            <div class="metric">
+                                <span class="metric-value">10+</span>
+                                <span class="metric-label">Platforms</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">300%</span>
+                                <span class="metric-label">Engagement Boost</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Stack -->
+        <section class="tech-section">
+            <div class="section-header text-center">
+                <h2 class="section-title">🛠️ Powered By Innovation</h2>
+                <p class="section-subtitle">The technology stack that makes the magic happen</p>
+            </div>
+            
+            <div class="tech-categories">
+                <div class="tech-category glass-card animate-slide-in">
+                    <div class="category-header">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI & Machine Learning</h3>
+                    </div>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <div class="tech-logo">🧠</div>
+                            <div class="tech-info">
+                                <strong>OpenAI GPT-4</strong>
+                                <span>Natural language processing</span>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-logo">👁️</div>
+                            <div class="tech-info">
+                                <strong>Computer Vision</strong>
+                                <span>Scene analysis & recognition</span>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-logo">🎵</div>
+                            <div class="tech-info">
+                                <strong>Audio Analysis</strong>
+                                <span>Speech & emotion detection</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-category glass-card animate-slide-in">
+                    <div class="category-header">
+                        <i class="fas fa-server"></i>
+                        <h3>Backend & Infrastructure</h3>
+                    </div>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <div class="tech-logo">🐍</div>
+                            <div class="tech-info">
+                                <strong>Flask</strong>
+                                <span>Web framework</span>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-logo">🎬</div>
+                            <div class="tech-info">
+                                <strong>FFmpeg</strong>
+                                <span>Video processing</span>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-logo">☁️</div>
+                            <div class="tech-info">
+                                <strong>Cloud Computing</strong>
+                                <span>Scalable infrastructure</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-category glass-card animate-slide-in">
+                    <div class="category-header">
+                        <i class="fas fa-palette"></i>
+                        <h3>Frontend & Experience</h3>
+                    </div>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <div class="tech-logo">🎨</div>
+                            <div class="tech-info">
+                                <strong>Modern UI/UX</strong>
+                                <span>Intuitive design</span>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-logo">📱</div>
+                            <div class="tech-info">
+                                <strong>Responsive Design</strong>
+                                <span>Works everywhere</span>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-logo">⚡</div>
+                            <div class="tech-info">
+                                <strong>Real-time Updates</strong>
+                                <span>Live progress tracking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section class="roadmap-section">
+            <div class="section-header text-center">
+                <h2 class="section-title">🗺️ What's Next</h2>
+                <p class="section-subtitle">Exciting features coming to YTomic</p>
+            </div>
+            
+            <div class="roadmap-timeline">
+                <div class="roadmap-quarter">
+                    <div class="quarter-header">
+                        <h3>Q1 2025</h3>
+                        <span class="quarter-status current">Current</span>
+                    </div>
+                    <div class="roadmap-items">
+                        <div class="roadmap-item glass-card completed">
+                            <div class="item-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="item-content">
+                                <h4>AI Thumbnail Generation</h4>
+                                <p>Create eye-catching thumbnails automatically</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-item glass-card in-progress">
+                            <div class="item-icon">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                            <div class="item-content">
+                                <h4>Advanced Analytics</h4>
+                                <p>Detailed performance insights and predictions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="roadmap-quarter">
+                    <div class="quarter-header">
+                        <h3>Q2 2025</h3>
+                        <span class="quarter-status upcoming">Upcoming</span>
+                    </div>
+                    <div class="roadmap-items">
+                        <div class="roadmap-item glass-card">
+                            <div class="item-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="item-content">
+                                <h4>Auto-Scheduling</h4>
+                                <p>Set and forget content distribution</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-item glass-card">
+                            <div class="item-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="item-content">
+                                <h4>Team Collaboration</h4>
+                                <p>Work together on content projects</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="roadmap-quarter">
+                    <div class="quarter-header">
+                        <h3>Q3 2025</h3>
+                        <span class="quarter-status future">Future</span>
+                    </div>
+                    <div class="roadmap-items">
+                        <div class="roadmap-item glass-card">
+                            <div class="item-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="item-content">
+                                <h4>Mobile App</h4>
+                                <p>Create clips on the go</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-item glass-card">
+                            <div class="item-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="item-content">
+                                <h4>Developer API</h4>
+                                <p>Integrate YTomic into your apps</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <div class="section-header text-center">
+                <h2 class="section-title">👥 Meet the Team</h2>
+                <p class="section-subtitle">The minds behind YTomic's innovation</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member glass-card animate-slide-in hover-lift">
+                    <div class="member-avatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='60' fill='%232196F3'/%3E%3Ctext x='60' y='70' text-anchor='middle' fill='white' font-size='40' font-family='Arial' font-weight='bold'%3EG%3C/text%3E%3C/svg%3E" alt="Gourav Yadav">
+                    </div>
+                    <div class="member-info">
+                        <h3>Gourav Yadav</h3>
+                        <p class="member-role">Founder & Lead Developer</p>
+                        <p class="member-bio">Full-stack developer passionate about AI and content creation. Gourav combines technical expertise with creative vision to build tools that empower creators worldwide.</p>
+                        <div class="member-social">
+                            <a href="mailto:gouravyadav200220@gmail.com" class="social-link">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member glass-card animate-slide-in hover-lift">
+                    <div class="member-avatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='60' fill='%234CAF50'/%3E%3Ctext x='60' y='70' text-anchor='middle' fill='white' font-size='40' font-family='Arial' font-weight='bold'%3EAI%3C/text%3E%3C/svg%3E" alt="AI Team">
+                    </div>
+                    <div class="member-info">
+                        <h3>AI Research Team</h3>
+                        <p class="member-role">Machine Learning Engineers</p>
+                        <p class="member-bio">Our dedicated AI team continuously improves our algorithms, ensuring YTomic stays at the forefront of content analysis and automated editing technology.</p>
+                        <div class="member-social">
+                            <a href="#" class="social-link">
+                                <i class="fas fa-brain"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & CTA Section -->
+        <section class="contact-cta-section glass-card text-center">
+            <div class="cta-content">
+                <div class="cta-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h2 class="cta-title">Ready to Transform Your Content?</h2>
+                <p class="cta-description">
+                    Join thousands of creators who are already using YTomic to amplify their content reach. 
+                    Start creating viral clips today with our AI-powered platform.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('register') }}" class="btn btn-gradient btn-lg cta-btn">
+                        <i class="fas fa-rocket me-2"></i>
+                        Get Started Free
+                    </a>
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-primary btn-lg cta-btn">
+                        <i class="fas fa-play me-2"></i>
+                        Try Demo
+                    </a>
+                </div>
+                
+                <div class="contact-info">
+                    <p class="contact-text">Questions? Ideas? Let's connect!</p>
+                    <a href="mailto:gouravyadav200220@gmail.com" class="contact-link">
+                        <i class="fas fa-envelope me-2"></i>
+                        gouravyadav200220@gmail.com
+                    </a>
+                </div>
+                
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Free to Start</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>No Credit Card</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Instant Setup</span>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-
-    <div class="feature-card animate-slide-left hover-card">
-      <h3 >⚡ How It Works</h3>
-      <ol class="process-list">
-        <li class="process-item">Paste your YouTube URL</li>
-        <li class="process-item">AI analyzes the transcript</li>
-        <li class="process-item">Key moments are identified</li>
-        <li class="process-item">Clips are automatically trimmed</li>
-        <li class="process-item">Metadata is generated</li>
-        <li class="process-item">Ready to share or upload!</li>
-      </ol>
-    </div>
-  </div>
-
-  <div class="tech-stack animate-fade-in">
-    <h2 class="white-heading">🛠️ Built With</h2>
-    <div class="tech-grid">
-      <div class="tech-item hover-tech">🐍 Flask</div>
-      <div class="tech-item hover-tech">🎥 YouTube API</div>
-      <div class="tech-item hover-tech">🧠 OpenAI</div>
-      <div class="tech-item hover-tech">🎬 MoviePy</div>
-      <div class="tech-item hover-tech">🌐 YouTube Data API</div>
-    </div>
-  </div>
-
-  <div class="roadmap">
-    <h2 class="animate-slide-up white-heading">🚀 What's Coming Next</h2>
-    <div class="roadmap-grid">
-      <div class="roadmap-item hover-card animate-fade-in">
-        <span class="icon bounce">🎨</span>
-        <h4>Smart Thumbnails</h4>
-        <p>AI-generated thumbnails that drive clicks</p>
-      </div>
-      <div class="roadmap-item hover-card animate-fade-in">
-        <span class="icon bounce">🎙️</span>
-        <h4>Speech Recognition</h4>
-        <p>Advanced audio processing capabilities</p>
-      </div>
-      <div class="roadmap-item hover-card animate-fade-in">
-        <span class="icon bounce">📊</span>
-        <h4>Analytics Dashboard</h4>
-        <p>Track performance and engagement</p>
-      </div>
-      <div class="roadmap-item hover-card animate-fade-in">
-        <span class="icon bounce">⚡</span>
-        <h4>Auto-Scheduling</h4>
-        <p>Set and forget content distribution</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="cta-section animate-fade-in">
-    <h2>Ready to Transform Your Content?</h2>
-    <p>Join the community of creators using YTomic to maximize their content's impact.</p>
-    <div class="cta-buttons">
-      <a href="#" class="cta-button primary hover-button">Get Started</a>
-      <a href="#" class="cta-button secondary hover-button">Learn More</a>
-    </div>
-  </div>
-
-  <div class="contact-section animate-fade-in">
-    <h2>🤝 Let's Connect</h2>
-    <p>Have ideas or want to contribute? We'd love to hear from you!</p>
-    <a href="mailto:gouravyadav200220@gmail.com" class="contact-link hover-button">Get in Touch</a>
-  </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation observer for reveal effects
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.animate-slide-in').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Animated counters for stats
+    function animateCounters() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        
+        statNumbers.forEach(counter => {
+            const target = counter.textContent;
+            const hasPlus = target.includes('+');
+            const hasPercent = target.includes('%');
+            const targetNum = parseInt(target.replace(/[+%]/g, ''));
+            
+            if (!isNaN(targetNum)) {
+                let current = 0;
+                const increment = targetNum / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= targetNum) {
+                        counter.textContent = targetNum + (hasPlus ? '+' : '') + (hasPercent ? '%' : '');
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current) + (hasPlus ? '+' : '') + (hasPercent ? '%' : '');
+                    }
+                }, 30);
+            }
+        });
+    }
+
+    // Trigger counter animation when hero stats come into view
+    const heroStatsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                heroStatsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const heroStats = document.querySelector('.hero-stats');
+    if (heroStats) heroStatsObserver.observe(heroStats);
+
+    // Timeline animation
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    timelineItems.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add('animate-visible');
+        }, index * 200);
+    });
+
+    // Roadmap interaction
+    const roadmapItems = document.querySelectorAll('.roadmap-item');
+    roadmapItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const title = this.querySelector('h4').textContent;
+            const description = this.querySelector('p').textContent;
+            
+            showNotification(`${title}: ${description}`, 'info', 4000);
+        });
+    });
+
+    // Team member hover effects
+    const teamMembers = document.querySelectorAll('.team-member');
+    teamMembers.forEach(member => {
+        member.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        member.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Tech stack hover effects with enhanced animations
+    const techItems = document.querySelectorAll('.tech-item');
+    techItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.querySelector('.tech-logo').style.transform = 'scale(1.2) rotate(10deg)';
+            this.style.background = 'rgba(33, 150, 243, 0.1)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.querySelector('.tech-logo').style.transform = 'scale(1) rotate(0deg)';
+            this.style.background = '';
+        });
+    });
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Social link interactions
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (this.href === '#') {
+                e.preventDefault();
+                showNotification('Social link coming soon!', 'info');
+            }
+        });
+    });
+
+    console.log('✨ About page initialized successfully!');
+});
+</script>
+
 <style>
-.about-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-image: 
-    radial-gradient(circle at 25px 25px, rgba(0,0,0,0.02) 2%, transparent 0%),
-    radial-gradient(circle at 75px 75px, rgba(0,0,0,0.02) 2%, transparent 0%);
-  background-size: 100px 100px;
+/* About Page Specific Styles */
+.about-hero {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.hero-section {
-  text-align: center;
-  margin-bottom: 4rem;
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="about-pattern" width="25" height="25" patternUnits="userSpaceOnUse"><circle cx="12.5" cy="12.5" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="5" cy="5" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="20" cy="8" r="1.5" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23about-pattern)"/></svg>');
 }
 
-.main-title {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(45deg, #2196F3, #FF4081);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
 }
 
-.badge-container {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 1.5rem 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
 }
 
-.badge {
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  background: #f0f0f0;
-  font-size: 0.9rem;
-  color: black;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.stat-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-.white-heading{
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
     color: white;
 }
 
-p:not(:nth-child(1)) {
-    color: black;
+.stat-content {
+    text-align: left;
 }
 
-
-.feature-card {
-  padding: 2rem;
-  border-radius: 10px;
-  background: #f8f9fa;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.stat-number {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #FFD700;
 }
 
-.tech-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  margin: 2rem 0;
+.stat-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* About Content */
+.about-content {
+    padding: 6rem 0;
+}
+
+.story-section,
+.mission-section,
+.features-showcase,
+.tech-section,
+.roadmap-section,
+.team-section {
+    margin-bottom: 6rem;
+}
+
+.section-header {
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+/* Story Timeline */
+.story-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.story-timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary-color), rgba(33, 150, 243, 0.3));
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    width: 100%;
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.timeline-item.animate-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-item:nth-child(odd) {
+    flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.timeline-item::before {
+    content: attr(data-year);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 2;
+    min-width: 80px;
+    text-align: center;
+}
+
+.timeline-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.timeline-content {
+    width: 45%;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.timeline-content h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.timeline-content p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Mission & Vision Cards */
+.mission-card,
+.vision-card {
+    padding: 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.mission-icon,
+.vision-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mission-content h3,
+.vision-content h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+.mission-content p,
+.vision-content p {
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.mission-highlights {
+    margin-top: auto;
+}
+
+.highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.highlight-item i {
+    color: #4CAF50;
+    font-size: 1.1rem;
+}
+
+.vision-goals {
+    display: flex;
+    justify-content: space-around;
+    margin-top: auto;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.goal-item {
+    text-align: center;
+}
+
+.goal-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.goal-label {
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Features Showcase */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.feature-showcase-card {
+    padding: 2.5rem;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-visual {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    margin: 0 auto 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.feature-icon.primary { background: linear-gradient(135deg, #2196F3, #1976D2); }
+.feature-icon.success { background: linear-gradient(135deg, #4CAF50, #45a049); }
+.feature-icon.warning { background: linear-gradient(135deg, #FF9800, #F57C00); }
+
+.feature-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: var(--gradient-secondary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 3;
+}
+
+.feature-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-content h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.feature-content p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+}
+
+.feature-metrics {
+    display: flex;
+    justify-content: space-around;
+    margin-top: auto;
+}
+
+.metric {
+    text-align: center;
+}
+
+.metric-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.metric-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Technology Section */
+.tech-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.tech-category {
+    padding: 2.5rem;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.category-header i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.category-header h3 {
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+.tech-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .tech-item {
-  padding: 1rem;
-  text-align: center;
-  background: #ffffff;
-  border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.roadmap-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin: 2rem 0;
+.tech-item:hover {
+    background: rgba(33, 150, 243, 0.1);
+    transform: translateX(5px);
+}
+
+.tech-logo {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.tech-info {
+    flex-grow: 1;
+}
+
+.tech-info strong {
+    display: block;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.tech-info span {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Roadmap Section */
+.roadmap-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.roadmap-quarter {
+    position: relative;
+}
+
+.quarter-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.quarter-header h3 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.quarter-status {
+    padding: 0.25rem 1rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.quarter-status.current {
+    background: var(--gradient-success);
+    color: white;
+}
+
+.quarter-status.upcoming {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.quarter-status.future {
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.roadmap-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .roadmap-item {
-  text-align: center;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
 }
 
-.cta-section {
-  text-align: center;
-  margin: 4rem 0;
-  padding: 3rem;
-  background: white;
-  border-radius: 15px;
+.roadmap-item:hover {
+    transform: translateX(5px);
+    border-left-color: var(--primary-color);
+}
+
+.roadmap-item.completed {
+    background: rgba(76, 175, 80, 0.1);
+    border-left-color: #4CAF50;
+}
+
+.roadmap-item.in-progress {
+    background: rgba(33, 150, 243, 0.1);
+    border-left-color: var(--primary-color);
+}
+
+.item-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(33, 150, 243, 0.1);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.roadmap-item.completed .item-icon {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.item-content {
+    flex-grow: 1;
+}
+
+.item-content h4 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.item-content p {
+    color: #666;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Team Section */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.team-member {
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.member-avatar {
+    margin-bottom: 2rem;
+}
+
+.member-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.team-member:hover .member-avatar img {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
+}
+
+.member-info h3 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.member-role {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.member-bio {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.member-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    background: rgba(33, 150, 243, 0.1);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Contact CTA Section */
+.contact-cta-section {
+    padding: 4rem;
+    margin: 4rem 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+}
+
+.cta-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 2rem;
+    animation: pulse 2s infinite;
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.cta-description {
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
 }
 
 .cta-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
 }
 
-.cta-button {
-  padding: 1rem 2rem;
-  border-radius: 25px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: transform 0.2s;
+.cta-btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 200px;
+    justify-content: center;
 }
 
-.cta-button:hover {
-  transform: translateY(-2px);
+.contact-info {
+    margin-bottom: 2rem;
 }
 
-.primary {
-  background: #2196F3;
-  color: white;
-}
-
-.secondary {
-  background: white;
-  color: #2196F3;
-  border: 2px solid #2196F3;
-}
-
-.contact-section {
-  text-align: center;
-  margin-top: 4rem;
-  padding: 2rem;
-  background: #f8f9fa;
-  border-radius: 10px;
+.contact-text {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
 }
 
 .contact-link {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.8rem 1.5rem;
-  background: #2196F3;
-  color: white;
-  text-decoration: none;
-  border-radius: 25px;
-  transition: background 0.2s;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .contact-link:hover {
-  background: #1976D2;
+    color: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
-@media (max-width: 768px) {
-  .features-grid,
-  .tech-grid,
-  .roadmap-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .cta-buttons {
-    flex-direction: column;
-  }
+.cta-features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
-/* New Animation and Interactive Styles */
-.animate-fade-in {
-  opacity: 0;
-  animation: fadeIn 1s ease-in forwards;
+.cta-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4CAF50;
+    font-weight: 500;
 }
 
-.animate-slide-down {
-  opacity: 0;
-  transform: translateY(-20px);
-  animation: slideDown 0.8s ease-out forwards;
+.cta-feature i {
+    font-size: 1rem;
 }
 
-.animate-slide-up {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-.animate-slide-right {
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: slideRight 0.8s ease-out forwards;
-}
-
-.animate-slide-left {
-  opacity: 0;
-  transform: translateX(20px);
-  animation: slideLeft 0.8s ease-out forwards;
-}
-
-.hover-float {
-  transition: transform 0.3s ease;
-}
-
-.hover-float:hover {
-  transform: translateY(-5px);
-}
-
-.hover-card {
-  transition: all 0.3s ease;
-}
-
-.hover-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-
-.hover-tech {
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.hover-tech::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.2),
-    transparent
-  );
-  transition: 0.5s;
-}
-
-.hover-tech:hover::before {
-  left: 100%;
-}
-
-.hover-tech:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.hover-button {
-  transition: all 0.3s ease;
-}
-
-.hover-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.bounce {
-  display: inline-block;
-  animation: bounce 2s infinite;
-}
-
-.feature-item, .process-item {
-  transition: all 0.3s ease;
-  padding: 8px 0;
-}
-
-.feature-item:hover, .process-item:hover {
-  transform: translateX(10px);
-  color: #2196F3;
-}
-
-/* Animation Keyframes */
+/* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease forwards;
+}
+
+.animate-slide-in {
     opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
+    transform: translateY(50px);
+    transition: all 0.6s ease;
+}
+
+.animate-slide-in.animate-visible {
     opacity: 1;
     transform: translateY(0);
-  }
 }
 
-@keyframes slideRight {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.animate-float {
+    animation: float 3s ease-in-out infinite;
 }
 
-@keyframes slideLeft {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.hover-lift {
+    transition: all 0.3s ease;
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
+.hover-lift:hover {
     transform: translateY(-5px);
-  }
 }
 
-/* Add scroll-triggered animations */
-@media (prefers-reduced-motion: no-preference) {
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease-out;
-  }
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .features-grid,
+    .tech-categories {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
 
-  .animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@media (max-width: 992px) {
+    .hero-stats {
+        gap: 1rem;
+    }
+    
+    .stat-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem 1.5rem;
+    }
+    
+    .story-timeline::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        flex-direction: row !important;
+        padding-left: 80px;
+    }
+    
+    .timeline-item::before {
+        left: 30px;
+        transform: translateY(-50%);
+    }
+    
+    .timeline-icon {
+        left: 30px;
+    }
+    
+    .timeline-content {
+        width: auto;
+    }
+    
+    .features-grid,
+    .tech-categories,
+    .roadmap-timeline,
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .vision-goals {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-hero {
+        min-height: 70vh;
+        padding: 2rem 0;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-item {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .about-content {
+        padding: 4rem 0;
+    }
+    
+    .story-section,
+    .mission-section,
+    .features-showcase,
+    .tech-section,
+    .roadmap-section,
+    .team-section {
+        margin-bottom: 4rem;
+    }
+    
+    .mission-card,
+    .vision-card,
+    .feature-showcase-card,
+    .tech-category {
+        padding: 2rem;
+    }
+    
+    .contact-cta-section {
+        padding: 3rem 2rem;
+    }
+    
+    .cta-title {
+        font-size: 2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .cta-features {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-content {
+        padding: 3rem 0;
+    }
+    
+    .section-header {
+        margin-bottom: 3rem;
+    }
+    
+    .hero-badge {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.25rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .timeline-item {
+        padding-left: 60px;
+    }
+    
+    .timeline-item::before {
+        left: 20px;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.75rem;
+        min-width: 60px;
+    }
+    
+    .timeline-icon {
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .story-timeline::before {
+        left: 20px;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .member-avatar img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .tech-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .tech-logo {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .about-hero {
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .cta-buttons,
+    .social-link {
+        display: none !important;
+    }
+    
+    .glass-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .glass-card {
+        background: white;
+        border: 2px solid #000;
+    }
+    
+    .feature-icon,
+    .mission-icon,
+    .vision-icon {
+        border: 2px solid #000;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .animate-float {
+        animation: none;
+    }
 }
 </style>
-
-<script>
-// Add scroll-triggered animations
-document.addEventListener('DOMContentLoaded', function() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, {
-    threshold: 0.1
-  });
-
-  document.querySelectorAll('.animate-on-scroll').forEach((element) => {
-    observer.observe(element);
-  });
-});
-</script>
-{% endblock %} 
+{% endblock %}

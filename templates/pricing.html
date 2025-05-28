@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Pricing Hero Section -->
+<section class="hero-banner">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fas fa-tags"></i>
+            <span>Simple & Transparent Pricing</span>
+        </div>
+        <h1 class="hero-title">Choose Your Perfect Plan</h1>
+        <p class="hero-subtitle">
+            Transform your YouTube content with AI-powered clip generation. 
+            Start free and scale as you grow.
+        </p>
+        
+        <!-- Billing Toggle -->
+        <div class="billing-toggle">
+            <span class="toggle-label">Monthly</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="billingToggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">
+                Annual 
+                <span class="discount-badge">Save 20%</span>
+            </span>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Cards Section -->
+<section class="main-content">
+    <div class="pricing-container">
+        <!-- Free Plan -->
+        <div class="pricing-card glass-card" data-plan="free">
+            <div class="plan-header">
+                <h3 class="plan-name">Starter</h3>
+                <div class="plan-price">
+                    <span class="currency">$</span>
+                    <span class="amount">0</span>
+                    <span class="period">/month</span>
+                </div>
+                <p class="plan-description">Perfect for trying out YTomic</p>
+            </div>
+            
+            <div class="plan-features">
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>5 clips per month</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>720p video quality</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Basic AI highlights</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Standard support</span>
+                </div>
+                <div class="feature-item disabled">
+                    <i class="fas fa-times feature-cross"></i>
+                    <span>Custom branding</span>
+                </div>
+                <div class="feature-item disabled">
+                    <i class="fas fa-times feature-cross"></i>
+                    <span>Advanced analytics</span>
+                </div>
+            </div>
+            
+            <button class="plan-btn btn-outline">
+                <span class="btn-text">Get Started Free</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="pricing-card glass-card featured" data-plan="pro">
+            <div class="popular-badge">
+                <i class="fas fa-star"></i>
+                Most Popular
+            </div>
+            <div class="plan-header">
+                <h3 class="plan-name">Professional</h3>
+                <div class="plan-price">
+                    <span class="currency">$</span>
+                    <span class="amount monthly-price">29</span>
+                    <span class="amount annual-price" style="display: none;">23</span>
+                    <span class="period">/month</span>
+                </div>
+                <p class="plan-description">Best for content creators</p>
+            </div>
+            
+            <div class="plan-features">
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>100 clips per month</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>1080p HD quality</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Advanced AI highlights</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Priority support</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Custom branding</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Basic analytics</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Batch processing</span>
+                </div>
+            </div>
+            
+            <button class="plan-btn btn-gradient">
+                <span class="btn-text">Start Pro Trial</span>
+                <i class="fas fa-rocket"></i>
+            </button>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card glass-card" data-plan="enterprise">
+            <div class="plan-header">
+                <h3 class="plan-name">Enterprise</h3>
+                <div class="plan-price">
+                    <span class="currency">$</span>
+                    <span class="amount monthly-price">99</span>
+                    <span class="amount annual-price" style="display: none;">79</span>
+                    <span class="period">/month</span>
+                </div>
+                <p class="plan-description">For teams and agencies</p>
+            </div>
+            
+            <div class="plan-features">
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Unlimited clips</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>4K video quality</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>AI-powered insights</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>24/7 dedicated support</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>White-label solution</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Advanced analytics</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>API access</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Team collaboration</span>
+                </div>
+            </div>
+            
+            <button class="plan-btn btn-outline">
+                <span class="btn-text">Contact Sales</span>
+                <i class="fas fa-phone"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="section-title gradient-text">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know about YTomic pricing</p>
+        </div>
+        
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>Can I change plans anytime?</h4>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! You can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at the next billing cycle.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>Is there a free trial for paid plans?</h4>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! We offer a 14-day free trial for both Professional and Enterprise plans. No credit card required to start.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>What happens if I exceed my clip limit?</h4>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You'll be notified when approaching your limit. You can upgrade your plan or purchase additional clips as needed.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>Do you offer refunds?</h4>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied, we'll provide a full refund.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2 class="cta-title">Ready to Create Viral Clips?</h2>
+        <p class="cta-subtitle">Join thousands of creators who trust YTomic to amplify their content reach</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('register') }}" class="cta-btn btn-outline-light">
+                <i class="fas fa-play"></i>
+                Start Free Trial
+            </a>
+            <a href="#contact" class="cta-btn btn-outline-light">
+                <i class="fas fa-comments"></i>
+                Talk to Sales
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Billing toggle functionality
+    const billingToggle = document.getElementById('billingToggle');
+    const monthlyPrices = document.querySelectorAll('.monthly-price');
+    const annualPrices = document.querySelectorAll('.annual-price');
+    
+    billingToggle.addEventListener('change', function() {
+        monthlyPrices.forEach(price => {
+            price.style.display = this.checked ? 'none' : 'inline';
+        });
+        annualPrices.forEach(price => {
+            price.style.display = this.checked ? 'inline' : 'none';
+        });
+    });
+    
+    // FAQ toggle functionality
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = item.querySelector('.faq-icon');
+        
+        question.addEventListener('click', function() {
+            const isOpen = item.classList.contains('active');
+            
+            // Close all FAQ items
+            faqItems.forEach(faqItem => {
+                faqItem.classList.remove('active');
+                faqItem.querySelector('.faq-answer').style.maxHeight = '0';
+                faqItem.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+            });
+            
+            // Open clicked item if it wasn't already open
+            if (!isOpen) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        });
+    });
+    
+    // Pricing card hover effects
+    const pricingCards = document.querySelectorAll('.pricing-card');
+    
+    pricingCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Button click animations
+    const planButtons = document.querySelectorAll('.plan-btn');
+    
+    planButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Add loading state
+            const originalText = this.querySelector('.btn-text').textContent;
+            this.querySelector('.btn-text').textContent = 'Processing...';
+            this.classList.add('loading');
+            
+            // Simulate processing
+            setTimeout(() => {
+                this.querySelector('.btn-text').textContent = originalText;
+                this.classList.remove('loading');
+                
+                // Add success animation
+                this.classList.add('success-state');
+                setTimeout(() => {
+                    this.classList.remove('success-state');
+                }, 1000);
+            }, 2000);
+        });
+    });
+});
+</script>
+{% endblock %} 

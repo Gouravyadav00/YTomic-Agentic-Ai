@@ -128,5 +128,13 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register')
 
+@app.route('/feature')
+def feature():
+    return render_template('feature.html', title='Feature')
+
+@app.route('/pricing')
+def pricing():
+    return render_template('pricing.html', title='Pricing')
+
 if __name__ == '__main__':
     app.run(debug=True, port=5100)

@@ -1,33 +1,96 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-8">
-            <h1 class="mb-4">Get clips just in a single click!</h1>
-            <hr>
-            
-            <!-- YouTube URL Input Section -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">YouTube Video Information</h5>
-                    <form id="youtubeForm" class="mb-3">
-                        <div class="mb-3">
-                            <label for="video_url" class="form-label">Enter YouTube Video URL</label>
-                            <input type="url" class="form-control" id="video_url" name="video_url" 
-                                    value="https://youtu.be/3qHkcs3kG44?feature=shared"
-                                   placeholder="https://www.youtube.com/watch?v=..." required>
+<!-- Hero Section -->
+<div class="hero-banner">
+    <div class="hero-content">
+        <div class="hero-badge animate-float">
+            <i class="fas fa-magic"></i>
+            AI-Powered
+        </div>
+        <h1 class="hero-title animate-fade-in">
+            Transform Long Videos into 
+            <span class="gradient-text">Viral Clips</span>
+            in Seconds
+        </h1>
+        <p class="hero-subtitle animate-slide-up">
+            Extract the most engaging moments from any YouTube video using advanced AI. 
+            Create compelling short-form content that drives engagement and grows your audience.
+        </p>
+        <div class="hero-stats animate-slide-up">
+            <div class="stat-item">
+                <span class="stat-number">10M+</span>
+                <span class="stat-label">Videos Processed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50K+</span>
+                <span class="stat-label">Happy Creators</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">99%</span>
+                <span class="stat-label">Accuracy Rate</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <!-- Quick Demo Section -->
+            <div class="demo-section glass-card animate-slide-in">
+                <div class="demo-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-rocket text-primary me-2"></i>
+                        Try It Now - Free Demo
+                    </h2>
+                    <div class="demo-badge">
+                        <span class="badge bg-success">No Registration Required</span>
+                    </div>
+                </div>
+                
+                <!-- YouTube URL Input -->
+                <div class="input-section">
+                    <form id="youtubeForm" class="demo-form">
+                        <div class="url-input-group">
+                            <div class="input-wrapper">
+                                <i class="fab fa-youtube input-icon"></i>
+                                <input type="url" 
+                                       class="form-control modern-input" 
+                                       id="video_url" 
+                                       name="video_url" 
+                                       value="https://youtu.be/3qHkcs3kG44?feature=shared"
+                                       placeholder="Paste any YouTube URL here..." 
+                                       required>
+                                <div class="input-highlight"></div>
+                            </div>
+                            <button type="submit" class="btn btn-gradient btn-lg demo-btn">
+                                <span class="btn-text">
+                                    <i class="fas fa-wand-magic me-2"></i>
+                                    Generate Clips
+                                </span>
+                                <div class="btn-loader" style="display: none;">
+                                    <div class="spinner"></div>
+                                    Processing...
+                                </div>
+                            </button>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Get Video Information
-                        </button>
                     </form>
-                    <div id="result" class="mt-3" style="display: none;">
-                        <div class="alert alert-info">
-                            <strong>Video Title:</strong> <span id="video_title"></span>
+
+                    <!-- Results Display -->
+                    <div id="result" class="result-card" style="display: none;">
+                        <div class="result-header">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Video Analyzed Successfully!</strong>
+                        </div>
+                        <div class="video-info">
+                            <span id="video_title" class="video-title"></span>
                         </div>
                     </div>
-                    <div id="error" class="mt-3" style="display: none;">
-                        <div class="alert alert-danger">
+
+                    <div id="error" class="error-card" style="display: none;">
+                        <div class="error-header">
+                            <i class="fas fa-exclamation-triangle text-danger me-2"></i>
                             <span id="error_message"></span>
                         </div>
                     </div>
@@ -35,242 +98,790 @@
             </div>
 
             <!-- Transcript Section -->
-            <div class="card mb-4" id="transcriptCard">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0">Video Transcript</h5>
-                        <div class="transcript-controls" style="display: none;">
-                            <button class="btn btn-sm btn-outline-primary me-2" id="copyTranscript">
-                                <i class="fas fa-copy"></i> Copy
-                            </button>
-                            <button class="btn btn-sm btn-outline-primary me-2" id="downloadTranscript">
-                                <i class="fas fa-download"></i> Download
-                            </button>
-                            <button id="expandTranscript" class="btn btn-sm btn-outline-secondary" style="display: none;">
-                                <i class="fas fa-expand"></i>
-                            </button>
-                        </div>
+            <div class="transcript-section glass-card animate-slide-in" id="transcriptCard" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <h3 class="section-title">
+                            <i class="fas fa-file-text text-info me-2"></i>
+                            Video Transcript
+                        </h3>
+                        <span class="section-badge">AI Extracted</span>
                     </div>
-                    <div id="transcript-container" style="display: none;">
-                        <div class="transcript-content">
-                            <pre id="transcript"></pre>
-                        </div>
+                    <div class="transcript-controls" style="display: none;">
+                        <button class="btn btn-outline-primary btn-sm action-btn" id="copyTranscript">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm action-btn" id="downloadTranscript">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button id="expandTranscript" class="btn btn-outline-secondary btn-sm action-btn">
+                            <i class="fas fa-expand"></i>
+                        </button>
                     </div>
-                    <div id="transcript-loading" class="text-center" style="display: none;">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Loading transcript...</p>
+                </div>
+                
+                <div id="transcript-container" style="display: none;">
+                    <div class="transcript-content">
+                        <pre id="transcript"></pre>
                     </div>
+                </div>
+                
+                <div id="transcript-loading" class="loading-state" style="display: none;">
+                    <div class="loading-spinner">
+                        <div class="spinner-ring"></div>
+                    </div>
+                    <p class="loading-text">Analyzing transcript with AI...</p>
                 </div>
             </div>
 
-            <!-- Highlight Clips -->
-            <div class="card mb-4 yt-card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0">Highlight Clip</h5>
-                        <div class="yt-controls">
-                            <button class="btn btn-sm btn-outline-primary me-2" onclick="copyLink(this)">
-                                <i class="fas fa-link"></i> Copy Link
-                            </button>
-                            <button class="btn btn-sm btn-outline-success me-2" onclick="downloadClip(this)">
-                                <i class="fas fa-download"></i> Download
-                            </button>
+            <!-- Clips Section -->
+            <div class="clips-section glass-card animate-slide-in" id="clipsSection" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <h3 class="section-title">
+                            <i class="fas fa-video text-success me-2"></i>
+                            Generated Highlight Clips
+                        </h3>
+                        <div class="clips-stats">
+                            <span class="badge bg-gradient-primary">8 Clips Found</span>
+                            <span class="badge bg-outline-success">Ready to Share</span>
                         </div>
                     </div>
-                    <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
-                    </div>
-                </div>
-                <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
+                    <div class="view-controls">
+                        <button class="btn btn-sm btn-outline-primary" id="gridView">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" id="listView">
+                            <i class="fas fa-list"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
+                
+                <div class="clips-container">
+                    <div class="clips-grid" id="clipsGrid">
+                        <!-- Clip items will be generated here -->
+                        <div class="clip-card hover-lift" data-clip="1">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"Success is not final, failure is not fatal..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-eye"></i>
+                                        High Engagement
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        95% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Repeat for other clips with different content -->
+                        <div class="clip-card hover-lift" data-clip="2">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=90&end=150" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"The courage to continue matters most..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-fire"></i>
+                                        Viral Potential
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        92% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Continue with remaining 6 clips -->
+                        <div class="clip-card hover-lift" data-clip="3">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=150&end=210" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"Innovation distinguishes leaders..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-trending-up"></i>
+                                        Trending Topic
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        88% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clip-card hover-lift" data-clip="4">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=210&end=270" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"Dreams are the foundation of reality..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-heart"></i>
+                                        Emotional Peak
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        94% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clip-card hover-lift" data-clip="5">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=270&end=330" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"Excellence is never an accident..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-bolt"></i>
+                                        Action Moment
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        91% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clip-card hover-lift" data-clip="6">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=330&end=390" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"The future belongs to those who believe..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-lightbulb"></i>
+                                        Key Insight
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        89% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clip-card hover-lift" data-clip="7">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=390&end=450" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"Persistence is the key to success..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-mountain"></i>
+                                        Motivational
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        93% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clip-card hover-lift" data-clip="8">
+                            <div class="clip-preview">
+                                <div class="video-thumbnail">
+                                    <iframe class="clip-video" 
+                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=450&end=510" 
+                                            frameborder="0" 
+                                            allowfullscreen></iframe>
+                                    <div class="play-overlay">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clip-duration">1:00</div>
+                            </div>
+                            <div class="clip-details">
+                                <h5 class="clip-title">"Great things never come from comfort zones..."</h5>
+                                <div class="clip-metrics">
+                                    <span class="metric">
+                                        <i class="fas fa-rocket"></i>
+                                        Growth Mindset
+                                    </span>
+                                    <span class="metric">
+                                        <i class="fas fa-star"></i>
+                                        96% Match
+                                    </span>
+                                </div>
+                                <div class="clip-actions">
+                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
-                    </div>
-                </div>
-                <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
-                    </div>
-                </div>
-                <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
-                    </div>
-                </div>
-                <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
-                    </div>
-                </div>
-                <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
-                    </div>
-                </div>
-                <div class="clip">
-                    <div class="video-wrapper mb-3">
-                        <iframe class="yt-video" src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="clip-info">
-                        <p class="mb-0 text-muted">"Success is not final, failure is not fatal..."</p>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
 
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Quick Links</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="{{ url_for('login') }}" class="card-link">Login</a></li>
-                            <li><a href="{{ url_for('register') }}" class="card-link">Register</a></li>
-                            <li><a href="{{ url_for('about') }}" class="card-link">About</a></li>
-                        </ul>
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Feature Highlights -->
+            <div class="features-sidebar glass-card animate-slide-in">
+                <div class="sidebar-header">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-star text-warning me-2"></i>
+                        Why Choose YTomic?
+                    </h3>
+                </div>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>AI-Powered Analysis</h5>
+                            <p>Advanced algorithms identify the most engaging moments</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-zap"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Lightning Fast</h5>
+                            <p>Process hours of content in just seconds</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Engagement Boost</h5>
+                            <p>Clips optimized for maximum viewer retention</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Mobile Ready</h5>
+                            <p>Perfect for TikTok, Instagram, and YouTube Shorts</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            
 
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+            <!-- Success Stories -->
+            <div class="success-stories glass-card animate-slide-in">
+                <div class="sidebar-header">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-trophy text-success me-2"></i>
+                        Success Stories
+                    </h3>
+                </div>
+                <div class="testimonials">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            "Increased my video engagement by 300% using YTomic clips!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Sarah Chen</div>
+                                <div class="author-role">Content Creator</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            "Saved me 10+ hours per week on video editing. Game changer!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Mike Rodriguez</div>
+                                <div class="author-role">Marketing Manager</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <script>
-        document.getElementById('youtubeForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const videoUrl = document.getElementById('video_url').value;
-            const resultDiv = document.getElementById('result');
-            const errorDiv = document.getElementById('error');
-            const videoTitleSpan = document.getElementById('video_title');
-            const errorMessageSpan = document.getElementById('error_message');
-            const transcriptContainer = document.getElementById('transcript-container');
-            const transcriptElement = document.getElementById('transcript');
-            const transcriptLoading = document.getElementById('transcript-loading');
-            const transcriptControls = document.querySelector('.transcript-controls');
-            const expandButton = document.getElementById('expandTranscript');
-            
-            // Show loading state
-            transcriptLoading.style.display = 'block';
-            transcriptContainer.style.display = 'none';
-            transcriptControls.style.display = 'none';
-            resultDiv.style.display = 'none';
-            errorDiv.style.display = 'none';
-            
-            try {
-                const response = await fetch('/get_video_info', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `video_url=${encodeURIComponent(videoUrl)}`
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    videoTitleSpan.textContent = data.title;
-                    resultDiv.style.display = 'block';
-                    errorDiv.style.display = 'none';
-                    
-                    // Display transcript
-                    transcriptElement.textContent = data.transcript;
-                    transcriptContainer.style.display = 'block';
-                    transcriptControls.style.display = 'flex';
-                    expandButton.style.display = 'block';
-                } else {
-                    errorMessageSpan.textContent = data.error;
-                    errorDiv.style.display = 'block';
-                    resultDiv.style.display = 'none';
-                    transcriptContainer.style.display = 'none';
-                    transcriptControls.style.display = 'none';
-                    expandButton.style.display = 'none';
-                }
-            } catch (error) {
-                errorMessageSpan.textContent = 'An error occurred while fetching the video information.';
-                errorDiv.style.display = 'block';
-                resultDiv.style.display = 'none';
-                transcriptContainer.style.display = 'none';
-                transcriptControls.style.display = 'none';
-                expandButton.style.display = 'none';
-            } finally {
-                transcriptLoading.style.display = 'none';
+            <!-- Quick Links -->
+            <div class="quick-links glass-card animate-slide-in">
+                <div class="sidebar-header">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-link text-info me-2"></i>
+                        Quick Actions
+                    </h3>
+                </div>
+                <div class="links-list">
+                    <a href="{{ url_for('login') }}" class="quick-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login to Dashboard</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{{ url_for('register') }}" class="quick-link">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create Free Account</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{{ url_for('about') }}" class="quick-link">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section">
+    <div class="cta-content">
+        <h2 class="cta-title">Ready to Go Viral?</h2>
+        <p class="cta-subtitle">Join thousands of creators who are already using YTomic to transform their content strategy</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('register') }}" class="btn btn-gradient btn-lg cta-btn">
+                <i class="fas fa-rocket me-2"></i>
+                Start Creating Now
+            </a>
+            <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg cta-btn">
+                <i class="fas fa-play me-2"></i>
+                Watch Demo
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Enhanced JavaScript functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize animations on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+                entry.target.classList.add('animate-visible');
             }
         });
+    }, observerOptions);
 
-        // Copy transcript functionality
-        document.getElementById('copyTranscript').addEventListener('click', function() {
-            const transcript = document.getElementById('transcript').textContent;
-            navigator.clipboard.writeText(transcript).then(() => {
-                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => {
-                    this.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                }, 2000);
-            });
-        });
+    // Observe all animated elements
+    document.querySelectorAll('.animate-slide-in, .clip-card, .feature-item').forEach(el => {
+        observer.observe(el);
+    });
 
-        // Download transcript functionality
-        document.getElementById('downloadTranscript').addEventListener('click', function() {
-            const transcript = document.getElementById('transcript').textContent;
-            const videoTitle = document.getElementById('video_title').textContent;
-            const blob = new Blob([transcript], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${videoTitle} - Transcript.txt`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        });
-
-        // Add expand functionality
-        const expandButton = document.getElementById('expandTranscript');
-        const transcriptCard = document.getElementById('transcriptCard');
+    // Form submission with enhanced UX
+    document.getElementById('youtubeForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        expandButton.addEventListener('click', function() {
-            transcriptCard.classList.toggle('expanded');
-            const isExpanded = transcriptCard.classList.contains('expanded');
-            this.innerHTML = isExpanded ? 
-                '<i class="fas fa-compress"></i>' : 
-                '<i class="fas fa-expand"></i>';
+        const submitBtn = this.querySelector('.demo-btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoader = submitBtn.querySelector('.btn-loader');
+        const videoUrl = document.getElementById('video_url').value;
+        
+        // Show loading state
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'flex';
+        submitBtn.disabled = true;
+        
+        // Show transcript section
+        document.getElementById('transcriptCard').style.display = 'block';
+        document.getElementById('transcript-loading').style.display = 'block';
+        
+        try {
+            const response = await fetch('/get_video_info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `video_url=${encodeURIComponent(videoUrl)}`
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                // Show success
+                document.getElementById('video_title').textContent = data.title;
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+                
+                // Show transcript
+                document.getElementById('transcript').textContent = data.transcript;
+                document.getElementById('transcript-container').style.display = 'block';
+                document.querySelector('.transcript-controls').style.display = 'flex';
+                
+                // Show clips section with animation
+                setTimeout(() => {
+                    document.getElementById('clipsSection').style.display = 'block';
+                    document.getElementById('clipsSection').classList.add('animate-slide-in');
+                }, 500);
+                
+            } else {
+                document.getElementById('error_message').textContent = data.error;
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('result').style.display = 'none';
+            }
+        } catch (error) {
+            document.getElementById('error_message').textContent = 'An error occurred while processing your request.';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+        } finally {
+            // Reset button state
+            btnText.style.display = 'flex';
+            btnLoader.style.display = 'none';
+            submitBtn.disabled = false;
+            document.getElementById('transcript-loading').style.display = 'none';
+        }
+    });
+
+    // Transcript controls
+    document.getElementById('copyTranscript').addEventListener('click', function() {
+        const transcript = document.getElementById('transcript').textContent;
+        navigator.clipboard.writeText(transcript).then(() => {
+            this.innerHTML = '<i class="fas fa-check"></i>';
+            this.classList.add('btn-success');
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-copy"></i>';
+                this.classList.remove('btn-success');
+            }, 2000);
         });
-    </script>
-{% endblock %} 
+    });
+
+    document.getElementById('downloadTranscript').addEventListener('click', function() {
+        const transcript = document.getElementById('transcript').textContent;
+        const videoTitle = document.getElementById('video_title').textContent || 'transcript';
+        const blob = new Blob([transcript], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${videoTitle} - Transcript.txt`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    });
+
+    document.getElementById('expandTranscript').addEventListener('click', function() {
+        const transcriptCard = document.getElementById('transcriptCard');
+        transcriptCard.classList.toggle('expanded');
+        const isExpanded = transcriptCard.classList.contains('expanded');
+        this.innerHTML = isExpanded ? 
+            '<i class="fas fa-compress"></i>' : 
+            '<i class="fas fa-expand"></i>';
+    });
+
+    // View controls
+    document.getElementById('gridView').addEventListener('click', function() {
+        document.getElementById('clipsGrid').classList.add('grid-view');
+        document.getElementById('clipsGrid').classList.remove('list-view');
+        this.classList.add('active');
+        document.getElementById('listView').classList.remove('active');
+    });
+
+    document.getElementById('listView').addEventListener('click', function() {
+        document.getElementById('clipsGrid').classList.add('list-view');
+        document.getElementById('clipsGrid').classList.remove('grid-view');
+        this.classList.add('active');
+        document.getElementById('gridView').classList.remove('active');
+    });
+});
+
+// Clip action functions
+function copyLink(button) {
+    const clipCard = button.closest('.clip-card');
+    const iframe = clipCard.querySelector('iframe');
+    const link = iframe.src;
+    
+    navigator.clipboard.writeText(link).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.classList.add('success-state');
+        
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('success-state');
+        }, 2000);
+    });
+}
+
+function downloadClip(button) {
+    const clipCard = button.closest('.clip-card');
+    const clipNumber = clipCard.getAttribute('data-clip');
+    
+    // Add loading state
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    button.disabled = true;
+    
+    // Simulate download process
+    setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.classList.add('success-state');
+        
+        setTimeout(() => {
+            button.innerHTML = '<i class="fas fa-download"></i>';
+            button.classList.remove('success-state');
+            button.disabled = false;
+        }, 2000);
+    }, 1500);
+}
+
+function shareClip(button) {
+    const clipCard = button.closest('.clip-card');
+    const iframe = clipCard.querySelector('iframe');
+    const link = iframe.src;
+    const title = clipCard.querySelector('.clip-title').textContent;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: `Check out this clip: ${title}`,
+            url: link
+        });
+    } else {
+        // Fallback to copy link
+        copyLink(button);
+    }
+}
+
+function editClip(button) {
+    const clipCard = button.closest('.clip-card');
+    const clipNumber = clipCard.getAttribute('data-clip');
+    
+    // Show edit modal or redirect to edit page
+    alert(`Edit functionality for Clip ${clipNumber} would open here.`);
+}
+
+// Add smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Add floating animation to hero badge
+setInterval(() => {
+    const badge = document.querySelector('.hero-badge');
+    if (badge) {
+        badge.style.transform = 'translateY(-5px)';
+        setTimeout(() => {
+            badge.style.transform = 'translateY(0)';
+        }, 1000);
+    }
+}, 3000);
+</script>
+{% endblock %}
