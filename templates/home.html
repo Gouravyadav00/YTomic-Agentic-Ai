@@ -135,7 +135,7 @@
             </div>
 
             <!-- Clips Section -->
-            <div class="clips-section glass-card animate-slide-in" id="clipsSection" style="display: none;">
+            <div class="clips-section glass-card animate-slide-in" id="clipsSection" style="display: block;">
                 <div class="section-header">
                     <div class="section-title-group">
                         <h3 class="section-title">
@@ -143,12 +143,12 @@
                             Generated Highlight Clips
                         </h3>
                         <div class="clips-stats">
-                            <span class="badge bg-gradient-primary">8 Clips Found</span>
-                            <span class="badge bg-outline-success">Ready to Share</span>
+                            <span class="badge bg-gradient-primary" id="clipCount">0 Clips Found</span>
+                            <span class="badge bg-outline-success">AI Generated</span>
                         </div>
                     </div>
                     <div class="view-controls">
-                        <button class="btn btn-sm btn-outline-primary" id="gridView">
+                        <button class="btn btn-sm btn-outline-primary active" id="gridView">
                             <i class="fas fa-th"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-primary" id="listView">
@@ -158,361 +158,15 @@
                 </div>
                 
                 <div class="clips-container">
+                    <div class="clips-loading" id="clipsLoading" style="display: none;">
+                        <div class="loading-spinner">
+                            <div class="spinner-ring"></div>
+                        </div>
+                        <p class="loading-text">AI is analyzing and generating clips...</p>
+                    </div>
+                    
                     <div class="clips-grid" id="clipsGrid">
-                        <!-- Clip items will be generated here -->
-                        <div class="clip-card hover-lift" data-clip="1">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=30&end=90" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"Success is not final, failure is not fatal..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-eye"></i>
-                                        High Engagement
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        95% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Repeat for other clips with different content -->
-                        <div class="clip-card hover-lift" data-clip="2">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=90&end=150" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"The courage to continue matters most..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-fire"></i>
-                                        Viral Potential
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        92% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Continue with remaining 6 clips -->
-                        <div class="clip-card hover-lift" data-clip="3">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=150&end=210" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"Innovation distinguishes leaders..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-trending-up"></i>
-                                        Trending Topic
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        88% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clip-card hover-lift" data-clip="4">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=210&end=270" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"Dreams are the foundation of reality..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-heart"></i>
-                                        Emotional Peak
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        94% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clip-card hover-lift" data-clip="5">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=270&end=330" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"Excellence is never an accident..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-bolt"></i>
-                                        Action Moment
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        91% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clip-card hover-lift" data-clip="6">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=330&end=390" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"The future belongs to those who believe..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-lightbulb"></i>
-                                        Key Insight
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        89% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clip-card hover-lift" data-clip="7">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=390&end=450" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"Persistence is the key to success..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-mountain"></i>
-                                        Motivational
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        93% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clip-card hover-lift" data-clip="8">
-                            <div class="clip-preview">
-                                <div class="video-thumbnail">
-                                    <iframe class="clip-video" 
-                                            src="https://www.youtube.com/embed/3qHkcs3kG44?start=450&end=510" 
-                                            frameborder="0" 
-                                            allowfullscreen></iframe>
-                                    <div class="play-overlay">
-                                        <div class="play-button">
-                                            <i class="fas fa-play"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clip-duration">1:00</div>
-                            </div>
-                            <div class="clip-details">
-                                <h5 class="clip-title">"Great things never come from comfort zones..."</h5>
-                                <div class="clip-metrics">
-                                    <span class="metric">
-                                        <i class="fas fa-rocket"></i>
-                                        Growth Mindset
-                                    </span>
-                                    <span class="metric">
-                                        <i class="fas fa-star"></i>
-                                        96% Match
-                                    </span>
-                                </div>
-                                <div class="clip-actions">
-                                    <button class="action-btn primary" onclick="copyLink(this)" title="Copy Link">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button class="action-btn success" onclick="downloadClip(this)" title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </button>
-                                    <button class="action-btn info" onclick="shareClip(this)" title="Share">
-                                        <i class="fas fa-share-alt"></i>
-                                    </button>
-                                    <button class="action-btn warning" onclick="editClip(this)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Dynamic clips will be generated here -->
                     </div>
                 </div>
             </div>
@@ -657,6 +311,45 @@
 </div>
 
 <script>
+// Global video management system
+class VideoPlayerManager {
+    constructor() {
+        this.players = new Map();
+        this.currentlyPlaying = null;
+    }
+
+    registerPlayer(clipId, videoElement) {
+        this.players.set(clipId, videoElement);
+        
+        // Add event listener for when video starts playing
+        videoElement.addEventListener('play', () => {
+            this.pauseAllExcept(clipId);
+            this.currentlyPlaying = clipId;
+        });
+        
+        videoElement.addEventListener('pause', () => {
+            if (this.currentlyPlaying === clipId) {
+                this.currentlyPlaying = null;
+            }
+        });
+    }
+
+    pauseAllExcept(activeClipId) {
+        this.players.forEach((video, clipId) => {
+            if (clipId !== activeClipId) {
+                video.pause();
+            }
+        });
+    }
+
+    pauseAll() {
+        this.players.forEach(video => video.pause());
+        this.currentlyPlaying = null;
+    }
+}
+
+const playerManager = new VideoPlayerManager();
+
 // Enhanced JavaScript functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize animations on scroll
@@ -708,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const data = await response.json();
             
-            if (response.ok) {
+            if (response.ok && data.success) {
                 // Show success
                 document.getElementById('video_title').textContent = data.title;
                 document.getElementById('result').style.display = 'block';
@@ -723,10 +416,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     document.getElementById('clipsSection').style.display = 'block';
                     document.getElementById('clipsSection').classList.add('animate-slide-in');
+                    
+                    // Generate clip cards
+                    generateClipCards(data.clips);
                 }, 500);
                 
             } else {
-                document.getElementById('error_message').textContent = data.error;
+                document.getElementById('error_message').textContent = data.error || 'An error occurred';
                 document.getElementById('error').style.display = 'block';
                 document.getElementById('result').style.display = 'none';
             }
@@ -795,69 +491,512 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Clip action functions
-function copyLink(button) {
-    const clipCard = button.closest('.clip-card');
-    const iframe = clipCard.querySelector('iframe');
-    const link = iframe.src;
-    
-    navigator.clipboard.writeText(link).then(() => {
-        const originalHTML = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-check"></i>';
-        button.classList.add('success-state');
-        
-        setTimeout(() => {
-            button.innerHTML = originalHTML;
-            button.classList.remove('success-state');
-        }, 2000);
-    });
-}
+// Custom Video Player Class
+class CustomVideoPlayer {
+    constructor(videoElement, clipData) {
+        this.video = videoElement;
+        this.clipData = clipData;
+        this.isFullscreen = false;
+        this.init();
+    }
 
-function downloadClip(button) {
-    const clipCard = button.closest('.clip-card');
-    const clipNumber = clipCard.getAttribute('data-clip');
-    
-    // Add loading state
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    button.disabled = true;
-    
-    // Simulate download process
-    setTimeout(() => {
-        button.innerHTML = '<i class="fas fa-check"></i>';
-        button.classList.add('success-state');
-        
-        setTimeout(() => {
-            button.innerHTML = '<i class="fas fa-download"></i>';
-            button.classList.remove('success-state');
-            button.disabled = false;
-        }, 2000);
-    }, 1500);
-}
+    init() {
+        this.createControls();
+        this.bindEvents();
+    }
 
-function shareClip(button) {
-    const clipCard = button.closest('.clip-card');
-    const iframe = clipCard.querySelector('iframe');
-    const link = iframe.src;
-    const title = clipCard.querySelector('.clip-title').textContent;
-    
-    if (navigator.share) {
-        navigator.share({
-            title: `Check out this clip: ${title}`,
-            url: link
+    createControls() {
+        const controlsHTML = `
+            <div class="video-controls">
+                <div class="control-button play-pause-btn" title="Play/Pause">
+                    <i class="fas fa-play"></i>
+                </div>
+                <div class="control-button skip-backward-btn" title="Skip Backward 10s">
+                    <i class="fas fa-backward"></i>
+                </div>
+                <div class="control-button skip-forward-btn" title="Skip Forward 10s">
+                    <i class="fas fa-forward"></i>
+                </div>
+                <div class="volume-control">
+                    <div class="control-button volume-btn" title="Volume">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1">
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                    <div class="progress-handle"></div>
+                </div>
+                <div class="time-display">
+                    <span class="current-time">0:00</span> / <span class="total-time">0:00</span>
+                </div>
+                <div class="control-button fullscreen-btn" title="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </div>
+            </div>
+        `;
+        
+        const controlsDiv = document.createElement('div');
+        controlsDiv.innerHTML = controlsHTML;
+        this.video.parentElement.appendChild(controlsDiv.firstElementChild);
+    }
+
+    bindEvents() {
+        const container = this.video.parentElement;
+        const playPauseBtn = container.querySelector('.play-pause-btn');
+        const skipBackBtn = container.querySelector('.skip-backward-btn');
+        const skipForwardBtn = container.querySelector('.skip-forward-btn');
+        const volumeBtn = container.querySelector('.volume-btn');
+        const volumeSlider = container.querySelector('.volume-slider');
+        const progressBar = container.querySelector('.progress-bar');
+        const fullscreenBtn = container.querySelector('.fullscreen-btn');
+        const currentTimeSpan = container.querySelector('.current-time');
+        const totalTimeSpan = container.querySelector('.total-time');
+
+        // Play/Pause
+        playPauseBtn.addEventListener('click', () => this.togglePlayPause());
+        this.video.addEventListener('click', () => this.togglePlayPause());
+
+        // Skip controls
+        skipBackBtn.addEventListener('click', () => this.skip(-10));
+        skipForwardBtn.addEventListener('click', () => this.skip(10));
+
+        // Volume controls
+        volumeBtn.addEventListener('click', () => this.toggleMute());
+        volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
+
+        // Progress bar
+        progressBar.addEventListener('click', (e) => this.seek(e));
+        this.video.addEventListener('timeupdate', () => this.updateProgress());
+        this.video.addEventListener('loadedmetadata', () => this.updateDuration());
+
+        // Fullscreen
+        fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+
+        // Keyboard shortcuts
+        this.video.addEventListener('keydown', (e) => this.handleKeyboard(e));
+
+        // Update play/pause button
+        this.video.addEventListener('play', () => {
+            playPauseBtn.querySelector('i').className = 'fas fa-pause';
         });
-    } else {
-        // Fallback to copy link
-        copyLink(button);
+        
+        this.video.addEventListener('pause', () => {
+            playPauseBtn.querySelector('i').className = 'fas fa-play';
+        });
+    }
+
+    togglePlayPause() {
+        if (this.video.paused) {
+            this.video.play();
+        } else {
+            this.video.pause();
+        }
+    }
+
+    skip(seconds) {
+        this.video.currentTime += seconds;
+    }
+
+    toggleMute() {
+        this.video.muted = !this.video.muted;
+        const volumeBtn = this.video.parentElement.querySelector('.volume-btn i');
+        volumeBtn.className = this.video.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+    }
+
+    setVolume(value) {
+        this.video.volume = value;
+        const volumeBtn = this.video.parentElement.querySelector('.volume-btn i');
+        if (value == 0) {
+            volumeBtn.className = 'fas fa-volume-mute';
+        } else if (value < 0.5) {
+            volumeBtn.className = 'fas fa-volume-down';
+        } else {
+            volumeBtn.className = 'fas fa-volume-up';
+        }
+    }
+
+    seek(e) {
+        const progressBar = e.currentTarget;
+        const rect = progressBar.getBoundingClientRect();
+        const percent = (e.clientX - rect.left) / rect.width;
+        this.video.currentTime = percent * this.video.duration;
+    }
+
+    updateProgress() {
+        const container = this.video.parentElement;
+        const progressFill = container.querySelector('.progress-fill');
+        const currentTimeSpan = container.querySelector('.current-time');
+        
+        if (this.video.duration) {
+            const percent = (this.video.currentTime / this.video.duration) * 100;
+            progressFill.style.width = percent + '%';
+        }
+        
+        currentTimeSpan.textContent = this.formatTime(this.video.currentTime);
+    }
+
+    updateDuration() {
+        const container = this.video.parentElement;
+        const totalTimeSpan = container.querySelector('.total-time');
+        totalTimeSpan.textContent = this.formatTime(this.video.duration);
+    }
+
+    toggleFullscreen() {
+        const container = this.video.parentElement.parentElement;
+        
+        if (!this.isFullscreen) {
+            if (container.requestFullscreen) {
+                container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+                container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+                container.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+    }
+
+    handleKeyboard(e) {
+        switch(e.code) {
+            case 'Space':
+                e.preventDefault();
+                this.togglePlayPause();
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                this.skip(-10);
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                this.skip(10);
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                this.setVolume(Math.min(1, this.video.volume + 0.1));
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                this.setVolume(Math.max(0, this.video.volume - 0.1));
+                break;
+            case 'KeyF':
+                e.preventDefault();
+                this.toggleFullscreen();
+                break;
+            case 'KeyM':
+                e.preventDefault();
+                this.toggleMute();
+                break;
+        }
+    }
+
+    formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs.toString().padStart(2, '0')}`;
     }
 }
 
-function editClip(button) {
-    const clipCard = button.closest('.clip-card');
-    const clipNumber = clipCard.getAttribute('data-clip');
-    
-    // Show edit modal or redirect to edit page
-    alert(`Edit functionality for Clip ${clipNumber} would open here.`);
+// Function to generate clip cards dynamically
+function generateClipCards(clips) {
+    console.log('=== GENERATING CUSTOM VIDEO PLAYER CLIPS ===');
+    console.log('Clips received:', clips);
+    console.log('Number of clips:', clips ? clips.length : 'undefined');
+
+    const clipsGrid = document.getElementById('clipsGrid');
+    const clipCount = document.getElementById('clipCount');
+    const clipsSection = document.getElementById('clipsSection');
+
+    // Force visibility
+    if (clipsSection) {
+        clipsSection.style.display = 'block';
+        clipsSection.style.visibility = 'visible';
+        clipsSection.style.opacity = '1';
+        console.log('✓ FORCED clips section visible');
+    }
+
+    if (!clipsGrid) {
+        console.error('❌ clipsGrid element not found!');
+        return;
+    }
+
+    if (!clips || clips.length === 0) {
+        console.log('⚠️ No clips provided, showing message');
+        clipsGrid.innerHTML = `
+            <div class="no-clips-message">
+                <h4>No clips generated</h4>
+                <p>The AI couldn't find engaging content in this video. Try a different video with more motivational or quotable content.</p>
+            </div>
+        `;
+        if (clipCount) clipCount.textContent = '0 Clips Found';
+        return;
+    }
+
+    // Update clip count
+    if (clipCount) {
+        clipCount.textContent = `${clips.length} Clips Found`;
+        console.log('✓ Updated clip count to:', clips.length);
+    }
+
+    // Clear existing clips
+    clipsGrid.innerHTML = '';
+    console.log('✓ Cleared existing clips');
+
+    // Generate clip cards with custom video player
+    clips.forEach((clip, index) => {
+        console.log(`Processing clip ${index + 1}:`, clip);
+
+        if (!clip.direct_url || !clip.title) {
+            console.error(`❌ Clip ${index + 1} missing required data:`, clip);
+            return;
+        }
+
+        const clipCard = document.createElement('div');
+        clipCard.className = 'clip-card hover-lift';
+        clipCard.setAttribute('data-clip', clip.id || index + 1);
+
+        const confidence = clip.confidence || 0;
+        const confidencePercentage = Math.round(confidence * 100);
+        const confidenceColor = confidence >= 0.8 ? 'high-confidence' :
+                                confidence >= 0.6 ? 'medium-confidence' : 'low-confidence';
+
+        clipCard.innerHTML = `
+            <div class="clip-preview">
+                <div class="video-container">
+                    <video class="custom-video-player" 
+                           data-clip-id="${clip.id || index + 1}"
+                           preload="metadata"
+                           poster="https://img.youtube.com/vi/${clip.video_id}/maxresdefault.jpg">
+                        <source src="${clip.direct_url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-overlay">
+                        <div class="play-button-large">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="clip-duration">${clip.duration || 'N/A'}</div>
+                <div class="clip-category">${clip.category || 'General'}</div>
+            </div>
+            <div class="clip-details">
+                <h5 class="clip-title" title="${(clip.full_text || clip.title).replace(/"/g, '&quot;')}">${clip.title}</h5>
+                <div class="clip-metrics">
+                    <span class="metric ${confidenceColor}">
+                        <i class="fas fa-star"></i>
+                        ${confidencePercentage}% Match
+                    </span>
+                    <span class="metric">
+                        <i class="fas fa-clock"></i>
+                        ${formatTime(clip.start_time)} - ${formatTime(clip.end_time)}
+                    </span>
+                </div>
+                <div class="clip-actions">
+                    <button class="action-btn primary" onclick="copyClipLink('${clip.direct_url}')" title="Copy Link">
+                        <i class="fas fa-link"></i>
+                    </button>
+                    <button class="action-btn success" onclick="openClipLink('${clip.share_url || clip.direct_url}')" title="Open Video">
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                    <button class="action-btn info" onclick="shareClipLink('${clip.title.replace(/'/g, '\\\'')}', '${clip.share_url || clip.direct_url}')" title="Share">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button class="action-btn warning" onclick="showFullText('${(clip.full_text || clip.title).replace(/'/g, '\\\'')}', '${clip.title.replace(/'/g, '\\\'')}');" title="View Full Text">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="select-action">
+                    <button class="btn btn-primary select-clip-btn" onclick="selectClip(${JSON.stringify(clip).replace(/"/g, '&quot;')})">
+                        <i class="fas fa-edit me-2"></i>
+                        Select for Editing
+                    </button>
+                </div>
+            </div>
+        `;
+
+        clipsGrid.appendChild(clipCard);
+        console.log(`✓ Added clip ${index + 1} to grid`);
+
+        // Initialize custom video player for this clip
+        const videoElement = clipCard.querySelector('.custom-video-player');
+        const customPlayer = new CustomVideoPlayer(videoElement, clip);
+        
+        // Register with global player manager
+        playerManager.registerPlayer(clip.id || index + 1, videoElement);
+
+        // Add click handler for large play button
+        const playButtonLarge = clipCard.querySelector('.play-button-large');
+        const videoOverlay = clipCard.querySelector('.video-overlay');
+        
+        playButtonLarge.addEventListener('click', () => {
+            videoElement.play();
+            videoOverlay.style.display = 'none';
+        });
+
+        // Show overlay again when video is paused or ended
+        videoElement.addEventListener('pause', () => {
+            videoOverlay.style.display = 'flex';
+        });
+        
+        videoElement.addEventListener('ended', () => {
+            videoOverlay.style.display = 'flex';
+        });
+
+        setTimeout(() => {
+            clipCard.classList.add('animate-slide-in');
+        }, index * 100);
+    });
+
+    console.log('✅ Successfully generated all custom video player clips');
 }
+
+// Select clip for editing
+async function selectClip(clipData) {
+    try {
+        console.log('🎯 Selecting clip for editing:', clipData);
+        
+        const response = await fetch('/select_clip', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(clipData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            showToast('Clip selected! Redirecting to edit room...', 'success');
+            
+            // Redirect to edit room after short delay
+            setTimeout(() => {
+                window.location.href = result.redirect_url;
+            }, 1000);
+        } else {
+            showToast(result.error || 'Failed to select clip', 'error');
+        }
+    } catch (error) {
+        console.error('❌ Error selecting clip:', error);
+        showToast('Error selecting clip', 'error');
+    }
+}
+
+// Helper: format seconds to mm:ss
+function formatTime(seconds) {
+    if (!seconds && seconds !== 0) return '0:00';
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Clipboard copy
+function copyClipLink(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        console.log('✓ Link copied:', url);
+        showToast('Link copied to clipboard!', 'success');
+    }).catch(err => {
+        console.error('❌ Copy failed:', err);
+        showToast('Failed to copy link', 'error');
+    });
+}
+
+// Open link
+function openClipLink(url) {
+    console.log('🔗 Opening link:', url);
+    window.open(url, '_blank');
+}
+
+// Share via native share API or fallback
+function shareClipLink(title, url) {
+    console.log('📤 Sharing:', title, url);
+    if (navigator.share) {
+        navigator.share({
+            title: `Check out this clip: ${title}`,
+            url: url
+        }).catch(err => console.log('Share cancelled'));
+    } else {
+        copyClipLink(url);
+    }
+}
+
+// Full text modal
+function showFullText(fullText, title) {
+    console.log('👁️ Showing full text for:', title);
+
+    const modal = document.createElement('div');
+    modal.className = 'clip-text-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Full Clip Text</h5>
+                <button onclick="this.closest('.clip-text-modal').remove()" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>${fullText}</p>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Toast alert
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-weight: 500;
+        animation: slideInRight 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Toast CSS animations
+const toastCSS = document.createElement('style');
+toastCSS.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(toastCSS);
+
+console.log('🚀 Custom Video Player System Loaded!');
+console.log('🎮 Features: Play/Pause, Volume Control, Fullscreen, Skip, Auto-Pause Others');
+console.log('⌨️ Keyboard shortcuts: Space=Play/Pause, ←/→=Skip, ↑/↓=Volume, F=Fullscreen, M=Mute');
 
 // Add smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -884,4 +1023,536 @@ setInterval(() => {
     }
 }, 3000);
 </script>
+
+<style>
+    /* Custom Video Player Styles */
+    .video-container {
+        position: relative !important;
+        width: 100% !important;
+        height: 200px !important;
+        background: #000 !important;
+        overflow: hidden !important;
+        border-radius: 8px !important;
+    }
+    
+    .custom-video-player {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        outline: none !important;
+    }
+    
+    .video-overlay {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: rgba(0, 0, 0, 0.4) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .video-overlay:hover {
+        background: rgba(0, 0, 0, 0.6) !important;
+    }
+    
+    .play-button-large {
+        width: 70px !important;
+        height: 70px !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 24px !important;
+        color: #333 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .play-button-large:hover {
+        background: white !important;
+        transform: scale(1.1) !important;
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    .play-button-large i {
+        margin-left: 4px !important; /* Center the play icon visually */
+    }
+    
+    /* Video Controls */
+    .video-controls {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)) !important;
+        padding: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        opacity: 0 !important;
+        transition: opacity 0.3s ease !important;
+        z-index: 20 !important;
+    }
+    
+    .video-container:hover .video-controls {
+        opacity: 1 !important;
+    }
+    
+    .control-button {
+        width: 32px !important;
+        height: 32px !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: white !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        font-size: 14px !important;
+    }
+    
+    .control-button:hover {
+        background: rgba(255, 255, 255, 0.3) !important;
+        transform: scale(1.1) !important;
+    }
+    
+    .volume-control {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+    }
+    
+    .volume-slider {
+        width: 60px !important;
+        height: 4px !important;
+        background: rgba(255, 255, 255, 0.3) !important;
+        border: none !important;
+        border-radius: 2px !important;
+        outline: none !important;
+        cursor: pointer !important;
+    }
+    
+    .volume-slider::-webkit-slider-thumb {
+        width: 12px !important;
+        height: 12px !important;
+        background: white !important;
+        border-radius: 50% !important;
+        cursor: pointer !important;
+        -webkit-appearance: none !important;
+    }
+    
+    .progress-bar {
+        flex: 1 !important;
+        height: 4px !important;
+        background: rgba(255, 255, 255, 0.3) !important;
+        border-radius: 2px !important;
+        cursor: pointer !important;
+        position: relative !important;
+        margin: 0 10px !important;
+    }
+    
+    .progress-fill {
+        height: 100% !important;
+        background: #ff6b6b !important;
+        border-radius: 2px !important;
+        width: 0% !important;
+        transition: width 0.1s ease !important;
+    }
+    
+    .time-display {
+        color: white !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        min-width: 80px !important;
+        text-align: center !important;
+    }
+    
+    /* Ensure clips section is always visible and properly styled */
+    #clipsSection {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Enhanced clips grid styling */
+    .clips-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
+        margin-top: 1rem !important;
+    }
+    
+    /* Enhanced clip card styling */
+    .clip-card {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.3s ease !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        min-height: 400px !important;
+        position: relative !important;
+    }
+    
+    .clip-card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* Clip preview styling */
+    .clip-preview {
+        position: relative !important;
+        width: 100% !important;
+        height: 200px !important;
+        background: #000 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Duration and category badges */
+    .clip-duration {
+        position: absolute !important;
+        bottom: 8px !important;
+        right: 8px !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        color: white !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        z-index: 25 !important;
+    }
+    
+    .clip-category {
+        position: absolute !important;
+        top: 8px !important;
+        left: 8px !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        padding: 4px 12px !important;
+        border-radius: 12px !important;
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        z-index: 25 !important;
+    }
+    
+    /* Clip details styling */
+    .clip-details {
+        padding: 1rem !important;
+        background: white !important;
+    }
+    
+    .clip-title {
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.75rem !important;
+        line-height: 1.4 !important;
+        color: #333 !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+    
+    .clip-metrics {
+        display: flex !important;
+        gap: 1rem !important;
+        margin-bottom: 1rem !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .metric {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.25rem !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        padding: 0.25rem 0.5rem !important;
+        background: #f8f9fa !important;
+        border-radius: 12px !important;
+        color: #666 !important;
+    }
+    
+    .metric i {
+        font-size: 0.7rem !important;
+    }
+    
+    /* Confidence colors */
+    .high-confidence {
+        color: #28a745 !important;
+        background: #e8f5e8 !important;
+    }
+    
+    .medium-confidence {
+        color: #ffc107 !important;
+        background: #fff3cd !important;
+    }
+    
+    .low-confidence {
+        color: #dc3545 !important;
+        background: #f8d7da !important;
+    }
+    
+    /* Action buttons */
+    .clip-actions {
+        display: flex !important;
+        gap: 0.5rem !important;
+        justify-content: center !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .action-btn {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 50% !important;
+        border: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .action-btn.primary {
+        background: rgba(0, 123, 255, 0.1) !important;
+        color: #007bff !important;
+    }
+    
+    .action-btn.primary:hover {
+        background: #007bff !important;
+        color: white !important;
+        transform: scale(1.1) !important;
+    }
+    
+    .action-btn.success {
+        background: rgba(40, 167, 69, 0.1) !important;
+        color: #28a745 !important;
+    }
+    
+    .action-btn.success:hover {
+        background: #28a745 !important;
+        color: white !important;
+        transform: scale(1.1) !important;
+    }
+    
+    .action-btn.info {
+        background: rgba(23, 162, 184, 0.1) !important;
+        color: #17a2b8 !important;
+    }
+    
+    .action-btn.info:hover {
+        background: #17a2b8 !important;
+        color: white !important;
+        transform: scale(1.1) !important;
+    }
+    
+    .action-btn.warning {
+        background: rgba(255, 193, 7, 0.1) !important;
+        color: #ffc107 !important;
+    }
+    
+    .action-btn.warning:hover {
+        background: #ffc107 !important;
+        color: #333 !important;
+        transform: scale(1.1) !important;
+    }
+    
+    /* Select button styling */
+    .select-action {
+        text-align: center !important;
+        margin-top: 0.5rem !important;
+    }
+    
+    .select-clip-btn {
+        width: 100% !important;
+        padding: 0.75rem !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border: none !important;
+        color: white !important;
+    }
+    
+    .select-clip-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+    }
+    
+    /* Modal styling */
+    .clip-text-modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 10000 !important;
+        padding: 2rem !important;
+    }
+    
+    .modal-content {
+        background: white !important;
+        border-radius: 12px !important;
+        max-width: 600px !important;
+        width: 100% !important;
+        max-height: 80vh !important;
+        overflow-y: auto !important;
+    }
+    
+    .modal-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 1.5rem !important;
+        border-bottom: 1px solid #eee !important;
+    }
+    
+    .modal-header h5 {
+        margin: 0 !important;
+        font-weight: 600 !important;
+    }
+    
+    .close-btn {
+        background: none !important;
+        border: none !important;
+        font-size: 1.2rem !important;
+        cursor: pointer !important;
+        color: #666 !important;
+        padding: 0.5rem !important;
+        border-radius: 50% !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .close-btn:hover {
+        background: #f0f0f0 !important;
+        color: #333 !important;
+    }
+    
+    .modal-body {
+        padding: 1.5rem !important;
+    }
+    
+    .modal-body p {
+        margin: 0 !important;
+        line-height: 1.6 !important;
+        color: #333 !important;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .clips-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+        
+        .video-container {
+            height: 180px !important;
+        }
+        
+        .clip-actions .action-btn {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .play-button-large {
+            width: 60px !important;
+            height: 60px !important;
+            font-size: 20px !important;
+        }
+        
+        .clip-text-modal {
+            padding: 1rem !important;
+        }
+        
+        .control-button {
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 12px !important;
+        }
+        
+        .volume-slider {
+            width: 40px !important;
+        }
+        
+        .time-display {
+            font-size: 10px !important;
+            min-width: 60px !important;
+        }
+    }
+    
+    /* Loading and no-clips states */
+    .no-clips-message {
+        text-align: center !important;
+        color: #666 !important;
+        padding: 2rem !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        margin: 1rem 0 !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .clips-loading {
+        text-align: center !important;
+        padding: 3rem !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(10px) !important;
+    }
+    
+    .clips-loading .loading-text {
+        color: #fff !important;
+        font-size: 1.1rem !important;
+        font-weight: 500 !important;
+        margin: 0 !important;
+    }
+    
+    /* Animation for clip cards */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .clip-card.animate-slide-in {
+        animation: slideInUp 0.5s ease-out forwards !important;
+    }
+    
+    /* Fullscreen styles */
+    .video-container:fullscreen {
+        background: black !important;
+    }
+    
+    .video-container:fullscreen .custom-video-player {
+        object-fit: contain !important;
+    }
+    
+    /* Focus styles for accessibility */
+    .control-button:focus,
+    .select-clip-btn:focus {
+        outline: 2px solid #667eea !important;
+        outline-offset: 2px !important;
+    }
+</style>
+
 {% endblock %}

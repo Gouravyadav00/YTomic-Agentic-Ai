@@ -1,15 +1,59 @@
-Flask==3.0.2
-Flask-SQLAlchemy==3.1.1
-Werkzeug==3.0.1
-Jinja2==3.1.2
-SQLAlchemy==2.0.23
-click==8.1.7
-itsdangerous==2.1.2
-MarkupSafe==2.1.3
-pytube==15.0.0
-certifi==2024.2.2
-requests==2.31.0
-youtube-transcript-api==0.6.2
-pandas==2.2.1
-jupyter==1.0.0
-notebook==7.0.7 
+# Existing Flask dependencies
+Flask
+Flask-SQLAlchemy
+Werkzeug
+Jinja2
+SQLAlchemy
+click
+itsdangerous
+MarkupSafe
+
+# YouTube and web scraping
+pytube
+certifi
+requests
+youtube-transcript-api
+
+# Data processing (existing)
+pandas
+
+# Jupyter (existing)
+jupyter
+notebook
+
+# NEW: Advanced AI/NLP dependencies for semantic analysis
+sentence-transformers
+transformers
+torch
+torchvision
+torchaudio
+scikit-learn
+numpy
+scipy
+nltk
+
+# NEW: Additional text processing libraries
+textstat
+regex
+
+# NEW: Machine learning utilities
+joblib
+threadpoolctl
+
+# NEW: Tokenization and text processing
+tokenizers
+huggingface-hub
+safetensors
+
+# NEW: Enhanced data manipulation
+pyarrow
+
+# Optional: For even better AI performance (uncomment if needed)
+# spacy
+# openai
+# anthropic
+
+# Development and debugging (optional)
+# tqdm
+# matplotlib
+# seaborn

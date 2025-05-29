@@ -1,0 +1,811 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="edit-room-container">
+    <div class="edit-header">
+        <div class="header-nav">
+            <a href="{{ url_for('home') }}" class="back-btn">
+                <i class="fas fa-arrow-left me-2"></i>
+                Back to Home
+            </a>
+            <h1 class="edit-title">
+                <i class="fas fa-edit me-2"></i>
+                Edit Room
+            </h1>
+        </div>
+        <div class="header-info">
+            <span class="edit-badge">Selected Clip</span>
+            <h2 class="clip-title">{{ clip.title if clip else 'No Clip Selected' }}</h2>
+        </div>
+    </div>
+
+    {% if clip %}
+    <div class="edit-workspace">
+        <div class="row g-4">
+            <!-- Video Preview Section -->
+            <div class="col-lg-8">
+                <div class="video-preview-section glass-card">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-play-circle text-primary me-2"></i>
+                            Video Preview
+                        </h3>
+                        <div class="preview-controls">
+                            <button class="btn btn-sm btn-outline-primary" id="previewOriginal">
+                                <i class="fas fa-video"></i>
+                                Original
+                            </button>
+                            <button class="btn btn-sm btn-primary" id="previewEdited">
+                                <i class="fas fa-magic"></i>
+                                Edited
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="video-preview-container">
+                        <div class="video-wrapper">
+                            <video class="preview-video" controls preload="metadata" 
+                                   poster="https://img.youtube.com/vi/{{ clip.video_id }}/maxresdefault.jpg">
+                                <source src="{{ clip.direct_url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        
+                        <div class="timeline-section">
+                            <div class="timeline-header">
+                                <h4>Timeline</h4>
+                                <div class="timeline-controls">
+                                    <button class="btn btn-sm btn-outline-secondary" id="zoomIn">
+                                        <i class="fas fa-search-plus"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" id="zoomOut">
+                                        <i class="fas fa-search-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="timeline-track">
+                                <div class="timeline-ruler"></div>
+                                <div class="clip-segment" data-start="{{ clip.start_time }}" data-end="{{ clip.end_time }}">
+                                    <div class="segment-handle start-handle"></div>
+                                    <div class="segment-content">
+                                        <span class="segment-duration">{{ clip.duration }}</span>
+                                    </div>
+                                    <div class="segment-handle end-handle"></div>
+                                </div>
+                                <div class="playhead"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editing Tools Section -->
+                <div class="editing-tools-section glass-card">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-tools text-success me-2"></i>
+                            Editing Tools
+                        </h3>
+                    </div>
+                    
+                    <div class="tools-grid">
+                        <div class="tool-category">
+                            <h5>Trim & Cut</h5>
+                            <div class="tool-buttons">
+                                <button class="tool-btn" id="trimStart">
+                                    <i class="fas fa-cut"></i>
+                                    <span>Trim Start</span>
+                                </button>
+                                <button class="tool-btn" id="trimEnd">
+                                    <i class="fas fa-cut"></i>
+                                    <span>Trim End</span>
+                                </button>
+                                <button class="tool-btn" id="splitClip">
+                                    <i class="fas fa-scissors"></i>
+                                    <span>Split</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-category">
+                            <h5>Effects</h5>
+                            <div class="tool-buttons">
+                                <button class="tool-btn" id="addFadeIn">
+                                    <i class="fas fa-volume-up"></i>
+                                    <span>Fade In</span>
+                                </button>
+                                <button class="tool-btn" id="addFadeOut">
+                                    <i class="fas fa-volume-down"></i>
+                                    <span>Fade Out</span>
+                                </button>
+                                <button class="tool-btn" id="adjustSpeed">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>Speed</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-category">
+                            <h5>Text & Graphics</h5>
+                            <div class="tool-buttons">
+                                <button class="tool-btn" id="addSubtitles">
+                                    <i class="fas fa-closed-captioning"></i>
+                                    <span>Subtitles</span>
+                                </button>
+                                <button class="tool-btn" id="addText">
+                                    <i class="fas fa-font"></i>
+                                    <span>Add Text</span>
+                                </button>
+                                <button class="tool-btn" id="addLogo">
+                                    <i class="fas fa-image"></i>
+                                    <span>Logo</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Properties Panel -->
+            <div class="col-lg-4">
+                <!-- Clip Information -->
+                <div class="clip-info-section glass-card">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-info-circle text-info me-2"></i>
+                            Clip Information
+                        </h3>
+                    </div>
+                    
+                    <div class="clip-details">
+                        <div class="detail-item">
+                            <label>Original Video:</label>
+                            <span>{{ clip.video_title }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Duration:</label>
+                            <span>{{ clip.duration }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Start Time:</label>
+                            <span>{{ clip.start_time }}s</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>End Time:</label>
+                            <span>{{ clip.end_time }}s</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Category:</label>
+                            <span class="category-badge">{{ clip.category }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Confidence:</label>
+                            <span class="confidence-score">{{ "%.0f"|format(clip.confidence * 100) }}%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="clip-text">
+                        <label>Full Text:</label>
+                        <div class="text-content">
+                            {{ clip.full_text }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Settings -->
+                <div class="export-settings-section glass-card">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-download text-warning me-2"></i>
+                            Export Settings
+                        </h3>
+                    </div>
+                    
+                    <div class="export-options">
+                        <div class="option-group">
+                            <label>Format:</label>
+                            <select class="form-select" id="exportFormat">
+                                <option value="mp4">MP4 (Recommended)</option>
+                                <option value="webm">WebM</option>
+                                <option value="mov">MOV</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label>Quality:</label>
+                            <select class="form-select" id="exportQuality">
+                                <option value="1080p">1080p (Full HD)</option>
+                                <option value="720p" selected>720p (HD)</option>
+                                <option value="480p">480p (SD)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label>Frame Rate:</label>
+                            <select class="form-select" id="exportFrameRate">
+                                <option value="60">60 FPS</option>
+                                <option value="30" selected>30 FPS</option>
+                                <option value="24">24 FPS</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label>Aspect Ratio:</label>
+                            <select class="form-select" id="exportAspectRatio">
+                                <option value="16:9" selected>16:9 (Landscape)</option>
+                                <option value="9:16">9:16 (Portrait/Stories)</option>
+                                <option value="1:1">1:1 (Square)</option>
+                                <option value="4:3">4:3 (Classic)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="export-actions">
+                        <button class="btn btn-outline-primary btn-lg w-100 mb-2" id="previewExport">
+                            <i class="fas fa-eye me-2"></i>
+                            Preview Export
+                        </button>
+                        <button class="btn btn-success btn-lg w-100" id="exportClip">
+                            <i class="fas fa-download me-2"></i>
+                            Export Clip
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions-section glass-card">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-bolt text-danger me-2"></i>
+                            Quick Actions
+                        </h3>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-outline-info w-100 mb-2" id="saveProject">
+                            <i class="fas fa-save me-2"></i>
+                            Save Project
+                        </button>
+                        <button class="btn btn-outline-secondary w-100 mb-2" id="resetChanges">
+                            <i class="fas fa-undo me-2"></i>
+                            Reset Changes
+                        </button>
+                        <button class="btn btn-outline-primary w-100" id="sharePreview">
+                            <i class="fas fa-share-alt me-2"></i>
+                            Share Preview
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="no-clip-selected">
+        <div class="empty-state">
+            <i class="fas fa-video-slash"></i>
+            <h3>No Clip Selected</h3>
+            <p>Please go back to the home page and select a clip to edit.</p>
+            <a href="{{ url_for('home') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-arrow-left me-2"></i>
+                Go Back to Home
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎬 Edit Room Loaded');
+    
+    // Initialize editing functionality
+    if (document.querySelector('.preview-video')) {
+        initVideoEditor();
+    }
+    
+    // Export functionality
+    document.getElementById('exportClip')?.addEventListener('click', function() {
+        const format = document.getElementById('exportFormat').value;
+        const quality = document.getElementById('exportQuality').value;
+        
+        showToast(`Exporting clip as ${format.toUpperCase()} in ${quality}...`, 'info');
+        
+        // Simulate export process
+        setTimeout(() => {
+            showToast('Clip exported successfully!', 'success');
+        }, 3000);
+    });
+    
+    // Save project
+    document.getElementById('saveProject')?.addEventListener('click', function() {
+        showToast('Project saved successfully!', 'success');
+    });
+    
+    // Reset changes
+    document.getElementById('resetChanges')?.addEventListener('click', function() {
+        if (confirm('Are you sure you want to reset all changes?')) {
+            showToast('Changes reset successfully!', 'info');
+        }
+    });
+});
+
+function initVideoEditor() {
+    console.log('🎥 Initializing Video Editor');
+    
+    const video = document.querySelector('.preview-video');
+    const timeline = document.querySelector('.timeline-track');
+    const playhead = document.querySelector('.playhead');
+    
+    // Timeline interaction
+    if (timeline) {
+        timeline.addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            const time = percent * video.duration;
+            video.currentTime = time;
+            updatePlayhead();
+        });
+    }
+    
+    // Update playhead position
+    video.addEventListener('timeupdate', updatePlayhead);
+    
+    function updatePlayhead() {
+        if (video.duration && playhead) {
+            const percent = (video.currentTime / video.duration) * 100;
+            playhead.style.left = percent + '%';
+        }
+    }
+    
+    // Tool button handlers
+    document.getElementById('trimStart')?.addEventListener('click', function() {
+        showToast('Trim start functionality coming soon!', 'info');
+    });
+    
+    document.getElementById('trimEnd')?.addEventListener('click', function() {
+        showToast('Trim end functionality coming soon!', 'info');
+    });
+    
+    document.getElementById('addSubtitles')?.addEventListener('click', function() {
+        showToast('Subtitle functionality coming soon!', 'info');
+    });
+    
+    console.log('✅ Video Editor Initialized');
+}
+
+// Toast notification function
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-weight: 500;
+        animation: slideInRight 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+console.log('🚀 Edit Room Script Loaded');
+</script>
+
+<style>
+/* Edit Room Styles */
+.edit-room-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem 0;
+}
+
+.edit-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    margin: 0 2rem 2rem 2rem;
+}
+
+.header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.back-btn {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.edit-title {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.header-info {
+    text-align: center;
+}
+
+.edit-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.clip-title {
+    color: white;
+    font-size: 1.25rem;
+    margin: 0.5rem 0 0 0;
+}
+
+.edit-workspace {
+    padding: 0 2rem;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 1.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+.video-preview-container {
+    margin-bottom: 1rem;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.preview-video {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    object-fit: contain;
+}
+
+.timeline-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.timeline-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.timeline-track {
+    position: relative;
+    height: 60px;
+    background: #e9ecef;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.clip-segment {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+    left: 20%;
+    width: 60%;
+}
+
+.segment-handle {
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    cursor: ew-resize;
+}
+
+.segment-handle.start-handle {
+    left: 0;
+    border-radius: 4px 0 0 4px;
+}
+
+.segment-handle.end-handle {
+    right: 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.playhead {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #ff6b6b;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.tool-category h5 {
+    color: #555;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.tool-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.tool-btn:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tool-btn i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #667eea;
+}
+
+.tool-btn span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.clip-details {
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-item label {
+    font-weight: 600;
+    color: #555;
+    margin: 0;
+}
+
+.detail-item span {
+    color: #333;
+}
+
+.category-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.confidence-score {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.clip-text {
+    margin-top: 1rem;
+}
+
+.clip-text label {
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.text-content {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    font-style: italic;
+    line-height: 1.6;
+    color: #333;
+}
+
+.export-options {
+    margin-bottom: 1.5rem;
+}
+
+.option-group {
+    margin-bottom: 1rem;
+}
+
+.option-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.export-actions .btn {
+    font-weight: 600;
+}
+
+.action-buttons .btn {
+    font-weight: 500;
+}
+
+.no-clip-selected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 2rem;
+}
+
+.empty-state {
+    text-align: center;
+    color: white;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.empty-state h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .edit-room-container {
+        padding: 1rem 0;
+    }
+    
+    .edit-header,
+    .edit-workspace {
+        padding: 0 1rem;
+    }
+    
+    .header-nav {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tool-buttons {
+        justify-content: center;
+    }
+    
+    .timeline-track {
+        height: 40px;
+    }
+    
+    .preview-video {
+        min-height: 200px;
+    }
+}
+
+/* Animations */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* Focus states for accessibility */
+.tool-btn:focus,
+.back-btn:focus,
+.btn:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+</style>
+
+{% endblock %}

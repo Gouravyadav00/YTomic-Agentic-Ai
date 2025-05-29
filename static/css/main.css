@@ -1709,3 +1709,4 @@ input:checked + .toggle-slider:before {
     color: white !important;
     animation: pulse 0.3s ease;
 }
+
