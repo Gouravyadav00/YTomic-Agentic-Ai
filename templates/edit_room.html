@@ -31,29 +31,81 @@
                             Video Preview
                         </h3>
                         <div class="preview-controls">
-                            <button class="btn btn-sm btn-outline-primary" id="previewOriginal">
+                            <button class="btn btn-sm btn-outline-primary active" id="previewOriginal">
                                 <i class="fas fa-video"></i>
                                 Original
                             </button>
                             <button class="btn btn-sm btn-primary" id="previewEdited">
                                 <i class="fas fa-magic"></i>
-                                Edited
+                                With Filters
                             </button>
                         </div>
                     </div>
                     
-                    <div class="video-preview-container">
-                        <div class="video-wrapper">
-                            <video class="preview-video" controls preload="metadata" 
-                                   poster="https://img.youtube.com/vi/{{ clip.video_id }}/maxresdefault.jpg">
-                                <source src="{{ clip.direct_url }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                    <div class="custom-video-player-container">
+                        <div class="video-player-wrapper">
+                            <iframe id="customVideoPlayer" 
+                                    src="https://www.youtube.com/embed/{{ clip.video_id }}?start={{ clip.start_time|int }}&end={{ clip.end_time|int }}&enablejsapi=1&controls=0&modestbranding=1&rel=0"
+                                    frameborder="0" 
+                                    allowfullscreen
+                                    class="custom-video-frame">
+                            </iframe>
+                            
+                            <!-- Custom Video Controls Overlay -->
+                            <div class="custom-video-controls">
+                                <div class="controls-overlay">
+                                    <button class="control-btn play-pause-btn" id="playPauseBtn">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    
+                                    <div class="progress-container">
+                                        <div class="progress-bar-custom">
+                                            <div class="progress-fill" id="progressFill"></div>
+                                            <div class="progress-handle" id="progressHandle"></div>
+                                        </div>
+                                        <div class="time-display">
+                                            <span id="currentTime">0:00</span>
+                                            <span class="separator">/</span>
+                                            <span id="totalTime">{{ "%.0f"|format(clip.end_time - clip.start_time) }}s</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="volume-control">
+                                        <button class="control-btn volume-btn" id="volumeBtn">
+                                            <i class="fas fa-volume-up"></i>
+                                        </button>
+                                        <div class="volume-slider-container">
+                                            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="speed-control">
+                                        <select class="speed-selector" id="speedSelector">
+                                            <option value="0.5">0.5x</option>
+                                            <option value="0.75">0.75x</option>
+                                            <option value="1" selected>1x</option>
+                                            <option value="1.25">1.25x</option>
+                                            <option value="1.5">1.5x</option>
+                                            <option value="2">2x</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button class="control-btn fullscreen-btn" id="fullscreenBtn">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Filter Preview Overlay -->
+                            <div class="filter-preview-overlay" id="filterOverlay">
+                                <canvas id="filterCanvas" class="filter-canvas"></canvas>
+                            </div>
                         </div>
                         
+                        <!-- Timeline Section -->
                         <div class="timeline-section">
                             <div class="timeline-header">
-                                <h4>Timeline</h4>
+                                <h4><i class="fas fa-scissors me-2"></i>Timeline Editor</h4>
                                 <div class="timeline-controls">
                                     <button class="btn btn-sm btn-outline-secondary" id="zoomIn">
                                         <i class="fas fa-search-plus"></i>
@@ -61,19 +113,97 @@
                                     <button class="btn btn-sm btn-outline-secondary" id="zoomOut">
                                         <i class="fas fa-search-minus"></i>
                                     </button>
+                                    <button class="btn btn-sm btn-outline-primary" id="resetTimeline">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="timeline-track">
-                                <div class="timeline-ruler"></div>
-                                <div class="clip-segment" data-start="{{ clip.start_time }}" data-end="{{ clip.end_time }}">
-                                    <div class="segment-handle start-handle"></div>
+                            <div class="timeline-track" id="timelineTrack">
+                                <div class="timeline-ruler" id="timelineRuler"></div>
+                                <div class="clip-segment" id="clipSegment" data-start="{{ clip.start_time }}" data-end="{{ clip.end_time }}">
+                                    <div class="segment-handle start-handle" id="startHandle"></div>
                                     <div class="segment-content">
-                                        <span class="segment-duration">{{ clip.duration }}</span>
+                                        <span class="segment-duration">{{ "%.1f"|format(clip.end_time - clip.start_time) }}s</span>
                                     </div>
-                                    <div class="segment-handle end-handle"></div>
+                                    <div class="segment-handle end-handle" id="endHandle"></div>
                                 </div>
-                                <div class="playhead"></div>
+                                <div class="playhead" id="playhead"></div>
                             </div>
+                            
+                            <!-- Precision Controls -->
+                            <div class="precision-controls">
+                                <div class="control-group">
+                                    <label>Start Time:</label>
+                                    <input type="number" id="startTimeInput" value="{{ clip.start_time }}" step="0.1" min="0">
+                                    <span class="unit">s</span>
+                                </div>
+                                <div class="control-group">
+                                    <label>End Time:</label>
+                                    <input type="number" id="endTimeInput" value="{{ clip.end_time }}" step="0.1" min="0">
+                                    <span class="unit">s</span>
+                                </div>
+                                <div class="control-group">
+                                    <label>Duration:</label>
+                                    <span id="durationDisplay" class="duration-display">{{ "%.1f"|format(clip.end_time - clip.start_time) }}s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters Section -->
+                <div class="filters-section glass-card">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-palette text-success me-2"></i>
+                            Video Filters
+                        </h3>
+                        <button class="btn btn-sm btn-outline-secondary" id="clearFilters">
+                            <i class="fas fa-times"></i>
+                            Clear All
+                        </button>
+                    </div>
+                    
+                    <div class="filters-grid">
+                        <div class="filter-item active" data-filter="none">
+                            <div class="filter-preview original-preview"></div>
+                            <span class="filter-name">Original</span>
+                        </div>
+                        <div class="filter-item" data-filter="vintage">
+                            <div class="filter-preview vintage-preview"></div>
+                            <span class="filter-name">Vintage</span>
+                        </div>
+                        <div class="filter-item" data-filter="black-white">
+                            <div class="filter-preview bw-preview"></div>
+                            <span class="filter-name">B&W</span>
+                        </div>
+                        <div class="filter-item" data-filter="cinematic">
+                            <div class="filter-preview cinematic-preview"></div>
+                            <span class="filter-name">Cinematic</span>
+                        </div>
+                        <div class="filter-item" data-filter="warm">
+                            <div class="filter-preview warm-preview"></div>
+                            <span class="filter-name">Warm</span>
+                        </div>
+                        <div class="filter-item" data-filter="cool">
+                            <div class="filter-preview cool-preview"></div>
+                            <span class="filter-name">Cool</span>
+                        </div>
+                        <div class="filter-item" data-filter="high-contrast">
+                            <div class="filter-preview contrast-preview"></div>
+                            <span class="filter-name">High Contrast</span>
+                        </div>
+                        <div class="filter-item" data-filter="soft">
+                            <div class="filter-preview soft-preview"></div>
+                            <span class="filter-name">Soft</span>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-intensity-control" id="filterIntensityControl" style="display: none;">
+                        <label>Filter Intensity:</label>
+                        <div class="intensity-slider-container">
+                            <input type="range" id="filterIntensitySlider" min="0" max="100" value="50" class="intensity-slider">
+                            <span id="intensityValue">50%</span>
                         </div>
                     </div>
                 </div>
@@ -82,7 +212,7 @@
                 <div class="editing-tools-section glass-card">
                     <div class="section-header">
                         <h3 class="section-title">
-                            <i class="fas fa-tools text-success me-2"></i>
+                            <i class="fas fa-tools text-warning me-2"></i>
                             Editing Tools
                         </h3>
                     </div>
@@ -107,7 +237,7 @@
                         </div>
                         
                         <div class="tool-category">
-                            <h5>Effects</h5>
+                            <h5>Audio</h5>
                             <div class="tool-buttons">
                                 <button class="tool-btn" id="addFadeIn">
                                     <i class="fas fa-volume-up"></i>
@@ -117,27 +247,27 @@
                                     <i class="fas fa-volume-down"></i>
                                     <span>Fade Out</span>
                                 </button>
-                                <button class="tool-btn" id="adjustSpeed">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    <span>Speed</span>
+                                <button class="tool-btn" id="muteAudio">
+                                    <i class="fas fa-volume-mute"></i>
+                                    <span>Mute</span>
                                 </button>
                             </div>
                         </div>
                         
                         <div class="tool-category">
-                            <h5>Text & Graphics</h5>
+                            <h5>Effects</h5>
                             <div class="tool-buttons">
-                                <button class="tool-btn" id="addSubtitles">
-                                    <i class="fas fa-closed-captioning"></i>
-                                    <span>Subtitles</span>
+                                <button class="tool-btn" id="addTransition">
+                                    <i class="fas fa-magic"></i>
+                                    <span>Transition</span>
                                 </button>
-                                <button class="tool-btn" id="addText">
-                                    <i class="fas fa-font"></i>
-                                    <span>Add Text</span>
+                                <button class="tool-btn" id="adjustBrightness">
+                                    <i class="fas fa-sun"></i>
+                                    <span>Brightness</span>
                                 </button>
-                                <button class="tool-btn" id="addLogo">
-                                    <i class="fas fa-image"></i>
-                                    <span>Logo</span>
+                                <button class="tool-btn" id="adjustContrast">
+                                    <i class="fas fa-adjust"></i>
+                                    <span>Contrast</span>
                                 </button>
                             </div>
                         </div>
@@ -158,24 +288,34 @@
                     
                     <div class="clip-details">
                         <div class="detail-item">
+                            <label>Title:</label>
+                            <input type="text" id="clipTitleInput" value="{{ clip.title }}" class="form-control form-control-sm">
+                        </div>
+                        <div class="detail-item">
                             <label>Original Video:</label>
                             <span>{{ clip.video_title }}</span>
                         </div>
                         <div class="detail-item">
                             <label>Duration:</label>
-                            <span>{{ clip.duration }}</span>
+                            <span id="clipDurationDisplay">{{ "%.1f"|format(clip.end_time - clip.start_time) }}s</span>
                         </div>
                         <div class="detail-item">
                             <label>Start Time:</label>
-                            <span>{{ clip.start_time }}s</span>
+                            <span id="clipStartDisplay">{{ "%.1f"|format(clip.start_time) }}s</span>
                         </div>
                         <div class="detail-item">
                             <label>End Time:</label>
-                            <span>{{ clip.end_time }}s</span>
+                            <span id="clipEndDisplay">{{ "%.1f"|format(clip.end_time) }}s</span>
                         </div>
                         <div class="detail-item">
                             <label>Category:</label>
-                            <span class="category-badge">{{ clip.category }}</span>
+                            <select id="clipCategorySelect" class="form-select form-select-sm">
+                                <option value="motivational" {{ 'selected' if clip.category == 'motivational' else '' }}>Motivational</option>
+                                <option value="educational" {{ 'selected' if clip.category == 'educational' else '' }}>Educational</option>
+                                <option value="entertaining" {{ 'selected' if clip.category == 'entertaining' else '' }}>Entertaining</option>
+                                <option value="inspirational" {{ 'selected' if clip.category == 'inspirational' else '' }}>Inspirational</option>
+                                <option value="general" {{ 'selected' if clip.category == 'general' else '' }}>General</option>
+                            </select>
                         </div>
                         <div class="detail-item">
                             <label>Confidence:</label>
@@ -216,15 +356,6 @@
                                 <option value="1080p">1080p (Full HD)</option>
                                 <option value="720p" selected>720p (HD)</option>
                                 <option value="480p">480p (SD)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="option-group">
-                            <label>Frame Rate:</label>
-                            <select class="form-select" id="exportFrameRate">
-                                <option value="60">60 FPS</option>
-                                <option value="30" selected>30 FPS</option>
-                                <option value="24">24 FPS</option>
                             </select>
                         </div>
                         
@@ -294,85 +425,1187 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 Edit Room Loaded');
-    
-    // Initialize editing functionality
-    if (document.querySelector('.preview-video')) {
-        initVideoEditor();
+    function showBasicAlert(message) {
+      alert(message);
     }
-    
-    // Export functionality
-    document.getElementById('exportClip')?.addEventListener('click', function() {
-        const format = document.getElementById('exportFormat').value;
-        const quality = document.getElementById('exportQuality').value;
-        
-        showToast(`Exporting clip as ${format.toUpperCase()} in ${quality}...`, 'info');
-        
-        // Simulate export process
-        setTimeout(() => {
-            showToast('Clip exported successfully!', 'success');
-        }, 3000);
-    });
-    
-    // Save project
-    document.getElementById('saveProject')?.addEventListener('click', function() {
-        showToast('Project saved successfully!', 'success');
-    });
-    
-    // Reset changes
-    document.getElementById('resetChanges')?.addEventListener('click', function() {
-        if (confirm('Are you sure you want to reset all changes?')) {
-            showToast('Changes reset successfully!', 'info');
-        }
-    });
-});
+  
+    window.onload = function() {
+      showBasicAlert("Edit Page is not fully functional!");
+    };
+  </script>
 
-function initVideoEditor() {
-    console.log('🎥 Initializing Video Editor');
-    
-    const video = document.querySelector('.preview-video');
-    const timeline = document.querySelector('.timeline-track');
-    const playhead = document.querySelector('.playhead');
-    
-    // Timeline interaction
-    if (timeline) {
-        timeline.addEventListener('click', function(e) {
-            const rect = this.getBoundingClientRect();
-            const percent = (e.clientX - rect.left) / rect.width;
-            const time = percent * video.duration;
-            video.currentTime = time;
-            updatePlayhead();
+<script>
+// =============================================================================
+// GLOBAL VARIABLES
+// =============================================================================
+let customPlayer = null;
+let currentFilter = 'none';
+let filterIntensity = 50;
+let currentStartTime = {{ clip.start_time if clip else 0 }};
+let currentEndTime = {{ clip.end_time if clip else 0 }};
+let isPlaying = false;
+let videoData = {
+    title: "{{ clip.title if clip else '' }}",
+    videoId: "{{ clip.video_id if clip else '' }}",
+    originalStart: {{ clip.start_time if clip else 0 }},
+    originalEnd: {{ clip.end_time if clip else 0 }},
+    modifications: {
+        filter: 'none',
+        intensity: 50,
+        brightness: 0,
+        contrast: 0,
+        fadeIn: false,
+        fadeOut: false,
+        muted: false
+    }
+};
+
+// =============================================================================
+// CUSTOM VIDEO PLAYER CLASS
+// =============================================================================
+class CustomVideoPlayer {
+    constructor() {
+        this.initializePlayer();
+        this.setupEventListeners();
+        this.setupTimeline();
+        this.setupFilters();
+    }
+
+    initializePlayer() {
+        if (!window.YT) {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        window.onYouTubeIframeAPIReady = () => {
+            this.player = new YT.Player('customVideoPlayer', {
+                events: {
+                    'onReady': (event) => {
+                        console.log('✓ Custom player ready');
+                        this.updateTimeDisplay();
+                    },
+                    'onStateChange': (event) => {
+                        if (event.data === YT.PlayerState.PLAYING) {
+                            isPlaying = true;
+                            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+                            this.startProgressTracking();
+                        } else {
+                            isPlaying = false;
+                            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>';
+                        }
+                    }
+                }
+            });
+        };
+    }
+
+    setupEventListeners() {
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            if (isPlaying) {
+                this.player.pauseVideo();
+            } else {
+                this.player.playVideo();
+            }
+        });
+
+        document.getElementById('volumeSlider').addEventListener('input', (e) => {
+            const volume = e.target.value;
+            this.player.setVolume(volume);
+            this.updateVolumeIcon(volume);
+        });
+
+        document.getElementById('speedSelector').addEventListener('change', (e) => {
+            this.player.setPlaybackRate(parseFloat(e.target.value));
+            showToast(`Playback speed set to ${e.target.value}x`, 'info');
+        });
+
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            const container = document.querySelector('.video-player-wrapper');
+            if (container.requestFullscreen) {
+                container.requestFullscreen();
+            }
+        });
+
+        document.getElementById('previewOriginal').addEventListener('click', () => {
+            this.togglePreviewMode('original');
+        });
+
+        document.getElementById('previewEdited').addEventListener('click', () => {
+            this.togglePreviewMode('edited');
         });
     }
-    
-    // Update playhead position
-    video.addEventListener('timeupdate', updatePlayhead);
-    
-    function updatePlayhead() {
-        if (video.duration && playhead) {
-            const percent = (video.currentTime / video.duration) * 100;
-            playhead.style.left = percent + '%';
+
+    setupTimeline() {
+        const timeline = document.getElementById('timelineTrack');
+        const startHandle = document.getElementById('startHandle');
+        const endHandle = document.getElementById('endHandle');
+        const startInput = document.getElementById('startTimeInput');
+        const endInput = document.getElementById('endTimeInput');
+
+        timeline.addEventListener('click', (e) => {
+            if (e.target.classList.contains('segment-handle')) return;
+            
+            const rect = timeline.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            const totalDuration = currentEndTime - currentStartTime;
+            const seekTime = currentStartTime + (percent * totalDuration);
+            
+            this.player.seekTo(seekTime, true);
+            this.updatePlayhead();
+        });
+
+        this.setupHandleDragging(startHandle, 'start');
+        this.setupHandleDragging(endHandle, 'end');
+
+        startInput.addEventListener('change', (e) => {
+            const newStart = parseFloat(e.target.value);
+            if (newStart < currentEndTime - 1) {
+                currentStartTime = newStart;
+                this.updateTimeline();
+                this.updateDisplays();
+            } else {
+                e.target.value = currentStartTime;
+            }
+        });
+
+        endInput.addEventListener('change', (e) => {
+            const newEnd = parseFloat(e.target.value);
+            if (newEnd > currentStartTime + 1) {
+                currentEndTime = newEnd;
+                this.updateTimeline();
+                this.updateDisplays();
+            } else {
+                e.target.value = currentEndTime;
+            }
+        });
+
+        document.getElementById('resetTimeline').addEventListener('click', () => {
+            currentStartTime = videoData.originalStart;
+            currentEndTime = videoData.originalEnd;
+            this.updateTimeline();
+            this.updateDisplays();
+            showToast('Timeline reset to original', 'info');
+        });
+    }
+
+    setupHandleDragging(handle, type) {
+        let isDragging = false;
+
+        handle.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const timeline = document.getElementById('timelineTrack');
+            const rect = timeline.getBoundingClientRect();
+            const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            const totalDuration = videoData.originalEnd - videoData.originalStart;
+            const time = videoData.originalStart + (percent * totalDuration);
+
+            if (type === 'start' && time < currentEndTime - 1) {
+                currentStartTime = time;
+            } else if (type === 'end' && time > currentStartTime + 1) {
+                currentEndTime = time;
+            }
+
+            this.updateTimeline();
+            this.updateDisplays();
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                showToast(`${type} time updated`, 'success');
+            }
+        });
+    }
+
+    setupFilters() {
+        const filterItems = document.querySelectorAll('.filter-item');
+        const intensityControl = document.getElementById('filterIntensityControl');
+        const intensitySlider = document.getElementById('filterIntensitySlider');
+        const intensityValue = document.getElementById('intensityValue');
+
+        filterItems.forEach(item => {
+            item.addEventListener('click', () => {
+                filterItems.forEach(f => f.classList.remove('active'));
+                item.classList.add('active');
+                
+                const filter = item.dataset.filter;
+                currentFilter = filter;
+                
+                if (filter === 'none') {
+                    intensityControl.style.display = 'none';
+                } else {
+                    intensityControl.style.display = 'block';
+                }
+                
+                this.applyFilter(filter, filterIntensity);
+                showToast(`${filter.replace('-', ' ')} filter applied`, 'success');
+            });
+        });
+
+        intensitySlider.addEventListener('input', (e) => {
+            filterIntensity = e.target.value;
+            intensityValue.textContent = filterIntensity + '%';
+            this.applyFilter(currentFilter, filterIntensity);
+        });
+
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            filterItems.forEach(f => f.classList.remove('active'));
+            filterItems[0].classList.add('active');
+            currentFilter = 'none';
+            filterIntensity = 50;
+            intensityControl.style.display = 'none';
+            this.applyFilter('none', 0);
+            showToast('All filters cleared', 'info');
+        });
+    }
+
+    applyFilter(filter, intensity) {
+        const overlay = document.getElementById('filterOverlay');
+        
+        overlay.className = 'filter-preview-overlay';
+        
+        if (filter !== 'none') {
+            overlay.classList.add(`filter-${filter}`);
+            overlay.style.opacity = intensity / 100;
+            overlay.style.display = 'block';
+        } else {
+            overlay.style.display = 'none';
+        }
+
+        videoData.modifications.filter = filter;
+        videoData.modifications.intensity = intensity;
+    }
+
+    togglePreviewMode(mode) {
+        const originalBtn = document.getElementById('previewOriginal');
+        const editedBtn = document.getElementById('previewEdited');
+        const overlay = document.getElementById('filterOverlay');
+
+        if (mode === 'original') {
+            originalBtn.classList.add('active');
+            editedBtn.classList.remove('active');
+            overlay.style.display = 'none';
+        } else {
+            editedBtn.classList.add('active');
+            originalBtn.classList.remove('active');
+            if (currentFilter !== 'none') {
+                overlay.style.display = 'block';
+            }
         }
     }
-    
-    // Tool button handlers
-    document.getElementById('trimStart')?.addEventListener('click', function() {
-        showToast('Trim start functionality coming soon!', 'info');
-    });
-    
-    document.getElementById('trimEnd')?.addEventListener('click', function() {
-        showToast('Trim end functionality coming soon!', 'info');
-    });
-    
-    document.getElementById('addSubtitles')?.addEventListener('click', function() {
-        showToast('Subtitle functionality coming soon!', 'info');
-    });
-    
-    console.log('✅ Video Editor Initialized');
+
+    updateTimeline() {
+        const segment = document.getElementById('clipSegment');
+        const totalDuration = videoData.originalEnd - videoData.originalStart;
+        const startPercent = ((currentStartTime - videoData.originalStart) / totalDuration) * 100;
+        const endPercent = ((currentEndTime - videoData.originalStart) / totalDuration) * 100;
+        
+        segment.style.left = startPercent + '%';
+        segment.style.width = (endPercent - startPercent) + '%';
+        
+        const duration = currentEndTime - currentStartTime;
+        segment.querySelector('.segment-duration').textContent = duration.toFixed(1) + 's';
+    }
+
+    updateDisplays() {
+        const duration = currentEndTime - currentStartTime;
+        
+        document.getElementById('startTimeInput').value = currentStartTime.toFixed(1);
+        document.getElementById('endTimeInput').value = currentEndTime.toFixed(1);
+        document.getElementById('durationDisplay').textContent = duration.toFixed(1) + 's';
+        document.getElementById('clipDurationDisplay').textContent = duration.toFixed(1) + 's';
+        document.getElementById('clipStartDisplay').textContent = currentStartTime.toFixed(1) + 's';
+        document.getElementById('clipEndDisplay').textContent = currentEndTime.toFixed(1) + 's';
+        document.getElementById('totalTime').textContent = duration.toFixed(1) + 's';
+    }
+
+    updateTimeDisplay() {
+        if (!this.player || !this.player.getCurrentTime) return;
+        
+        const currentTime = this.player.getCurrentTime() - currentStartTime;
+        const duration = currentEndTime - currentStartTime;
+        
+        document.getElementById('currentTime').textContent = this.formatTime(Math.max(0, currentTime));
+        
+        const progressPercent = Math.max(0, Math.min(100, (currentTime / duration) * 100));
+        document.getElementById('progressFill').style.width = progressPercent + '%';
+        
+        const playhead = document.getElementById('playhead');
+        if (playhead) {
+            playhead.style.left = progressPercent + '%';
+        }
+    }
+
+    updateVolumeIcon(volume) {
+        const volumeBtn = document.getElementById('volumeBtn');
+        const icon = volumeBtn.querySelector('i');
+        
+        if (volume == 0) {
+            icon.className = 'fas fa-volume-mute';
+        } else if (volume < 50) {
+            icon.className = 'fas fa-volume-down';
+        } else {
+            icon.className = 'fas fa-volume-up';
+        }
+    }
+
+    startProgressTracking() {
+        const updateProgress = () => {
+            if (isPlaying && this.player) {
+                this.updateTimeDisplay();
+                
+                if (this.player.getCurrentTime() >= currentEndTime) {
+                    this.player.pauseVideo();
+                    return;
+                }
+                
+                requestAnimationFrame(updateProgress);
+            }
+        };
+        updateProgress();
+    }
+
+    formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs.toString().padStart(2, '0')}`;
+    }
 }
 
-// Toast notification function
+// =============================================================================
+// ADVANCED VIDEO EDITOR CLASS
+// =============================================================================
+class AdvancedVideoEditor {
+    constructor() {
+        this.effects = [];
+        this.keyframes = [];
+        this.audioTracks = [];
+        this.textOverlays = [];
+        this.initAdvancedFeatures();
+    }
+
+    initAdvancedFeatures() {
+        this.setupAudioMixer();
+        this.setupTextEditor();
+        this.setupColorGrading();
+        this.setupMotionEffects();
+    }
+
+    setupAudioMixer() {
+        const audioMixer = document.createElement('div');
+        audioMixer.className = 'audio-mixer glass-card';
+        audioMixer.innerHTML = `
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-sliders-h text-info me-2"></i>
+                    Audio Mixer
+                </h3>
+            </div>
+            <div class="mixer-controls">
+                <div class="audio-channel">
+                    <label>Master Volume</label>
+                    <input type="range" class="audio-slider" id="masterVolume" min="0" max="100" value="80">
+                    <span class="volume-value">80%</span>
+                </div>
+                <div class="audio-channel">
+                    <label>Music Track</label>
+                    <input type="range" class="audio-slider" id="musicVolume" min="0" max="100" value="60">
+                    <span class="volume-value">60%</span>
+                </div>
+                <div class="audio-channel">
+                    <label>Voice Track</label>
+                    <input type="range" class="audio-slider" id="voiceVolume" min="0" max="100" value="90">
+                    <span class="volume-value">90%</span>
+                </div>
+                <div class="eq-controls">
+                    <h6>Equalizer</h6>
+                    <div class="eq-bands">
+                        <div class="eq-band">
+                            <label>Bass</label>
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0">
+                        </div>
+                        <div class="eq-band">
+                            <label>Mid</label>
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0">
+                        </div>
+                        <div class="eq-band">
+                            <label>Treble</label>
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.querySelector('.col-lg-8').appendChild(audioMixer);
+        this.bindAudioControls();
+    }
+
+    setupTextEditor() {
+        const textEditor = document.createElement('div');
+        textEditor.className = 'text-editor glass-card';
+        textEditor.innerHTML = `
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-font text-warning me-2"></i>
+                    Text & Subtitles
+                </h3>
+            </div>
+            <div class="text-controls">
+                <div class="text-input-group">
+                    <input type="text" class="form-control" id="textInput" placeholder="Enter text...">
+                    <button class="btn btn-primary" id="addTextOverlay">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+                <div class="text-style-controls">
+                    <div class="style-group">
+                        <label>Font Size</label>
+                        <input type="range" id="fontSize" min="12" max="72" value="24">
+                        <span id="fontSizeValue">24px</span>
+                    </div>
+                    <div class="style-group">
+                        <label>Font Family</label>
+                        <select id="fontFamily" class="form-select">
+                            <option value="Arial">Arial</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Courier New">Courier New</option>
+                        </select>
+                    </div>
+                    <div class="style-group">
+                        <label>Text Color</label>
+                        <input type="color" id="textColor" value="#ffffff">
+                    </div>
+                    <div class="style-group">
+                        <label>Background</label>
+                        <input type="color" id="textBackground" value="#000000">
+                        <input type="range" id="backgroundOpacity" min="0" max="100" value="50">
+                    </div>
+                </div>
+                <div class="text-position-controls">
+                    <label>Position</label>
+                    <div class="position-grid">
+                        <button class="position-btn" data-position="top-left">↖</button>
+                        <button class="position-btn" data-position="top-center">↑</button>
+                        <button class="position-btn" data-position="top-right">↗</button>
+                        <button class="position-btn" data-position="center-left">←</button>
+                        <button class="position-btn active" data-position="center">•</button>
+                        <button class="position-btn" data-position="center-right">→</button>
+                        <button class="position-btn" data-position="bottom-left">↙</button>
+                        <button class="position-btn" data-position="bottom-center">↓</button>
+                        <button class="position-btn" data-position="bottom-right">↘</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.querySelector('.col-lg-8').appendChild(textEditor);
+        this.bindTextControls();
+    }
+
+    setupColorGrading() {
+        const colorGrading = document.createElement('div');
+        colorGrading.className = 'color-grading glass-card';
+        colorGrading.innerHTML = `
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-eye-dropper text-danger me-2"></i>
+                    Color Grading
+                </h3>
+            </div>
+            <div class="color-controls">
+                <div class="color-sliders">
+                    <div class="slider-group">
+                        <label>Exposure</label>
+                        <input type="range" class="color-slider" id="exposure" min="-2" max="2" step="0.1" value="0">
+                        <span class="slider-value">0</span>
+                    </div>
+                    <div class="slider-group">
+                        <label>Highlights</label>
+                        <input type="range" class="color-slider" id="highlights" min="-100" max="100" value="0">
+                        <span class="slider-value">0</span>
+                    </div>
+                    <div class="slider-group">
+                        <label>Shadows</label>
+                        <input type="range" class="color-slider" id="shadows" min="-100" max="100" value="0">
+                        <span class="slider-value">0</span>
+                    </div>
+                    <div class="slider-group">
+                        <label>Vibrance</label>
+                        <input type="range" class="color-slider" id="vibrance" min="-100" max="100" value="0">
+                        <span class="slider-value">0</span>
+                    </div>
+                    <div class="slider-group">
+                        <label>Saturation</label>
+                        <input type="range" class="color-slider" id="saturation" min="-100" max="100" value="0">
+                        <span class="slider-value">0</span>
+                    </div>
+                </div>
+                <div class="color-presets">
+                    <button class="preset-btn" data-preset="cinematic">Cinematic</button>
+                    <button class="preset-btn" data-preset="vibrant">Vibrant</button>
+                    <button class="preset-btn" data-preset="matte">Matte</button>
+                    <button class="preset-btn" data-preset="vintage">Vintage</button>
+                </div>
+            </div>
+        `;
+        
+        document.querySelector('.col-lg-8').appendChild(colorGrading);
+        this.bindColorControls();
+    }
+
+    setupMotionEffects() {
+        const motionEffects = document.createElement('div');
+        motionEffects.className = 'motion-effects glass-card';
+        motionEffects.innerHTML = `
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-arrows-alt text-success me-2"></i>
+                    Motion & Transform
+                </h3>
+            </div>
+            <div class="motion-controls">
+                <div class="transform-controls">
+                    <div class="transform-group">
+                        <label>Position X</label>
+                        <input type="range" class="transform-slider" id="positionX" min="-50" max="50" value="0">
+                        <span class="transform-value">0%</span>
+                    </div>
+                    <div class="transform-group">
+                        <label>Position Y</label>
+                        <input type="range" class="transform-slider" id="positionY" min="-50" max="50" value="0">
+                        <span class="transform-value">0%</span>
+                    </div>
+                    <div class="transform-group">
+                        <label>Scale</label>
+                        <input type="range" class="transform-slider" id="scale" min="50" max="200" value="100">
+                        <span class="transform-value">100%</span>
+                    </div>
+                    <div class="transform-group">
+                        <label>Rotation</label>
+                        <input type="range" class="transform-slider" id="rotation" min="-180" max="180" value="0">
+                        <span class="transform-value">0°</span>
+                    </div>
+                </div>
+                <div class="motion-presets">
+                    <button class="motion-btn" data-motion="zoom-in">Zoom In</button>
+                    <button class="motion-btn" data-motion="zoom-out">Zoom Out</button>
+                    <button class="motion-btn" data-motion="pan-left">Pan Left</button>
+                    <button class="motion-btn" data-motion="pan-right">Pan Right</button>
+                    <button class="motion-btn" data-motion="rotate">Rotate</button>
+                    <button class="motion-btn" data-motion="shake">Shake</button>
+                </div>
+            </div>
+        `;
+        
+        document.querySelector('.col-lg-8').appendChild(motionEffects);
+        this.bindMotionControls();
+    }
+
+    bindAudioControls() {
+        document.getElementById('masterVolume').addEventListener('input', (e) => {
+            const value = e.target.value;
+            e.target.nextElementSibling.textContent = value + '%';
+            if (customPlayer.player) {
+                customPlayer.player.setVolume(value);
+            }
+        });
+
+        ['musicVolume', 'voiceVolume'].forEach(id => {
+            document.getElementById(id).addEventListener('input', (e) => {
+                const value = e.target.value;
+                e.target.nextElementSibling.textContent = value + '%';
+            });
+        });
+
+        document.querySelectorAll('.eq-slider').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                showToast(`${e.target.previousElementSibling.textContent}: ${value}dB`, 'info');
+            });
+        });
+    }
+
+    bindTextControls() {
+        document.getElementById('addTextOverlay').addEventListener('click', () => {
+            const text = document.getElementById('textInput').value;
+            if (text.trim()) {
+                this.addTextOverlay(text);
+                document.getElementById('textInput').value = '';
+            }
+        });
+
+        document.getElementById('fontSize').addEventListener('input', (e) => {
+            document.getElementById('fontSizeValue').textContent = e.target.value + 'px';
+        });
+
+        document.querySelectorAll('.position-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.position-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
+    }
+
+    addTextOverlay(text) {
+        const overlay = {
+            id: 'text-' + Date.now(),
+            text: text,
+            startTime: customPlayer.player.getCurrentTime(),
+            duration: 3
+        };
+        
+        this.textOverlays.push(overlay);
+        showToast('Text overlay added', 'success');
+    }
+
+    bindColorControls() {
+        document.querySelectorAll('.color-slider').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                e.target.nextElementSibling.textContent = value;
+                this.applyColorGrading();
+            });
+        });
+
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.applyColorPreset(e.target.dataset.preset);
+            });
+        });
+    }
+
+    applyColorGrading() {
+        const exposure = document.getElementById('exposure').value;
+        const highlights = document.getElementById('highlights').value;
+        const shadows = document.getElementById('shadows').value;
+        const vibrance = document.getElementById('vibrance').value;
+        const saturation = document.getElementById('saturation').value;
+        
+        const overlay = document.getElementById('filterOverlay');
+        overlay.style.filter = `
+            brightness(${100 + parseFloat(exposure) * 50}%)
+            contrast(${100 + parseFloat(highlights) / 2}%)
+            saturate(${100 + parseFloat(saturation)}%)
+        `;
+    }
+
+    applyColorPreset(preset) {
+        const presets = {
+            cinematic: { exposure: 0.2, highlights: -20, shadows: 20, saturation: -10 },
+            vibrant: { exposure: 0.1, highlights: 10, shadows: -10, saturation: 30 },
+            matte: { exposure: 0, highlights: -30, shadows: 30, saturation: -20 },
+            vintage: { exposure: -0.1, highlights: -15, shadows: 15, saturation: -15 }
+        };
+        
+        const settings = presets[preset];
+        if (settings) {
+            Object.keys(settings).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = settings[key];
+                    element.nextElementSibling.textContent = settings[key];
+                }
+            });
+            this.applyColorGrading();
+            showToast(`${preset} preset applied`, 'success');
+        }
+    }
+
+    bindMotionControls() {
+        document.querySelectorAll('.transform-slider').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                const unit = e.target.id === 'rotation' ? '°' : '%';
+                e.target.nextElementSibling.textContent = value + unit;
+                this.applyTransform();
+            });
+        });
+
+        document.querySelectorAll('.motion-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.applyMotionEffect(e.target.dataset.motion);
+            });
+        });
+    }
+
+    applyTransform() {
+        const positionX = document.getElementById('positionX').value;
+        const positionY = document.getElementById('positionY').value;
+        const scale = document.getElementById('scale').value / 100;
+        const rotation = document.getElementById('rotation').value;
+        
+        const overlay = document.getElementById('filterOverlay');
+        overlay.style.transform = `
+            translateX(${positionX}%) 
+            translateY(${positionY}%) 
+            scale(${scale}) 
+            rotate(${rotation}deg)
+        `;
+    }
+
+    applyMotionEffect(effect) {
+        const effects = {
+            'zoom-in': () => { document.getElementById('scale').value = 150; },
+            'zoom-out': () => { document.getElementById('scale').value = 50; },
+            'pan-left': () => { document.getElementById('positionX').value = -20; },
+            'pan-right': () => { document.getElementById('positionX').value = 20; },
+            'rotate': () => { document.getElementById('rotation').value = 15; },
+            'shake': () => this.createShakeEffect()
+        };
+        
+        if (effects[effect]) {
+            effects[effect]();
+            this.applyTransform();
+            showToast(`${effect.replace('-', ' ')} effect applied`, 'success');
+        }
+    }
+
+    createShakeEffect() {
+        const overlay = document.getElementById('filterOverlay');
+        let shakeCount = 0;
+        const maxShakes = 10;
+        
+        const shake = () => {
+            if (shakeCount < maxShakes) {
+                const x = Math.random() * 4 - 2;
+                const y = Math.random() * 4 - 2;
+                overlay.style.transform = `translateX(${x}px) translateY(${y}px)`;
+                shakeCount++;
+                setTimeout(shake, 50);
+            } else {
+                overlay.style.transform = '';
+            }
+        };
+        
+        shake();
+    }
+}
+
+// =============================================================================
+// INITIALIZATION
+// =============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎬 Enhanced Edit Room Loaded');
+    
+    {% if clip %}
+    customPlayer = new CustomVideoPlayer();
+    setupEditingTools();
+    setupExportFunctionality();
+    setupQuickActions();
+    
+    setTimeout(() => {
+        window.advancedEditor = new AdvancedVideoEditor();
+        console.log('🎨 Advanced Video Editor Initialized');
+    }, 1000);
+    {% endif %}
+});
+
+// =============================================================================
+// EDITING TOOLS SETUP
+// =============================================================================
+function setupEditingTools() {
+    document.getElementById('trimStart').addEventListener('click', () => {
+        if (!customPlayer.player) return;
+        
+        const currentTime = customPlayer.player.getCurrentTime();
+        if (currentTime > currentStartTime && currentTime < currentEndTime - 1) {
+            currentStartTime = currentTime;
+            customPlayer.updateTimeline();
+            customPlayer.updateDisplays();
+            showToast('Start time trimmed to current position', 'success');
+        } else {
+            showToast('Invalid trim position', 'error');
+        }
+    });
+
+    document.getElementById('trimEnd').addEventListener('click', () => {
+        if (!customPlayer.player) return;
+        
+        const currentTime = customPlayer.player.getCurrentTime();
+        if (currentTime < currentEndTime && currentTime > currentStartTime + 1) {
+            currentEndTime = currentTime;
+            customPlayer.updateTimeline();
+            customPlayer.updateDisplays();
+            showToast('End time trimmed to current position', 'success');
+        } else {
+            showToast('Invalid trim position', 'error');
+        }
+    });
+
+    document.getElementById('splitClip').addEventListener('click', () => {
+        if (!customPlayer.player) return;
+        
+        const currentTime = customPlayer.player.getCurrentTime();
+        if (currentTime > currentStartTime && currentTime < currentEndTime) {
+            showSplitModal(currentTime);
+        } else {
+            showToast('Position cursor within the clip to split', 'error');
+        }
+    });
+
+    document.getElementById('addFadeIn').addEventListener('click', () => {
+        videoData.modifications.fadeIn = !videoData.modifications.fadeIn;
+        const btn = document.getElementById('addFadeIn');
+        btn.classList.toggle('active');
+        showToast(`Fade in ${videoData.modifications.fadeIn ? 'enabled' : 'disabled'}`, 'success');
+    });
+
+    document.getElementById('addFadeOut').addEventListener('click', () => {
+        videoData.modifications.fadeOut = !videoData.modifications.fadeOut;
+        const btn = document.getElementById('addFadeOut');
+        btn.classList.toggle('active');
+        showToast(`Fade out ${videoData.modifications.fadeOut ? 'enabled' : 'disabled'}`, 'success');
+    });
+
+    document.getElementById('muteAudio').addEventListener('click', () => {
+        videoData.modifications.muted = !videoData.modifications.muted;
+        const btn = document.getElementById('muteAudio');
+        btn.classList.toggle('active');
+        
+        if (customPlayer.player) {
+            if (videoData.modifications.muted) {
+                customPlayer.player.mute();
+            } else {
+                customPlayer.player.unMute();
+            }
+        }
+        
+        showToast(`Audio ${videoData.modifications.muted ? 'muted' : 'unmuted'}`, 'success');
+    });
+
+    document.getElementById('addTransition').addEventListener('click', () => {
+        showTransitionModal();
+    });
+
+    document.getElementById('adjustBrightness').addEventListener('click', () => {
+        showBrightnessModal();
+    });
+
+    document.getElementById('adjustContrast').addEventListener('click', () => {
+        showContrastModal();
+    });
+}
+
+// =============================================================================
+// EXPORT FUNCTIONALITY
+// =============================================================================
+function setupExportFunctionality() {
+    document.getElementById('previewExport').addEventListener('click', () => {
+        const settings = getExportSettings();
+        showExportPreview(settings);
+    });
+
+    document.getElementById('exportClip').addEventListener('click', () => {
+        const settings = getExportSettings();
+        startExport(settings);
+    });
+}
+
+// =============================================================================
+// QUICK ACTIONS SETUP
+// =============================================================================
+function setupQuickActions() {
+    document.getElementById('saveProject').addEventListener('click', () => {
+        saveProject();
+    });
+
+    document.getElementById('resetChanges').addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset all changes? This cannot be undone.')) {
+            resetAllChanges();
+        }
+    });
+
+    document.getElementById('sharePreview').addEventListener('click', () => {
+        sharePreview();
+    });
+}
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+function getExportSettings() {
+    return {
+        format: document.getElementById('exportFormat').value,
+        quality: document.getElementById('exportQuality').value,
+        aspectRatio: document.getElementById('exportAspectRatio').value,
+        startTime: currentStartTime,
+        endTime: currentEndTime,
+        filter: currentFilter,
+        filterIntensity: filterIntensity,
+        modifications: videoData.modifications
+    };
+}
+
+function showSplitModal(splitTime) {
+    const modal = createModal('Split Clip', `
+        <p>Split the clip at ${customPlayer.formatTime(splitTime - currentStartTime)}?</p>
+        <div class="split-options">
+            <button class="btn btn-primary" onclick="splitClipAtTime(${splitTime}); closeModal();">
+                <i class="fas fa-cut me-2"></i>Split Here
+            </button>
+            <button class="btn btn-secondary" onclick="closeModal();">Cancel</button>
+        </div>
+    `);
+    document.body.appendChild(modal);
+}
+
+function showTransitionModal() {
+    const modal = createModal('Add Transition', `
+        <div class="transition-options">
+            <div class="transition-grid">
+                <div class="transition-item" onclick="applyTransition('fade'); closeModal();">
+                    <div class="transition-preview fade-preview"></div>
+                    <span>Fade</span>
+                </div>
+                <div class="transition-item" onclick="applyTransition('slide'); closeModal();">
+                    <div class="transition-preview slide-preview"></div>
+                    <span>Slide</span>
+                </div>
+                <div class="transition-item" onclick="applyTransition('zoom'); closeModal();">
+                    <div class="transition-preview zoom-preview"></div>
+                    <span>Zoom</span>
+                </div>
+            </div>
+        </div>
+    `);
+    document.body.appendChild(modal);
+}
+
+function showBrightnessModal() {
+    const currentBrightness = videoData.modifications.brightness || 0;
+    const modal = createModal('Adjust Brightness', `
+        <div class="adjustment-control">
+            <label>Brightness: <span id="brightnessValue">${currentBrightness}</span></label>
+            <input type="range" id="brightnessSlider" min="-50" max="50" value="${currentBrightness}" 
+                   oninput="updateBrightness(this.value)">
+            <div class="adjustment-buttons">
+                <button class="btn btn-primary" onclick="applyBrightness(); closeModal();">Apply</button>
+                <button class="btn btn-secondary" onclick="closeModal();">Cancel</button>
+            </div>
+        </div>
+    `);
+    document.body.appendChild(modal);
+}
+
+function showContrastModal() {
+    const currentContrast = videoData.modifications.contrast || 0;
+    const modal = createModal('Adjust Contrast', `
+        <div class="adjustment-control">
+            <label>Contrast: <span id="contrastValue">${currentContrast}</span></label>
+            <input type="range" id="contrastSlider" min="-50" max="50" value="${currentContrast}" 
+                   oninput="updateContrast(this.value)">
+            <div class="adjustment-buttons">
+                <button class="btn btn-primary" onclick="applyContrast(); closeModal();">Apply</button>
+                <button class="btn btn-secondary" onclick="closeModal();">Cancel</button>
+            </div>
+        </div>
+    `);
+    document.body.appendChild(modal);
+}
+
+function showExportPreview(settings) {
+    const modal = createModal('Export Preview', `
+        <div class="export-preview">
+            <h5>Export Settings Summary</h5>
+            <div class="settings-summary">
+                <div class="setting-item">
+                    <strong>Format:</strong> ${settings.format.toUpperCase()}
+                </div>
+                <div class="setting-item">
+                    <strong>Quality:</strong> ${settings.quality}
+                </div>
+                <div class="setting-item">
+                    <strong>Aspect Ratio:</strong> ${settings.aspectRatio}
+                </div>
+                <div class="setting-item">
+                    <strong>Duration:</strong> ${(settings.endTime - settings.startTime).toFixed(1)}s
+                </div>
+                <div class="setting-item">
+                    <strong>Filter:</strong> ${settings.filter.replace('-', ' ')}
+                </div>
+            </div>
+            <div class="preview-actions">
+                <button class="btn btn-success" onclick="startExport(getExportSettings()); closeModal();">
+                    <i class="fas fa-download me-2"></i>Export Now
+                </button>
+                <button class="btn btn-secondary" onclick="closeModal();">Cancel</button>
+            </div>
+        </div>
+    `);
+    document.body.appendChild(modal);
+}
+
+// =============================================================================
+// ACTION FUNCTIONS
+// =============================================================================
+function splitClipAtTime(splitTime) {
+    showToast(`Clip split at ${customPlayer.formatTime(splitTime - currentStartTime)}`, 'success');
+}
+
+function applyTransition(type) {
+    videoData.modifications.transition = type;
+    showToast(`${type} transition applied`, 'success');
+}
+
+function updateBrightness(value) {
+    document.getElementById('brightnessValue').textContent = value;
+    const overlay = document.getElementById('filterOverlay');
+    overlay.style.filter = `brightness(${100 + parseInt(value)}%)`;
+}
+
+function updateContrast(value) {
+    document.getElementById('contrastValue').textContent = value;
+    const overlay = document.getElementById('filterOverlay');
+    overlay.style.filter = `contrast(${100 + parseInt(value)}%)`;
+}
+
+function applyBrightness() {
+    const value = document.getElementById('brightnessSlider').value;
+    videoData.modifications.brightness = parseInt(value);
+    showToast(`Brightness adjusted to ${value}`, 'success');
+}
+
+function applyContrast() {
+    const value = document.getElementById('contrastSlider').value;
+    videoData.modifications.contrast = parseInt(value);
+    showToast(`Contrast adjusted to ${value}`, 'success');
+}
+
+function startExport(settings) {
+    const exportBtn = document.getElementById('exportClip');
+    const originalText = exportBtn.innerHTML;
+    
+    exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Exporting...';
+    exportBtn.disabled = true;
+    
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        progress += 10;
+        exportBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>Exporting... ${progress}%`;
+        
+        if (progress >= 100) {
+            clearInterval(progressInterval);
+            exportBtn.innerHTML = '<i class="fas fa-check me-2"></i>Export Complete!';
+            
+            setTimeout(() => {
+                exportBtn.innerHTML = originalText;
+                exportBtn.disabled = false;
+            }, 2000);
+            
+            showToast('Export completed successfully!', 'success');
+            console.log('Export settings:', settings);
+        }
+    }, 300);
+}
+
+function saveProject() {
+    const projectData = {
+        ...videoData,
+        currentStartTime,
+        currentEndTime,
+        lastSaved: new Date().toISOString()
+    };
+    
+    localStorage.setItem('videoEditProject', JSON.stringify(projectData));
+    showToast('Project saved successfully!', 'success');
+    console.log('Project saved:', projectData);
+}
+
+function resetAllChanges() {
+    currentStartTime = videoData.originalStart;
+    currentEndTime = videoData.originalEnd;
+    currentFilter = 'none';
+    filterIntensity = 50;
+    
+    videoData.modifications = {
+        filter: 'none',
+        intensity: 50,
+        brightness: 0,
+        contrast: 0,
+        fadeIn: false,
+        fadeOut: false,
+        muted: false
+    };
+    
+    document.querySelectorAll('.filter-item').forEach(f => f.classList.remove('active'));
+    document.querySelector('.filter-item[data-filter="none"]').classList.add('active');
+    document.getElementById('filterIntensityControl').style.display = 'none';
+    document.querySelectorAll('.tool-btn.active').forEach(btn => btn.classList.remove('active'));
+    
+    if (customPlayer) {
+        customPlayer.updateTimeline();
+        customPlayer.updateDisplays();
+        customPlayer.applyFilter('none', 0);
+    }
+    
+    showToast('All changes reset to original', 'info');
+}
+
+function sharePreview() {
+    const shareData = {
+        title: videoData.title,
+        text: 'Check out this edited video clip!',
+        url: window.location.href
+    };
+    
+    if (navigator.share) {
+        navigator.share(shareData).catch(() => {
+            navigator.clipboard.writeText(window.location.href);
+            showToast('Share URL copied to clipboard!', 'success');
+        });
+    } else {
+        navigator.clipboard.writeText(window.location.href);
+        showToast('Share URL copied to clipboard!', 'success');
+    }
+}
+
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
+function createModal(title, content) {
+    const modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>${title}</h5>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                ${content}
+            </div>
+        </div>
+    `;
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    return modal;
+}
+
+function closeModal() {
+    const modal = document.querySelector('.custom-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.style.cssText = `
@@ -397,11 +1630,14 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-console.log('🚀 Edit Room Script Loaded');
+console.log('🚀 Enhanced Edit Room Script Loaded');
 </script>
 
 <style>
-/* Edit Room Styles */
+/* =============================================================================
+   EDIT ROOM STYLES
+   ============================================================================= */
+
 .edit-room-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -495,94 +1731,490 @@ console.log('🚀 Edit Room Script Loaded');
     color: #333;
 }
 
-.video-preview-container {
-    margin-bottom: 1rem;
+/* =============================================================================
+   CUSTOM VIDEO PLAYER STYLES
+   ============================================================================= */
+
+.custom-video-player-container {
+    position: relative;
 }
 
-.video-wrapper {
+.video-player-wrapper {
     position: relative;
     width: 100%;
+    height: 400px;
     background: #000;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     margin-bottom: 1.5rem;
 }
 
-.preview-video {
+.custom-video-frame {
     width: 100%;
-    height: auto;
-    min-height: 300px;
-    object-fit: contain;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
 }
+
+.custom-video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-player-wrapper:hover .custom-video-controls {
+    opacity: 1;
+}
+
+.controls-overlay {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.progress-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.progress-bar-custom {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #ff6b6b;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.progress-handle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    left: 0%;
+}
+
+.time-display {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 80px;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.volume-slider-container {
+    width: 60px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.volume-control:hover .volume-slider-container {
+    opacity: 1;
+}
+
+.volume-slider {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.speed-control select {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.filter-preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    display: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Filter Effects */
+.filter-vintage { 
+    background: radial-gradient(circle, rgba(255,204,119,0.3) 0%, rgba(139,69,19,0.2) 100%);
+    backdrop-filter: sepia(0.8) contrast(1.2);
+}
+
+.filter-black-white { 
+    backdrop-filter: grayscale(1);
+}
+
+.filter-cinematic { 
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.1) 100%);
+    backdrop-filter: contrast(1.3) brightness(0.9);
+}
+
+.filter-warm { 
+    background: rgba(255, 165, 0, 0.15);
+    backdrop-filter: saturate(1.2);
+}
+
+.filter-cool { 
+    background: rgba(173, 216, 230, 0.15);
+    backdrop-filter: hue-rotate(15deg);
+}
+
+.filter-high-contrast { 
+    backdrop-filter: contrast(1.8) brightness(1.1);
+}
+
+.filter-soft { 
+    backdrop-filter: blur(0.5px) brightness(1.1);
+}
+
+/* Preview Controls */
+.preview-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.preview-controls .btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* =============================================================================
+   TIMELINE STYLES
+   ============================================================================= */
 
 .timeline-section {
     background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1rem;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
 }
 
 .timeline-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .timeline-header h4 {
     margin: 0;
     font-size: 1rem;
-    color: #555;
+    color: #333;
+    display: flex;
+    align-items: center;
 }
 
 .timeline-track {
     position: relative;
     height: 60px;
     background: #e9ecef;
-    border-radius: 4px;
-    margin-top: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+.timeline-ruler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.1) 25%, transparent 50%, rgba(0,0,0,0.1) 75%, transparent 100%);
 }
 
 .clip-segment {
     position: absolute;
-    height: 100%;
+    top: 20px;
+    height: 40px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 4px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-weight: 500;
-    left: 20%;
-    width: 60%;
+    font-weight: 600;
+    left: 0%;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .segment-handle {
     position: absolute;
-    width: 10px;
+    top: 0;
+    width: 12px;
     height: 100%;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
     cursor: ew-resize;
+    transition: background 0.3s ease;
+}
+
+.segment-handle:hover {
+    background: white;
 }
 
 .segment-handle.start-handle {
-    left: 0;
-    border-radius: 4px 0 0 4px;
+    left: -6px;
+    border-radius: 6px 0 0 6px;
 }
 
 .segment-handle.end-handle {
-    right: 0;
-    border-radius: 0 4px 4px 0;
+    right: -6px;
+    border-radius: 0 6px 6px 0;
 }
 
 .playhead {
     position: absolute;
     top: 0;
-    width: 2px;
+    width: 3px;
     height: 100%;
     background: #ff6b6b;
     pointer-events: none;
     z-index: 10;
+    box-shadow: 0 0 6px rgba(255, 107, 107, 0.5);
 }
+
+.precision-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.control-group input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.control-group .unit {
+    font-size: 0.8rem;
+    color: #666;
+    align-self: flex-end;
+}
+
+.duration-display {
+    font-weight: 600;
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =============================================================================
+   FILTERS SECTION
+   ============================================================================= */
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.filter-item.active {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.filter-preview {
+    width: 60px;
+    height: 40px;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+}
+
+.original-preview {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+.vintage-preview {
+    background: linear-gradient(45deg, #d4af37, #8b4513);
+    filter: sepia(0.8);
+}
+
+.bw-preview {
+    background: linear-gradient(45deg, #333, #fff);
+    filter: grayscale(1);
+}
+
+.cinematic-preview {
+    background: linear-gradient(45deg, #2c3e50, #34495e);
+}
+
+.warm-preview {
+    background: linear-gradient(45deg, #ff7f50, #ffa500);
+}
+
+.cool-preview {
+    background: linear-gradient(45deg, #87ceeb, #4682b4);
+}
+
+.contrast-preview {
+    background: linear-gradient(45deg, #000, #fff);
+    filter: contrast(2);
+}
+
+.soft-preview {
+    background: linear-gradient(45deg, #ffeaa7, #fab1a0);
+    filter: blur(0.5px);
+}
+
+.filter-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+}
+
+.filter-intensity-control {
+    padding: 1rem;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.filter-intensity-control label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.intensity-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.intensity-slider {
+    flex: 1;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.intensity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* =============================================================================
+   TOOLS SECTION
+   ============================================================================= */
 
 .tools-grid {
     display: grid;
@@ -596,12 +2228,14 @@ console.log('🚀 Edit Room Script Loaded');
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
 }
 
 .tool-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.75rem;
 }
 
 .tool-btn {
@@ -611,10 +2245,11 @@ console.log('🚀 Edit Room Script Loaded');
     padding: 1rem;
     background: #f8f9fa;
     border: 1px solid #dee2e6;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-width: 80px;
+    min-width: 85px;
+    flex: 1;
 }
 
 .tool-btn:hover {
@@ -623,17 +2258,37 @@ console.log('🚀 Edit Room Script Loaded');
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.tool-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
 .tool-btn i {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     color: #667eea;
+    transition: color 0.3s ease;
+}
+
+.tool-btn.active i {
+    color: white;
 }
 
 .tool-btn span {
     font-size: 0.8rem;
     font-weight: 500;
     color: #555;
+    transition: color 0.3s ease;
 }
+
+.tool-btn.active span {
+    color: white;
+}
+
+/* =============================================================================
+   SIDEBAR STYLES
+   ============================================================================= */
 
 .clip-details {
     margin-bottom: 1.5rem;
@@ -651,19 +2306,22 @@ console.log('🚀 Edit Room Script Loaded');
     font-weight: 600;
     color: #555;
     margin: 0;
+    flex: 1;
 }
 
-.detail-item span {
-    color: #333;
+.detail-item span,
+.detail-item input,
+.detail-item select {
+    flex: 1;
+    text-align: right;
 }
 
-.category-badge {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: 500;
+.detail-item input,
+.detail-item select {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
 }
 
 .confidence-score {
@@ -690,6 +2348,8 @@ console.log('🚀 Edit Room Script Loaded');
     font-style: italic;
     line-height: 1.6;
     color: #333;
+    max-height: 120px;
+    overflow-y: auto;
 }
 
 .export-options {
@@ -724,88 +2384,801 @@ console.log('🚀 Edit Room Script Loaded');
     font-weight: 500;
 }
 
-.no-clip-selected {
+/* =============================================================================
+   ADVANCED EDITOR STYLES
+   ============================================================================= */
+
+.audio-mixer,
+.text-editor,
+.color-grading,
+.motion-effects {
+    margin-top: 1.5rem;
+}
+
+.mixer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.audio-channel {
     display: flex;
     align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    padding: 2rem;
+    gap: 1rem;
 }
 
-.empty-state {
-    text-align: center;
+.audio-channel label {
+    min-width: 100px;
+    font-weight: 600;
+    color: #555;
+}
+
+.audio-slider {
+    flex: 1;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.audio-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-value {
+    min-width: 40px;
+    font-weight: 600;
+    color: #333;
+}
+
+.eq-controls {
+    margin-top: 1rem;
+}
+
+.eq-bands {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.eq-band {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.eq-slider {
+    height: 60px;
+    width: 6px;
+    writing-mode: bt-lr;
+    -webkit-appearance: slider-vertical;
+}
+
+.text-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.text-input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.text-input-group input {
+    flex: 1;
+}
+
+.text-style-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.style-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.position-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.position-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.position-btn:hover,
+.position-btn.active {
+    background: #667eea;
     color: white;
+    border-color: #667eea;
 }
 
-.empty-state i {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.7;
-}
-
-.empty-state h3 {
-    font-size: 2rem;
+.color-sliders {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.empty-state p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    opacity: 0.8;
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .edit-room-container {
-        padding: 1rem 0;
-    }
-    
-    .edit-header,
-    .edit-workspace {
-        padding: 0 1rem;
-    }
-    
-    .header-nav {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .tools-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .tool-buttons {
-        justify-content: center;
-    }
-    
-    .timeline-track {
-        height: 40px;
-    }
-    
-    .preview-video {
-        min-height: 200px;
-    }
+.color-slider {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
 }
 
-/* Animations */
+.color-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-value {
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.color-presets {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.preset-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.preset-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.transform-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.transform-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.transform-slider {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.transform-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #667eea;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.transform-value {
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.motion-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.5rem;
+}
+
+.motion-btn {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.motion-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* =============================================================================
+   MODAL STYLES
+   ============================================================================= */
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
+   animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+}
+
 @keyframes slideInRight {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+   from {
+       transform: translateX(100%);
+       opacity: 0;
+   }
+   to {
+       transform: translateX(0);
+       opacity: 1;
+   }
 }
 
 @keyframes slideOutRight {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
+   from {
+       transform: translateX(0);
+       opacity: 1;
+   }
+   to {
+       transform: translateX(100%);
+       opacity: 0;
+   }
 }
 
-/* Focus states for accessibility */
+.modal-content {
+   background: white;
+   border-radius: 12px;
+   padding: 2rem;
+   max-width: 500px;
+   width: 90%;
+   max-height: 80vh;
+   overflow-y: auto;
+   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+   animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+   from {
+       transform: translateY(50px);
+       opacity: 0;
+   }
+   to {
+       transform: translateY(0);
+       opacity: 1;
+   }
+}
+
+.modal-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 1.5rem;
+   padding-bottom: 1rem;
+   border-bottom: 1px solid #eee;
+}
+
+.modal-header h5 {
+   margin: 0;
+   font-size: 1.25rem;
+   color: #333;
+}
+
+.close-btn {
+   background: none;
+   border: none;
+   font-size: 1.5rem;
+   color: #999;
+   cursor: pointer;
+   transition: color 0.3s ease;
+   padding: 0;
+   width: 30px;
+   height: 30px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.close-btn:hover {
+   color: #333;
+}
+
+.modal-body {
+   color: #555;
+}
+
+.split-options,
+.preview-actions {
+   display: flex;
+   gap: 1rem;
+   justify-content: center;
+   margin-top: 1.5rem;
+}
+
+.transition-options {
+   padding: 1rem 0;
+}
+
+.transition-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 1rem;
+}
+
+.transition-item {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 1rem;
+   border: 2px solid #eee;
+   border-radius: 8px;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+
+.transition-item:hover {
+   border-color: #667eea;
+   transform: translateY(-2px);
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.transition-preview {
+   width: 80px;
+   height: 60px;
+   border-radius: 6px;
+   margin-bottom: 0.5rem;
+   background: #f8f9fa;
+   position: relative;
+   overflow: hidden;
+}
+
+.fade-preview::before {
+   content: '';
+   position: absolute;
+   inset: 0;
+   background: linear-gradient(to right, transparent, black);
+}
+
+.slide-preview::before {
+   content: '';
+   position: absolute;
+   inset: 0;
+   background: linear-gradient(to right, #667eea 50%, #764ba2 50%);
+   animation: slidePreview 2s infinite;
+}
+
+@keyframes slidePreview {
+   0% { transform: translateX(-100%); }
+   100% { transform: translateX(0); }
+}
+
+.zoom-preview::before {
+   content: '';
+   position: absolute;
+   inset: 0;
+   background: radial-gradient(circle, #667eea, #764ba2);
+   animation: zoomPreview 2s infinite;
+}
+
+@keyframes zoomPreview {
+   0% { transform: scale(0); }
+   100% { transform: scale(1); }
+}
+
+.adjustment-control {
+   padding: 1rem 0;
+}
+
+.adjustment-control label {
+   display: block;
+   margin-bottom: 1rem;
+   font-weight: 600;
+   color: #333;
+}
+
+.adjustment-control input[type="range"] {
+   width: 100%;
+   height: 6px;
+   background: #ddd;
+   border-radius: 3px;
+   outline: none;
+   cursor: pointer;
+   -webkit-appearance: none;
+   margin-bottom: 1.5rem;
+}
+
+.adjustment-control input[type="range"]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   width: 20px;
+   height: 20px;
+   background: #667eea;
+   border-radius: 50%;
+   cursor: pointer;
+   border: 2px solid white;
+   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.adjustment-buttons {
+   display: flex;
+   gap: 1rem;
+   justify-content: flex-end;
+}
+
+.export-preview {
+   padding: 1rem 0;
+}
+
+.export-preview h5 {
+   margin-bottom: 1rem;
+   color: #333;
+}
+
+.settings-summary {
+   background: #f8f9fa;
+   padding: 1rem;
+   border-radius: 8px;
+   margin-bottom: 1.5rem;
+}
+
+.setting-item {
+   display: flex;
+   justify-content: space-between;
+   padding: 0.5rem 0;
+   border-bottom: 1px solid #eee;
+}
+
+.setting-item:last-child {
+   border-bottom: none;
+}
+
+.setting-item strong {
+   color: #555;
+}
+
+/* =============================================================================
+  EMPTY STATE
+  ============================================================================= */
+
+.no-clip-selected {
+   min-height: 80vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 2rem;
+}
+
+.empty-state {
+   text-align: center;
+   color: white;
+   max-width: 400px;
+}
+
+.empty-state i {
+   font-size: 4rem;
+   margin-bottom: 1.5rem;
+   opacity: 0.8;
+}
+
+.empty-state h3 {
+   font-size: 1.5rem;
+   margin-bottom: 1rem;
+}
+
+.empty-state p {
+   margin-bottom: 2rem;
+   opacity: 0.9;
+}
+
+.empty-state .btn {
+   font-size: 1.1rem;
+   padding: 0.75rem 2rem;
+}
+
+/* =============================================================================
+  RESPONSIVE STYLES
+  ============================================================================= */
+
+@media (max-width: 992px) {
+   .edit-workspace {
+       padding: 0 1rem;
+   }
+   
+   .header-nav {
+       flex-direction: column;
+       gap: 1rem;
+   }
+   
+   .tools-grid {
+       grid-template-columns: 1fr;
+   }
+   
+   .filters-grid {
+       grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+   }
+   
+   .color-sliders {
+       grid-template-columns: 1fr;
+   }
+   
+   .motion-presets {
+       grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+   }
+}
+
+@media (max-width: 768px) {
+   .edit-header {
+       margin: 0 1rem 1rem 1rem;
+       padding: 1rem;
+   }
+   
+   .edit-title {
+       font-size: 1.25rem;
+   }
+   
+   .clip-title {
+       font-size: 1rem;
+   }
+   
+   .video-player-wrapper {
+       height: 250px;
+   }
+   
+   .glass-card {
+       padding: 1rem;
+   }
+   
+   .section-title {
+       font-size: 1rem;
+   }
+   
+   .timeline-track {
+       height: 50px;
+   }
+   
+   .clip-segment {
+       height: 30px;
+       top: 20px;
+   }
+   
+   .precision-controls {
+       grid-template-columns: 1fr;
+   }
+   
+   .tool-buttons {
+       flex-direction: column;
+   }
+   
+   .tool-btn {
+       width: 100%;
+   }
+   
+   .position-grid {
+       width: 120px;
+       margin: 0 auto;
+   }
+   
+   .transform-controls {
+       grid-template-columns: 1fr;
+   }
+   
+   .custom-video-controls {
+       opacity: 1;
+   }
+   
+   .controls-overlay {
+       flex-wrap: wrap;
+   }
+   
+   .volume-slider-container {
+       opacity: 1;
+       width: 100%;
+   }
+   
+   .modal-content {
+       padding: 1.5rem;
+       margin: 1rem;
+   }
+   
+   .transition-grid {
+       grid-template-columns: 1fr;
+   }
+}
+
+@media (max-width: 576px) {
+   .filters-grid {
+       grid-template-columns: repeat(2, 1fr);
+       gap: 0.5rem;
+   }
+   
+   .filter-item {
+       padding: 0.75rem;
+   }
+   
+   .filter-preview {
+       width: 50px;
+       height: 35px;
+   }
+   
+   .filter-name {
+       font-size: 0.7rem;
+   }
+   
+   .export-options .option-group {
+       margin-bottom: 0.75rem;
+   }
+   
+   .export-actions .btn {
+       font-size: 0.9rem;
+       padding: 0.75rem;
+   }
+   
+   .detail-item {
+       flex-direction: column;
+       align-items: flex-start;
+       gap: 0.5rem;
+   }
+   
+   .detail-item span,
+   .detail-item input,
+   .detail-item select {
+       width: 100%;
+       text-align: left;
+   }
+}
+
+/* =============================================================================
+  LOADING STATES
+  ============================================================================= */
+
+.loading-spinner {
+   display: inline-block;
+   width: 20px;
+   height: 20px;
+   border: 3px solid rgba(255, 255, 255, 0.3);
+   border-top-color: white;
+   border-radius: 50%;
+   animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+   to { transform: rotate(360deg); }
+}
+
+/* =============================================================================
+  ACCESSIBILITY
+  ============================================================================= */
+
+.sr-only {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   padding: 0;
+   margin: -1px;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+   border: 0;
+}
+
+/* Focus styles */
+button:focus,
+input:focus,
+select:focus,
+.control-btn:focus,
 .tool-btn:focus,
-.back-btn:focus,
-.btn:focus {
-    outline: 2px solid #667eea;
-    outline-offset: 2px;
+.filter-item:focus,
+.position-btn:focus,
+.preset-btn:focus,
+.motion-btn:focus {
+   outline: 2px solid #667eea;
+   outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+   *,
+   *::before,
+   *::after {
+       animation-duration: 0.01ms !important;
+       animation-iteration-count: 1 !important;
+       transition-duration: 0.01ms !important;
+   }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+   .glass-card {
+       background: rgba(30, 30, 30, 0.95);
+       color: #e0e0e0;
+   }
+   
+   .section-title,
+   .modal-header h5,
+   .detail-item label,
+   .clip-text label,
+   .option-group label,
+   .timeline-header h4,
+   .tool-category h5 {
+       color: #e0e0e0;
+   }
+   
+   .text-content,
+   .timeline-section,
+   .filter-item,
+   .tool-btn,
+   .settings-summary {
+       background: #2a2a2a;
+       color: #e0e0e0;
+   }
+   
+   .modal-content {
+       background: #1e1e1e;
+       color: #e0e0e0;
+   }
+   
+   input[type="range"] {
+       background: #444;
+   }
+   
+   .form-select,
+   .detail-item input,
+   .detail-item select {
+       background: #2a2a2a;
+       color: #e0e0e0;
+       border-color: #444;
+   }
 }
 </style>
+
 
 {% endblock %}

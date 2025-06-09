@@ -225,14 +225,15 @@ def get_video_info():
                     'full_text': clip['text'],
                     'start_time': clip['start_time'],
                     'end_time': clip['end_time'],
-                    'duration': f"{duration}s",
+                    'duration': f"{duration:.1f}s",
                     'category': clip['category'],
                     'confidence': clip.get('confidence_score', clip.get('overall_score', 0)),
                     'video_id': video_id,
                     'video_title': video_title,
-                    'embed_url': f"https://www.youtube.com/embed/{video_id}?start={format_time_for_youtube(clip['start_time'])}&end={format_time_for_youtube(clip['end_time'])}&autoplay=0",
+                    'embed_url': f"https://www.youtube.com/embed/{video_id}?start={format_time_for_youtube(clip['start_time'])}&end={format_time_for_youtube(clip['end_time'])}&autoplay=1&rel=0&modestbranding=1",
                     'direct_url': f"https://www.youtube.com/watch?v={video_id}&t={format_time_for_youtube(clip['start_time'])}s",
                     'share_url': f"https://youtu.be/{video_id}?t={format_time_for_youtube(clip['start_time'])}",
+                    'thumbnail_url': f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg",
                     **additional_info
                 }
                 
@@ -395,3 +396,4 @@ if __name__ == '__main__':
         print("3. Restart the application")
     print("=" * 60)
     app.run(debug=True, port=5100)
+    

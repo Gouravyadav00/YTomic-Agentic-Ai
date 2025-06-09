@@ -1,711 +1,870 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 
-{% block content %}
-<!-- Hero Section -->
-<div class="hero-banner">
-    <div class="hero-content">
-        <div class="hero-badge animate-float">
-            <i class="fas fa-magic"></i>
-            AI-Powered
-        </div>
-        <h1 class="hero-title animate-fade-in">
-            Transform Long Videos into 
-            <span class="gradient-text">Viral Clips</span>
-            in Seconds
-        </h1>
-        <p class="hero-subtitle animate-slide-up">
-            Extract the most engaging moments from any YouTube video using advanced AI. 
-            Create compelling short-form content that drives engagement and grows your audience.
-        </p>
-        <div class="hero-stats animate-slide-up">
-            <div class="stat-item">
-                <span class="stat-number">10M+</span>
-                <span class="stat-label">Videos Processed</span>
+    {% block content %}
+    <!-- Hero Section -->
+    <div class="hero-banner">
+        <div class="hero-content">
+            <div class="hero-badge animate-float">
+                <i class="fas fa-magic"></i>
+                AI-Powered
             </div>
-            <div class="stat-item">
-                <span class="stat-number">50K+</span>
-                <span class="stat-label">Happy Creators</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">99%</span>
-                <span class="stat-label">Accuracy Rate</span>
+            <h1 class="hero-title animate-fade-in">
+                Transform Long Videos into 
+                <span class="gradient-text">Viral Clips</span>
+                in Seconds
+            </h1>
+            <p class="hero-subtitle animate-slide-up">
+                Extract the most engaging moments from any YouTube video using advanced AI. 
+                Create compelling short-form content that drives engagement and grows your audience.
+            </p>
+            <div class="hero-stats animate-slide-up">
+                <div class="stat-item">
+                    <span class="stat-number">10M+</span>
+                    <span class="stat-label">Videos Processed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50K+</span>
+                    <span class="stat-label">Happy Creators</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">99%</span>
+                    <span class="stat-label">Accuracy Rate</span>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="main-content">
-    <div class="row g-4">
-        <div class="col-lg-8">
-            <!-- Quick Demo Section -->
-            <div class="demo-section glass-card animate-slide-in">
-                <div class="demo-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-rocket text-primary me-2"></i>
-                        Try It Now - Free Demo
-                    </h2>
-                    <div class="demo-badge">
-                        <span class="badge bg-success">No Registration Required</span>
+    <div class="main-content">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <!-- Quick Demo Section -->
+                <div class="demo-section glass-card animate-slide-in">
+                    <div class="demo-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-rocket text-primary me-2"></i>
+                            Try It Now - Free Demo
+                        </h2>
+                        <div class="demo-badge">
+                            <span class="badge bg-success">No Registration Required</span>
+                        </div>
+                    </div>
+                    
+                    <!-- YouTube URL Input -->
+                    <div class="input-section">
+                        <form id="youtubeForm" class="demo-form">
+                            <div class="url-input-group">
+                                <div class="input-wrapper">
+                                    <i class="fab fa-youtube input-icon"></i>
+                                    <input type="url" 
+                                        class="form-control modern-input" 
+                                        id="video_url" 
+                                        name="video_url" 
+                                        value="https://youtu.be/3qHkcs3kG44?feature=shared"
+                                        placeholder="Paste any YouTube URL here..." 
+                                        required>
+                                    <div class="input-highlight"></div>
+                                </div>
+                                <button type="submit" class="btn btn-gradient btn-lg demo-btn">
+                                    <span class="btn-text">
+                                        <i class="fas fa-wand-magic me-2"></i>
+                                        Generate Clips
+                                    </span>
+                                    <div class="btn-loader" style="display: none;">
+                                        <div class="spinner"></div>
+                                        Processing...
+                                    </div>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Results Display -->
+                        <div id="result" class="result-card" style="display: none;">
+                            <div class="result-header">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Video Analyzed Successfully!</strong>
+                            </div>
+                            <div class="video-info">
+                                <span id="video_title" class="video-title"></span>
+                            </div>
+                        </div>
+
+                        <div id="error" class="error-card" style="display: none;">
+                            <div class="error-header">
+                                <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+                                <span id="error_message"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- YouTube URL Input -->
-                <div class="input-section">
-                    <form id="youtubeForm" class="demo-form">
-                        <div class="url-input-group">
-                            <div class="input-wrapper">
-                                <i class="fab fa-youtube input-icon"></i>
-                                <input type="url" 
-                                       class="form-control modern-input" 
-                                       id="video_url" 
-                                       name="video_url" 
-                                       value="https://youtu.be/3qHkcs3kG44?feature=shared"
-                                       placeholder="Paste any YouTube URL here..." 
-                                       required>
-                                <div class="input-highlight"></div>
-                            </div>
-                            <button type="submit" class="btn btn-gradient btn-lg demo-btn">
-                                <span class="btn-text">
-                                    <i class="fas fa-wand-magic me-2"></i>
-                                    Generate Clips
-                                </span>
-                                <div class="btn-loader" style="display: none;">
-                                    <div class="spinner"></div>
-                                    Processing...
-                                </div>
+
+                <!-- Transcript Section -->
+                <div class="transcript-section glass-card animate-slide-in" id="transcriptCard" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-title-group">
+                            <h3 class="section-title">
+                                <i class="fas fa-file-text text-info me-2"></i>
+                                Video Transcript
+                            </h3>
+                            <span class="section-badge">AI Extracted</span>
+                        </div>
+                        <div class="transcript-controls" style="display: none;">
+                            <button class="btn btn-outline-primary btn-sm action-btn" id="copyTranscript">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm action-btn" id="downloadTranscript">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button id="expandTranscript" class="btn btn-outline-secondary btn-sm action-btn">
+                                <i class="fas fa-expand"></i>
                             </button>
                         </div>
-                    </form>
-
-                    <!-- Results Display -->
-                    <div id="result" class="result-card" style="display: none;">
-                        <div class="result-header">
-                            <i class="fas fa-check-circle text-success me-2"></i>
-                            <strong>Video Analyzed Successfully!</strong>
-                        </div>
-                        <div class="video-info">
-                            <span id="video_title" class="video-title"></span>
+                    </div>
+                    
+                    <div id="transcript-container" style="display: none;">
+                        <div class="transcript-content">
+                            <pre id="transcript"></pre>
                         </div>
                     </div>
-
-                    <div id="error" class="error-card" style="display: none;">
-                        <div class="error-header">
-                            <i class="fas fa-exclamation-triangle text-danger me-2"></i>
-                            <span id="error_message"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transcript Section -->
-            <div class="transcript-section glass-card animate-slide-in" id="transcriptCard" style="display: none;">
-                <div class="section-header">
-                    <div class="section-title-group">
-                        <h3 class="section-title">
-                            <i class="fas fa-file-text text-info me-2"></i>
-                            Video Transcript
-                        </h3>
-                        <span class="section-badge">AI Extracted</span>
-                    </div>
-                    <div class="transcript-controls" style="display: none;">
-                        <button class="btn btn-outline-primary btn-sm action-btn" id="copyTranscript">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button class="btn btn-outline-primary btn-sm action-btn" id="downloadTranscript">
-                            <i class="fas fa-download"></i>
-                        </button>
-                        <button id="expandTranscript" class="btn btn-outline-secondary btn-sm action-btn">
-                            <i class="fas fa-expand"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="transcript-container" style="display: none;">
-                    <div class="transcript-content">
-                        <pre id="transcript"></pre>
-                    </div>
-                </div>
-                
-                <div id="transcript-loading" class="loading-state" style="display: none;">
-                    <div class="loading-spinner">
-                        <div class="spinner-ring"></div>
-                    </div>
-                    <p class="loading-text">Analyzing transcript with AI...</p>
-                </div>
-            </div>
-
-            <!-- Clips Section -->
-            <div class="clips-section glass-card animate-slide-in" id="clipsSection" style="display: block;">
-                <div class="section-header">
-                    <div class="section-title-group">
-                        <h3 class="section-title">
-                            <i class="fas fa-video text-success me-2"></i>
-                            Generated Highlight Clips
-                        </h3>
-                        <div class="clips-stats">
-                            <span class="badge bg-gradient-primary" id="clipCount">0 Clips Found</span>
-                            <span class="badge bg-outline-success">AI Generated</span>
-                        </div>
-                    </div>
-                    <div class="view-controls">
-                        <button class="btn btn-sm btn-outline-primary active" id="gridView">
-                            <i class="fas fa-th"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-primary" id="listView">
-                            <i class="fas fa-list"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="clips-container">
-                    <div class="clips-loading" id="clipsLoading" style="display: none;">
+                    
+                    <div id="transcript-loading" class="loading-state" style="display: none;">
                         <div class="loading-spinner">
                             <div class="spinner-ring"></div>
                         </div>
-                        <p class="loading-text">AI is analyzing and generating clips...</p>
+                        <p class="loading-text">Analyzing transcript with AI...</p>
+                    </div>
+                </div>
+
+                <!-- Clips Section -->
+                <div class="clips-section glass-card animate-slide-in" id="clipsSection">
+                    <div class="section-header">
+                        <div class="section-title-group">
+                            <h3 class="section-title">
+                                <i class="fas fa-video text-success me-2"></i>
+                                Generated Highlight Clips
+                            </h3>
+                            <div class="clips-stats">
+                                <span class="badge bg-gradient-primary" id="clipCount">Ready to Generate</span>
+                                <span class="badge bg-outline-success">AI Powered</span>
+                            </div>
+                        </div>
+                        <div class="view-controls">
+                            <button class="btn btn-sm btn-outline-primary active" id="gridView">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" id="listView">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="clips-grid" id="clipsGrid">
-                        <!-- Dynamic clips will be generated here -->
+                    <div class="clips-container">
+                        <div class="clips-loading" id="clipsLoading" style="display: none;">
+                            <div class="loading-spinner">
+                                <div class="spinner-ring"></div>
+                            </div>
+                            <p class="loading-text">AI is analyzing and generating clips...</p>
+                        </div>
+                        
+                        <!-- Empty State Content -->
+                        <div class="clips-empty-state" id="clipsEmptyState">
+                            <div class="empty-state-hero">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-video"></i>
+                                    <div class="icon-particles">
+                                        <div class="particle"></div>
+                                        <div class="particle"></div>
+                                        <div class="particle"></div>
+                                        <div class="particle"></div>
+                                    </div>
+                                </div>
+                                <h4 class="empty-state-title">Ready to Create Viral Clips?</h4>
+                                <p class="empty-state-subtitle">Paste a YouTube URL above and watch our AI extract the most engaging moments in seconds!</p>
+                            </div>
+
+                            <!-- How It Works -->
+                            <div class="how-it-works">
+                                <h5 class="how-it-works-title">
+                                    <i class="fas fa-cogs me-2"></i>
+                                    How It Works
+                                </h5>
+                                <div class="steps-grid">
+                                    <div class="step-item">
+                                        <div class="step-number">1</div>
+                                        <div class="step-content">
+                                            <h6>Paste URL</h6>
+                                            <p>Copy any YouTube video link</p>
+                                        </div>
+                                    </div>
+                                    <div class="step-item">
+                                        <div class="step-number">2</div>
+                                        <div class="step-content">
+                                            <h6>AI Analysis</h6>
+                                            <p>Our AI finds engaging moments</p>
+                                        </div>
+                                    </div>
+                                    <div class="step-item">
+                                        <div class="step-number">3</div>
+                                        <div class="step-content">
+                                            <h6>Get Clips</h6>
+                                            <p>Download ready-to-share clips</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sample Clips Preview -->
+                            <div class="sample-clips">
+                                <h5 class="sample-clips-title">
+                                    <i class="fas fa-sparkles me-2"></i>
+                                    Example Clips You'll Get
+                                </h5>
+                                <div class="sample-clips-grid">
+                                    <div class="sample-clip-card">
+                                        <div class="sample-video-placeholder">
+                                            <i class="fas fa-play"></i>
+                                            <div class="video-duration">0:15</div>
+                                        </div>
+                                        <div class="sample-clip-info">
+                                            <h6>"Key Quote Moment"</h6>
+                                            <div class="sample-metrics">
+                                                <span class="metric high-confidence">
+                                                    <i class="fas fa-star"></i>
+                                                    95% Match
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sample-clip-card">
+                                        <div class="sample-video-placeholder">
+                                            <i class="fas fa-play"></i>
+                                            <div class="video-duration">0:30</div>
+                                        </div>
+                                        <div class="sample-clip-info">
+                                            <h6>"Engaging Story"</h6>
+                                            <div class="sample-metrics">
+                                                <span class="metric medium-confidence">
+                                                    <i class="fas fa-star"></i>
+                                                    87% Match
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sample-clip-card">
+                                        <div class="sample-video-placeholder">
+                                            <i class="fas fa-play"></i>
+                                            <div class="video-duration">0:20</div>
+                                        </div>
+                                        <div class="sample-clip-info">
+                                            <h6>"Action Sequence"</h6>
+                                            <div class="sample-metrics">
+                                                <span class="metric high-confidence">
+                                                    <i class="fas fa-star"></i>
+                                                    92% Match
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Popular Video Types -->
+                            <div class="popular-types">
+                                <h5 class="popular-types-title">
+                                    <i class="fas fa-fire me-2"></i>
+                                    Works Best With
+                                </h5>
+                                <div class="video-types-grid">
+                                    <div class="video-type-item">
+                                        <i class="fas fa-microphone"></i>
+                                        <span>Podcasts</span>
+                                    </div>
+                                    <div class="video-type-item">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <span>Educational</span>
+                                    </div>
+                                    <div class="video-type-item">
+                                        <i class="fas fa-users"></i>
+                                        <span>Interviews</span>
+                                    </div>
+                                    <div class="video-type-item">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Business</span>
+                                    </div>
+                                    <div class="video-type-item">
+                                        <i class="fas fa-gamepad"></i>
+                                        <span>Gaming</span>
+                                    </div>
+                                    <div class="video-type-item">
+                                        <i class="fas fa-heart"></i>
+                                        <span>Motivational</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="clips-grid grid-view" id="clipsGrid">
+                            <!-- Dynamic clips will be generated here -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <!-- Feature Highlights -->
-            <div class="features-sidebar glass-card animate-slide-in">
-                <div class="sidebar-header">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-star text-warning me-2"></i>
-                        Why Choose YTomic?
-                    </h3>
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Feature Highlights -->
+                <div class="features-sidebar glass-card animate-slide-in">
+                    <div class="sidebar-header">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-star text-warning me-2"></i>
+                            Why Choose YTomic?
+                        </h3>
+                    </div>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>AI-Powered Analysis</h5>
+                                <p>Advanced algorithms identify the most engaging moments</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-zap"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>Lightning Fast</h5>
+                                <p>Process hours of content in just seconds</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>Engagement Boost</h5>
+                                <p>Clips optimized for maximum viewer retention</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>Mobile Ready</h5>
+                                <p>Perfect for TikTok, Instagram, and YouTube Shorts</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="features-list">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <div class="feature-content">
-                            <h5>AI-Powered Analysis</h5>
-                            <p>Advanced algorithms identify the most engaging moments</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-zap"></i>
-                        </div>
-                        <div class="feature-content">
-                            <h5>Lightning Fast</h5>
-                            <p>Process hours of content in just seconds</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="feature-content">
-                            <h5>Engagement Boost</h5>
-                            <p>Clips optimized for maximum viewer retention</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <div class="feature-content">
-                            <h5>Mobile Ready</h5>
-                            <p>Perfect for TikTok, Instagram, and YouTube Shorts</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Success Stories -->
-            <div class="success-stories glass-card animate-slide-in">
-                <div class="sidebar-header">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-trophy text-success me-2"></i>
-                        Success Stories
-                    </h3>
-                </div>
-                <div class="testimonials">
-                    <div class="testimonial">
-                        <div class="testimonial-content">
-                            "Increased my video engagement by 300% using YTomic clips!"
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">
-                                <i class="fas fa-user"></i>
+                <!-- Success Stories -->
+                <div class="success-stories glass-card animate-slide-in">
+                    <div class="sidebar-header">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-trophy text-success me-2"></i>
+                            Success Stories
+                        </h3>
+                    </div>
+                    <div class="testimonials">
+                        <div class="testimonial">
+                            <div class="testimonial-content">
+                                "Increased my video engagement by 300% using YTomic clips!"
                             </div>
-                            <div class="author-info">
-                                <div class="author-name">Sarah Chen</div>
-                                <div class="author-role">Content Creator</div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <div class="author-name">Sarah Chen</div>
+                                    <div class="author-role">Content Creator</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <div class="testimonial-content">
+                                "Saved me 10+ hours per week on video editing. Game changer!"
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-info">
+                                    <div class="author-name">Mike Rodriguez</div>
+                                    <div class="author-role">Marketing Manager</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="testimonial">
-                        <div class="testimonial-content">
-                            "Saved me 10+ hours per week on video editing. Game changer!"
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="author-info">
-                                <div class="author-name">Mike Rodriguez</div>
-                                <div class="author-role">Marketing Manager</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Quick Links -->
-            <div class="quick-links glass-card animate-slide-in">
-                <div class="sidebar-header">
-                    <h3 class="sidebar-title">
-                        <i class="fas fa-link text-info me-2"></i>
-                        Quick Actions
-                    </h3>
-                </div>
-                <div class="links-list">
-                    <a href="{{ url_for('login') }}" class="quick-link">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Login to Dashboard</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="{{ url_for('register') }}" class="quick-link">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Create Free Account</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="{{ url_for('about') }}" class="quick-link">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Learn More</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
+                <!-- Quick Links -->
+                <div class="quick-links glass-card animate-slide-in">
+                    <div class="sidebar-header">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-link text-info me-2"></i>
+                            Quick Actions
+                        </h3>
+                    </div>
+                    <div class="links-list">
+                        <a href="{{ url_for('login') }}" class="quick-link">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login to Dashboard</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="{{ url_for('register') }}" class="quick-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Create Free Account</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="{{ url_for('about') }}" class="quick-link">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- CTA Section -->
-<div class="cta-section">
-    <div class="cta-content">
-        <h2 class="cta-title">Ready to Go Viral?</h2>
-        <p class="cta-subtitle">Join thousands of creators who are already using YTomic to transform their content strategy</p>
-        <div class="cta-buttons">
-            <a href="{{ url_for('register') }}" class="btn btn-gradient btn-lg cta-btn">
-                <i class="fas fa-rocket me-2"></i>
-                Start Creating Now
-            </a>
-            <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg cta-btn">
-                <i class="fas fa-play me-2"></i>
-                Watch Demo
-            </a>
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Go Viral?</h2>
+            <p class="cta-subtitle">Join thousands of creators who are already using YTomic to transform their content strategy</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('register') }}" class="btn btn-gradient btn-lg cta-btn">
+                    <i class="fas fa-rocket me-2"></i>
+                    Start Creating Now
+                </a>
+                <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg cta-btn">
+                    <i class="fas fa-play me-2"></i>
+                    Watch Demo
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-// Global video management system
-class VideoPlayerManager {
-    constructor() {
-        this.players = new Map();
-        this.currentlyPlaying = null;
-    }
+    <script>
+    // Global video management system
+    class VideoPlayerManager {
+        constructor() {
+            this.players = new Map();
+            this.currentlyPlaying = null;
+        }
 
-    registerPlayer(clipId, videoElement) {
-        this.players.set(clipId, videoElement);
-        
-        // Add event listener for when video starts playing
-        videoElement.addEventListener('play', () => {
-            this.pauseAllExcept(clipId);
-            this.currentlyPlaying = clipId;
-        });
-        
-        videoElement.addEventListener('pause', () => {
-            if (this.currentlyPlaying === clipId) {
-                this.currentlyPlaying = null;
-            }
-        });
-    }
-
-    pauseAllExcept(activeClipId) {
-        this.players.forEach((video, clipId) => {
-            if (clipId !== activeClipId) {
-                video.pause();
-            }
-        });
-    }
-
-    pauseAll() {
-        this.players.forEach(video => video.pause());
-        this.currentlyPlaying = null;
-    }
-}
-
-const playerManager = new VideoPlayerManager();
-
-// Enhanced JavaScript functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize animations on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animationPlayState = 'running';
-                entry.target.classList.add('animate-visible');
-            }
-        });
-    }, observerOptions);
-
-    // Observe all animated elements
-    document.querySelectorAll('.animate-slide-in, .clip-card, .feature-item').forEach(el => {
-        observer.observe(el);
-    });
-
-    // Form submission with enhanced UX
-    document.getElementById('youtubeForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitBtn = this.querySelector('.demo-btn');
-        const btnText = submitBtn.querySelector('.btn-text');
-        const btnLoader = submitBtn.querySelector('.btn-loader');
-        const videoUrl = document.getElementById('video_url').value;
-        
-        // Show loading state
-        btnText.style.display = 'none';
-        btnLoader.style.display = 'flex';
-        submitBtn.disabled = true;
-        
-        // Show transcript section
-        document.getElementById('transcriptCard').style.display = 'block';
-        document.getElementById('transcript-loading').style.display = 'block';
-        
-        try {
-            const response = await fetch('/get_video_info', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `video_url=${encodeURIComponent(videoUrl)}`
+        registerPlayer(clipId, videoElement) {
+            this.players.set(clipId, videoElement);
+            
+            // Add event listener for when video starts playing
+            videoElement.addEventListener('play', () => {
+                this.pauseAllExcept(clipId);
+                this.currentlyPlaying = clipId;
             });
             
-            const data = await response.json();
+            videoElement.addEventListener('pause', () => {
+                if (this.currentlyPlaying === clipId) {
+                    this.currentlyPlaying = null;
+                }
+            });
+        }
+
+        pauseAllExcept(activeClipId) {
+            this.players.forEach((video, clipId) => {
+                if (clipId !== activeClipId) {
+                    video.pause();
+                }
+            });
+        }
+
+        pauseAll() {
+            this.players.forEach(video => video.pause());
+            this.currentlyPlaying = null;
+        }
+    }
+
+    const playerManager = new VideoPlayerManager();
+
+    // Enhanced JavaScript functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    entry.target.classList.add('animate-visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.animate-slide-in, .clip-card, .feature-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form submission with enhanced UX
+        document.getElementById('youtubeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            if (response.ok && data.success) {
-                // Show success
-                document.getElementById('video_title').textContent = data.title;
-                document.getElementById('result').style.display = 'block';
-                document.getElementById('error').style.display = 'none';
+            const submitBtn = this.querySelector('.demo-btn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoader = submitBtn.querySelector('.btn-loader');
+            const videoUrl = document.getElementById('video_url').value;
+            
+            // Hide empty state and show loading
+            document.getElementById('clipsEmptyState').style.display = 'none';
+            document.getElementById('clipsLoading').style.display = 'block';
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'flex';
+            submitBtn.disabled = true;
+            
+            // Show transcript section
+            document.getElementById('transcriptCard').style.display = 'block';
+            document.getElementById('transcript-loading').style.display = 'block';
+            
+            try {
+                const response = await fetch('/get_video_info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `video_url=${encodeURIComponent(videoUrl)}`
+                });
                 
-                // Show transcript
-                document.getElementById('transcript').textContent = data.transcript;
-                document.getElementById('transcript-container').style.display = 'block';
-                document.querySelector('.transcript-controls').style.display = 'flex';
+                const data = await response.json();
                 
-                // Show clips section with animation
-                setTimeout(() => {
-                    document.getElementById('clipsSection').style.display = 'block';
-                    document.getElementById('clipsSection').classList.add('animate-slide-in');
+                if (response.ok && data.success) {
+                    // Show success
+                    document.getElementById('video_title').textContent = data.title;
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('error').style.display = 'none';
                     
-                    // Generate clip cards
+                    // Show transcript
+                    document.getElementById('transcript').textContent = data.transcript;
+                    document.getElementById('transcript-container').style.display = 'block';
+                    document.querySelector('.transcript-controls').style.display = 'flex';
+                    
+                    // Hide loading and generate clips
+                    document.getElementById('clipsLoading').style.display = 'none';
                     generateClipCards(data.clips);
-                }, 500);
-                
-            } else {
-                document.getElementById('error_message').textContent = data.error || 'An error occurred';
+                    
+                } else {
+                    document.getElementById('error_message').textContent = data.error || 'An error occurred';
+                    document.getElementById('error').style.display = 'block';
+                    document.getElementById('result').style.display = 'none';
+                    // Show empty state again on error
+                    document.getElementById('clipsLoading').style.display = 'none';
+                    document.getElementById('clipsEmptyState').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('error_message').textContent = 'An error occurred while processing your request.';
                 document.getElementById('error').style.display = 'block';
                 document.getElementById('result').style.display = 'none';
+                // Show empty state again on error
+                document.getElementById('clipsLoading').style.display = 'none';
+                document.getElementById('clipsEmptyState').style.display = 'block';
+            } finally {
+                // Reset button state
+                btnText.style.display = 'flex';
+                btnLoader.style.display = 'none';
+                submitBtn.disabled = false;
+                document.getElementById('transcript-loading').style.display = 'none';
             }
-        } catch (error) {
-            document.getElementById('error_message').textContent = 'An error occurred while processing your request.';
-            document.getElementById('error').style.display = 'block';
-            document.getElementById('result').style.display = 'none';
-        } finally {
-            // Reset button state
-            btnText.style.display = 'flex';
-            btnLoader.style.display = 'none';
-            submitBtn.disabled = false;
-            document.getElementById('transcript-loading').style.display = 'none';
-        }
-    });
+        });
 
-    // Transcript controls
-    document.getElementById('copyTranscript').addEventListener('click', function() {
-        const transcript = document.getElementById('transcript').textContent;
-        navigator.clipboard.writeText(transcript).then(() => {
-            this.innerHTML = '<i class="fas fa-check"></i>';
-            this.classList.add('btn-success');
-            setTimeout(() => {
-                this.innerHTML = '<i class="fas fa-copy"></i>';
-                this.classList.remove('btn-success');
-            }, 2000);
+        // Transcript controls
+        document.getElementById('copyTranscript').addEventListener('click', function() {
+            const transcript = document.getElementById('transcript').textContent;
+            navigator.clipboard.writeText(transcript).then(() => {
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                this.classList.add('btn-success');
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i>';
+                    this.classList.remove('btn-success');
+                }, 2000);
+            });
+        });
+
+        document.getElementById('downloadTranscript').addEventListener('click', function() {
+            const transcript = document.getElementById('transcript').textContent;
+            const videoTitle = document.getElementById('video_title').textContent || 'transcript';
+            const blob = new Blob([transcript], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${videoTitle} - Transcript.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+
+        document.getElementById('expandTranscript').addEventListener('click', function() {
+            const transcriptCard = document.getElementById('transcriptCard');
+            transcriptCard.classList.toggle('expanded');
+            const isExpanded = transcriptCard.classList.contains('expanded');
+            this.innerHTML = isExpanded ? 
+                '<i class="fas fa-compress"></i>' : 
+                '<i class="fas fa-expand"></i>';
+        });
+
+        // View controls
+        // View controls - Fixed version
+document.addEventListener('DOMContentLoaded', function() {
+    const gridViewBtn = document.getElementById('gridView');
+    const listViewBtn = document.getElementById('listView');
+    const clipsGrid = document.getElementById('clipsGrid');
+
+    if (gridViewBtn && listViewBtn && clipsGrid) {
+        // Grid view button
+        gridViewBtn.addEventListener('click', function() {
+            clipsGrid.classList.remove('list-view');
+            clipsGrid.classList.add('grid-view');
+            this.classList.add('active');
+            listViewBtn.classList.remove('active');
+            console.log('Grid view activated');
+        });
+
+        // List view button
+        listViewBtn.addEventListener('click', function() {
+            clipsGrid.classList.remove('grid-view');
+            clipsGrid.classList.add('list-view');
+            this.classList.add('active');
+            gridViewBtn.classList.remove('active');
+            console.log('List view activated');
+        });
+
+        // Initialize with grid view
+        clipsGrid.classList.add('grid-view');
+        gridViewBtn.classList.add('active');
+        }
         });
     });
 
-    document.getElementById('downloadTranscript').addEventListener('click', function() {
-        const transcript = document.getElementById('transcript').textContent;
-        const videoTitle = document.getElementById('video_title').textContent || 'transcript';
-        const blob = new Blob([transcript], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${videoTitle} - Transcript.txt`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-    });
+    // Custom Video Player Class
+    class CustomVideoPlayer {
+        constructor(videoElement, clipData) {
+            this.video = videoElement;
+            this.clipData = clipData;
+            this.isFullscreen = false;
+            this.init();
+        }
 
-    document.getElementById('expandTranscript').addEventListener('click', function() {
-        const transcriptCard = document.getElementById('transcriptCard');
-        transcriptCard.classList.toggle('expanded');
-        const isExpanded = transcriptCard.classList.contains('expanded');
-        this.innerHTML = isExpanded ? 
-            '<i class="fas fa-compress"></i>' : 
-            '<i class="fas fa-expand"></i>';
-    });
+        init() {
+            this.createControls();
+            this.bindEvents();
+        }
 
-    // View controls
-    document.getElementById('gridView').addEventListener('click', function() {
-        document.getElementById('clipsGrid').classList.add('grid-view');
-        document.getElementById('clipsGrid').classList.remove('list-view');
-        this.classList.add('active');
-        document.getElementById('listView').classList.remove('active');
-    });
-
-    document.getElementById('listView').addEventListener('click', function() {
-        document.getElementById('clipsGrid').classList.add('list-view');
-        document.getElementById('clipsGrid').classList.remove('grid-view');
-        this.classList.add('active');
-        document.getElementById('gridView').classList.remove('active');
-    });
-});
-
-// Custom Video Player Class
-class CustomVideoPlayer {
-    constructor(videoElement, clipData) {
-        this.video = videoElement;
-        this.clipData = clipData;
-        this.isFullscreen = false;
-        this.init();
-    }
-
-    init() {
-        this.createControls();
-        this.bindEvents();
-    }
-
-    createControls() {
-        const controlsHTML = `
-            <div class="video-controls">
-                <div class="control-button play-pause-btn" title="Play/Pause">
-                    <i class="fas fa-play"></i>
-                </div>
-                <div class="control-button skip-backward-btn" title="Skip Backward 10s">
-                    <i class="fas fa-backward"></i>
-                </div>
-                <div class="control-button skip-forward-btn" title="Skip Forward 10s">
-                    <i class="fas fa-forward"></i>
-                </div>
-                <div class="volume-control">
-                    <div class="control-button volume-btn" title="Volume">
-                        <i class="fas fa-volume-up"></i>
+        createControls() {
+            const controlsHTML = `
+                <div class="video-controls">
+                    <div class="control-button play-pause-btn" title="Play/Pause">
+                        <i class="fas fa-play"></i>
                     </div>
-                    <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1">
+                    <div class="control-button skip-backward-btn" title="Skip Backward 10s">
+                        <i class="fas fa-backward"></i>
+                    </div>
+                    <div class="control-button skip-forward-btn" title="Skip Forward 10s">
+                        <i class="fas fa-forward"></i>
+                    </div>
+                    <div class="volume-control">
+                        <div class="control-button volume-btn" title="Volume">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="1">
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                        <div class="progress-handle"></div>
+                    </div>
+                    <div class="time-display">
+                        <span class="current-time">0:00</span> / <span class="total-time">0:00</span>
+                    </div>
+                    <div class="control-button fullscreen-btn" title="Fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                    <div class="progress-handle"></div>
-                </div>
-                <div class="time-display">
-                    <span class="current-time">0:00</span> / <span class="total-time">0:00</span>
-                </div>
-                <div class="control-button fullscreen-btn" title="Fullscreen">
-                    <i class="fas fa-expand"></i>
-                </div>
-            </div>
-        `;
-        
-        const controlsDiv = document.createElement('div');
-        controlsDiv.innerHTML = controlsHTML;
-        this.video.parentElement.appendChild(controlsDiv.firstElementChild);
-    }
-
-    bindEvents() {
-        const container = this.video.parentElement;
-        const playPauseBtn = container.querySelector('.play-pause-btn');
-        const skipBackBtn = container.querySelector('.skip-backward-btn');
-        const skipForwardBtn = container.querySelector('.skip-forward-btn');
-        const volumeBtn = container.querySelector('.volume-btn');
-        const volumeSlider = container.querySelector('.volume-slider');
-        const progressBar = container.querySelector('.progress-bar');
-        const fullscreenBtn = container.querySelector('.fullscreen-btn');
-        const currentTimeSpan = container.querySelector('.current-time');
-        const totalTimeSpan = container.querySelector('.total-time');
-
-        // Play/Pause
-        playPauseBtn.addEventListener('click', () => this.togglePlayPause());
-        this.video.addEventListener('click', () => this.togglePlayPause());
-
-        // Skip controls
-        skipBackBtn.addEventListener('click', () => this.skip(-10));
-        skipForwardBtn.addEventListener('click', () => this.skip(10));
-
-        // Volume controls
-        volumeBtn.addEventListener('click', () => this.toggleMute());
-        volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
-
-        // Progress bar
-        progressBar.addEventListener('click', (e) => this.seek(e));
-        this.video.addEventListener('timeupdate', () => this.updateProgress());
-        this.video.addEventListener('loadedmetadata', () => this.updateDuration());
-
-        // Fullscreen
-        fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
-
-        // Keyboard shortcuts
-        this.video.addEventListener('keydown', (e) => this.handleKeyboard(e));
-
-        // Update play/pause button
-        this.video.addEventListener('play', () => {
-            playPauseBtn.querySelector('i').className = 'fas fa-pause';
-        });
-        
-        this.video.addEventListener('pause', () => {
-            playPauseBtn.querySelector('i').className = 'fas fa-play';
-        });
-    }
-
-    togglePlayPause() {
-        if (this.video.paused) {
-            this.video.play();
-        } else {
-            this.video.pause();
+            `;
+            
+            const controlsDiv = document.createElement('div');
+            controlsDiv.innerHTML = controlsHTML;
+            this.video.parentElement.appendChild(controlsDiv.firstElementChild);
         }
-    }
 
-    skip(seconds) {
-        this.video.currentTime += seconds;
-    }
+        bindEvents() {
+            const container = this.video.parentElement;
+            const playPauseBtn = container.querySelector('.play-pause-btn');
+            const skipBackBtn = container.querySelector('.skip-backward-btn');
+            const skipForwardBtn = container.querySelector('.skip-forward-btn');
+            const volumeBtn = container.querySelector('.volume-btn');
+            const volumeSlider = container.querySelector('.volume-slider');
+            const progressBar = container.querySelector('.progress-bar');
+            const fullscreenBtn = container.querySelector('.fullscreen-btn');
+            const currentTimeSpan = container.querySelector('.current-time');
+            const totalTimeSpan = container.querySelector('.total-time');
 
-    toggleMute() {
-        this.video.muted = !this.video.muted;
-        const volumeBtn = this.video.parentElement.querySelector('.volume-btn i');
-        volumeBtn.className = this.video.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
-    }
+            // Play/Pause
+            playPauseBtn.addEventListener('click', () => this.togglePlayPause());
+            this.video.addEventListener('click', () => this.togglePlayPause());
 
-    setVolume(value) {
-        this.video.volume = value;
-        const volumeBtn = this.video.parentElement.querySelector('.volume-btn i');
-        if (value == 0) {
-            volumeBtn.className = 'fas fa-volume-mute';
-        } else if (value < 0.5) {
-            volumeBtn.className = 'fas fa-volume-down';
-        } else {
-            volumeBtn.className = 'fas fa-volume-up';
+            // Skip controls
+            skipBackBtn.addEventListener('click', () => this.skip(-10));
+            skipForwardBtn.addEventListener('click', () => this.skip(10));
+
+            // Volume controls
+            volumeBtn.addEventListener('click', () => this.toggleMute());
+            volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
+
+            // Progress bar
+            progressBar.addEventListener('click', (e) => this.seek(e));
+            this.video.addEventListener('timeupdate', () => this.updateProgress());
+            this.video.addEventListener('loadedmetadata', () => this.updateDuration());
+
+            // Fullscreen
+            fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+
+            // Keyboard shortcuts
+            this.video.addEventListener('keydown', (e) => this.handleKeyboard(e));
+
+            // Update play/pause button
+            this.video.addEventListener('play', () => {
+                playPauseBtn.querySelector('i').className = 'fas fa-pause';
+            });
+            
+            this.video.addEventListener('pause', () => {
+                playPauseBtn.querySelector('i').className = 'fas fa-play';
+            });
         }
-    }
 
-    seek(e) {
-        const progressBar = e.currentTarget;
-        const rect = progressBar.getBoundingClientRect();
-        const percent = (e.clientX - rect.left) / rect.width;
-        this.video.currentTime = percent * this.video.duration;
-    }
-
-    updateProgress() {
-        const container = this.video.parentElement;
-        const progressFill = container.querySelector('.progress-fill');
-        const currentTimeSpan = container.querySelector('.current-time');
-        
-        if (this.video.duration) {
-            const percent = (this.video.currentTime / this.video.duration) * 100;
-            progressFill.style.width = percent + '%';
-        }
-        
-        currentTimeSpan.textContent = this.formatTime(this.video.currentTime);
-    }
-
-    updateDuration() {
-        const container = this.video.parentElement;
-        const totalTimeSpan = container.querySelector('.total-time');
-        totalTimeSpan.textContent = this.formatTime(this.video.duration);
-    }
-
-    toggleFullscreen() {
-        const container = this.video.parentElement.parentElement;
-        
-        if (!this.isFullscreen) {
-            if (container.requestFullscreen) {
-                container.requestFullscreen();
-            } else if (container.webkitRequestFullscreen) {
-                container.webkitRequestFullscreen();
-            } else if (container.msRequestFullscreen) {
-                container.msRequestFullscreen();
-            }
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
+        togglePlayPause() {
+            if (this.video.paused) {
+                this.video.play();
+            } else {
+                this.video.pause();
             }
         }
-    }
 
-    handleKeyboard(e) {
-        switch(e.code) {
-            case 'Space':
-                e.preventDefault();
-                this.togglePlayPause();
-                break;
-            case 'ArrowLeft':
-                e.preventDefault();
-                this.skip(-10);
-                break;
-            case 'ArrowRight':
-                e.preventDefault();
-                this.skip(10);
-                break;
-            case 'ArrowUp':
-                e.preventDefault();
-                this.setVolume(Math.min(1, this.video.volume + 0.1));
-                break;
-            case 'ArrowDown':
-                e.preventDefault();
-                this.setVolume(Math.max(0, this.video.volume - 0.1));
-                break;
-            case 'KeyF':
-                e.preventDefault();
-                this.toggleFullscreen();
-                break;
-            case 'KeyM':
-                e.preventDefault();
-                this.toggleMute();
-                break;
+        skip(seconds) {
+            this.video.currentTime += seconds;
+        }
+
+        toggleMute() {
+            this.video.muted = !this.video.muted;
+            const volumeBtn = this.video.parentElement.querySelector('.volume-btn i');
+            volumeBtn.className = this.video.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+        }
+
+        setVolume(value) {
+            this.video.volume = value;
+            const volumeBtn = this.video.parentElement.querySelector('.volume-btn i');
+            if (value == 0) {
+                volumeBtn.className = 'fas fa-volume-mute';
+            } else if (value < 0.5) {
+                volumeBtn.className = 'fas fa-volume-down';
+            } else {
+                volumeBtn.className = 'fas fa-volume-up';
+            }
+        }
+
+        seek(e) {
+            const progressBar = e.currentTarget;
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            this.video.currentTime = percent * this.video.duration;
+        }
+
+        updateProgress() {
+            const container = this.video.parentElement;
+            const progressFill = container.querySelector('.progress-fill');
+            const currentTimeSpan = container.querySelector('.current-time');
+            
+            if (this.video.duration) {
+                const percent = (this.video.currentTime / this.video.duration) * 100;
+                progressFill.style.width = percent + '%';
+            }
+            
+            currentTimeSpan.textContent = this.formatTime(this.video.currentTime);
+        }
+
+        updateDuration() {
+            const container = this.video.parentElement;
+            const totalTimeSpan = container.querySelector('.total-time');
+            totalTimeSpan.textContent = this.formatTime(this.video.duration);
+        }
+
+        toggleFullscreen() {
+            const container = this.video.parentElement.parentElement;
+            
+            if (!this.isFullscreen) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) {
+                    container.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        handleKeyboard(e) {
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    this.togglePlayPause();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    this.skip(-10);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    this.skip(10);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    this.setVolume(Math.min(1, this.video.volume + 0.1));
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    this.setVolume(Math.max(0, this.video.volume - 0.1));
+                    break;
+                case 'KeyF':
+                    e.preventDefault();
+                    this.toggleFullscreen();
+                    break;
+                case 'KeyM':
+                    e.preventDefault();
+                    this.toggleMute();
+                    break;
+            }
+        }
+
+        formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
         }
     }
 
-    formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${minutes}:${secs.toString().padStart(2, '0')}`;
-    }
-}
-
-// Function to generate clip cards dynamically
-function generateClipCards(clips) {
+    // Function to generate clip cards dynamically
+    function generateClipCards(clips) {
     console.log('=== GENERATING CUSTOM VIDEO PLAYER CLIPS ===');
     console.log('Clips received:', clips);
     console.log('Number of clips:', clips ? clips.length : 'undefined');
@@ -713,6 +872,7 @@ function generateClipCards(clips) {
     const clipsGrid = document.getElementById('clipsGrid');
     const clipCount = document.getElementById('clipCount');
     const clipsSection = document.getElementById('clipsSection');
+    const emptyState = document.getElementById('clipsEmptyState');
 
     // Force visibility
     if (clipsSection) {
@@ -720,6 +880,11 @@ function generateClipCards(clips) {
         clipsSection.style.visibility = 'visible';
         clipsSection.style.opacity = '1';
         console.log('✓ FORCED clips section visible');
+    }
+
+    // Hide empty state
+    if (emptyState) {
+        emptyState.style.display = 'none';
     }
 
     if (!clipsGrid) {
@@ -771,9 +936,9 @@ function generateClipCards(clips) {
             <div class="clip-preview">
                 <div class="video-container">
                     <video class="custom-video-player" 
-                           data-clip-id="${clip.id || index + 1}"
-                           preload="metadata"
-                           poster="https://img.youtube.com/vi/${clip.video_id}/maxresdefault.jpg">
+                        data-clip-id="${clip.id || index + 1}"
+                        preload="metadata"
+                        poster="https://img.youtube.com/vi/${clip.video_id}/maxresdefault.jpg">
                         <source src="${clip.direct_url}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -854,705 +1019,1360 @@ function generateClipCards(clips) {
         }, index * 100);
     });
 
+    // Initialize grid view after clips are added
+    console.log('✓ Initializing view controls...');
+    const gridViewBtn = document.getElementById('gridView');
+    const listViewBtn = document.getElementById('listView');
+
+    if (clipsGrid && gridViewBtn && listViewBtn) {
+        // Set initial state to grid view
+        clipsGrid.classList.remove('list-view');
+        clipsGrid.classList.add('grid-view');
+        gridViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+        console.log('✓ Grid view initialized as default');
+        
+        // Ensure view toggle event listeners are properly set up
+        setupViewToggleListeners();
+    } else {
+        console.warn('⚠️ View control elements not found');
+    }
+
     console.log('✅ Successfully generated all custom video player clips');
 }
 
-// Select clip for editing
-async function selectClip(clipData) {
-    try {
-        console.log('🎯 Selecting clip for editing:', clipData);
-        
-        const response = await fetch('/select_clip', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(clipData)
-        });
-        
-        const result = await response.json();
-        
-        if (response.ok && result.success) {
-            showToast('Clip selected! Redirecting to edit room...', 'success');
+// Helper function to set up view toggle listeners
+function setupViewToggleListeners() {
+    const gridViewBtn = document.getElementById('gridView');
+    const listViewBtn = document.getElementById('listView');
+    const clipsGrid = document.getElementById('clipsGrid');
+
+    if (!gridViewBtn || !listViewBtn || !clipsGrid) {
+        console.warn('⚠️ Cannot setup view toggles - elements missing');
+        return;
+    }
+
+    // Remove existing listeners to prevent duplicates
+    const newGridBtn = gridViewBtn.cloneNode(true);
+    const newListBtn = listViewBtn.cloneNode(true);
+    gridViewBtn.parentNode.replaceChild(newGridBtn, gridViewBtn);
+    listViewBtn.parentNode.replaceChild(newListBtn, listViewBtn);
+
+    // Add fresh event listeners
+    newGridBtn.addEventListener('click', function() {
+        clipsGrid.classList.remove('list-view');
+        clipsGrid.classList.add('grid-view');
+        this.classList.add('active');
+        newListBtn.classList.remove('active');
+        console.log('✓ Grid view activated');
+    });
+
+    newListBtn.addEventListener('click', function() {
+        clipsGrid.classList.remove('grid-view');
+        clipsGrid.classList.add('list-view');
+        this.classList.add('active');
+        newGridBtn.classList.remove('active');
+        console.log('✓ List view activated');
+    });
+
+    console.log('✓ View toggle listeners set up successfully');
+}
+
+    // Select clip for editing
+    async function selectClip(clipData) {
+        try {
+            console.log('🎯 Selecting clip for editing:', clipData);
             
-            // Redirect to edit room after short delay
-            setTimeout(() => {
-                window.location.href = result.redirect_url;
-            }, 1000);
-        } else {
-            showToast(result.error || 'Failed to select clip', 'error');
-        }
-    } catch (error) {
-        console.error('❌ Error selecting clip:', error);
-        showToast('Error selecting clip', 'error');
-    }
-}
-
-// Helper: format seconds to mm:ss
-function formatTime(seconds) {
-    if (!seconds && seconds !== 0) return '0:00';
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs.toString().padStart(2, '0')}`;
-}
-
-// Clipboard copy
-function copyClipLink(url) {
-    navigator.clipboard.writeText(url).then(() => {
-        console.log('✓ Link copied:', url);
-        showToast('Link copied to clipboard!', 'success');
-    }).catch(err => {
-        console.error('❌ Copy failed:', err);
-        showToast('Failed to copy link', 'error');
-    });
-}
-
-// Open link
-function openClipLink(url) {
-    console.log('🔗 Opening link:', url);
-    window.open(url, '_blank');
-}
-
-// Share via native share API or fallback
-function shareClipLink(title, url) {
-    console.log('📤 Sharing:', title, url);
-    if (navigator.share) {
-        navigator.share({
-            title: `Check out this clip: ${title}`,
-            url: url
-        }).catch(err => console.log('Share cancelled'));
-    } else {
-        copyClipLink(url);
-    }
-}
-
-// Full text modal
-function showFullText(fullText, title) {
-    console.log('👁️ Showing full text for:', title);
-
-    const modal = document.createElement('div');
-    modal.className = 'clip-text-modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>Full Clip Text</h5>
-                <button onclick="this.closest('.clip-text-modal').remove()" class="close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>${fullText}</p>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) {
-            modal.remove();
-        }
-    });
-}
-
-// Toast alert
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        z-index: 10000;
-        font-weight: 500;
-        animation: slideInRight 0.3s ease;
-    `;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.animation = 'slideOutRight 0.3s ease forwards';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// Toast CSS animations
-const toastCSS = document.createElement('style');
-toastCSS.textContent = `
-    @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOutRight {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-`;
-document.head.appendChild(toastCSS);
-
-console.log('🚀 Custom Video Player System Loaded!');
-console.log('🎮 Features: Play/Pause, Volume Control, Fullscreen, Skip, Auto-Pause Others');
-console.log('⌨️ Keyboard shortcuts: Space=Play/Pause, ←/→=Skip, ↑/↓=Volume, F=Fullscreen, M=Mute');
-
-// Add smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+            const response = await fetch('/select_clip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(clipData)
             });
+            
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
+                showToast('Clip selected! Redirecting to edit room...', 'success');
+                
+                // Redirect to edit room after short delay
+                setTimeout(() => {
+                    window.location.href = result.redirect_url;
+                }, 1000);
+            } else {
+                showToast(result.error || 'Failed to select clip', 'error');
+            }
+        } catch (error) {
+            console.error('❌ Error selecting clip:', error);
+            showToast('Error selecting clip', 'error');
         }
-    });
-});
+    }
 
-// Add floating animation to hero badge
-setInterval(() => {
-    const badge = document.querySelector('.hero-badge');
-    if (badge) {
-        badge.style.transform = 'translateY(-5px)';
+    // Helper: format seconds to mm:ss
+    function formatTime(seconds) {
+        if (!seconds && seconds !== 0) return '0:00';
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Clipboard copy
+    function copyClipLink(url) {
+        navigator.clipboard.writeText(url).then(() => {
+            console.log('✓ Link copied:', url);
+            showToast('Link copied to clipboard!', 'success');
+        }).catch(err => {
+            console.error('❌ Copy failed:', err);
+            showToast('Failed to copy link', 'error');
+        });
+    }
+
+    // Open link
+    function openClipLink(url) {
+        console.log('🔗 Opening link:', url);
+        window.open(url, '_blank');
+    }
+
+    // Share via native share API or fallback
+    function shareClipLink(title, url) {
+        console.log('📤 Sharing:', title, url);
+        if (navigator.share) {
+            navigator.share({
+                title: `Check out this clip: ${title}`,
+                url: url
+            }).catch(err => console.log('Share cancelled'));
+        } else {
+            copyClipLink(url);
+        }
+    }
+
+    // Full text modal
+    function showFullText(fullText, title) {
+        console.log('👁️ Showing full text for:', title);
+
+        const modal = document.createElement('div');
+        modal.className = 'clip-text-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Full Clip Text</h5>
+                    <button onclick="this.closest('.clip-text-modal').remove()" class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>${fullText}</p>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
+    // Toast alert
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10000;
+            font-weight: 500;
+            animation: slideInRight 0.3s ease;
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
         setTimeout(() => {
-            badge.style.transform = 'translateY(0)';
-        }, 1000);
+            toast.style.animation = 'slideOutRight 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
-}, 3000);
-</script>
 
-<style>
-    /* Custom Video Player Styles */
-    .video-container {
-        position: relative !important;
-        width: 100% !important;
-        height: 200px !important;
-        background: #000 !important;
-        overflow: hidden !important;
-        border-radius: 8px !important;
-    }
-    
-    .custom-video-player {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        outline: none !important;
-    }
-    
-    .video-overlay {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        background: rgba(0, 0, 0, 0.4) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .video-overlay:hover {
-        background: rgba(0, 0, 0, 0.6) !important;
-    }
-    
-    .play-button-large {
-        width: 70px !important;
-        height: 70px !important;
-        background: rgba(255, 255, 255, 0.9) !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        font-size: 24px !important;
-        color: #333 !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    .play-button-large:hover {
-        background: white !important;
-        transform: scale(1.1) !important;
-        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4) !important;
-    }
-    
-    .play-button-large i {
-        margin-left: 4px !important; /* Center the play icon visually */
-    }
-    
-    /* Video Controls */
-    .video-controls {
-        position: absolute !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)) !important;
-        padding: 10px !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        opacity: 0 !important;
-        transition: opacity 0.3s ease !important;
-        z-index: 20 !important;
-    }
-    
-    .video-container:hover .video-controls {
-        opacity: 1 !important;
-    }
-    
-    .control-button {
-        width: 32px !important;
-        height: 32px !important;
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: white !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        font-size: 14px !important;
-    }
-    
-    .control-button:hover {
-        background: rgba(255, 255, 255, 0.3) !important;
-        transform: scale(1.1) !important;
-    }
-    
-    .volume-control {
-        display: flex !important;
-        align-items: center !important;
-        gap: 5px !important;
-    }
-    
-    .volume-slider {
-        width: 60px !important;
-        height: 4px !important;
-        background: rgba(255, 255, 255, 0.3) !important;
-        border: none !important;
-        border-radius: 2px !important;
-        outline: none !important;
-        cursor: pointer !important;
-    }
-    
-    .volume-slider::-webkit-slider-thumb {
-        width: 12px !important;
-        height: 12px !important;
-        background: white !important;
-        border-radius: 50% !important;
-        cursor: pointer !important;
-        -webkit-appearance: none !important;
-    }
-    
-    .progress-bar {
-        flex: 1 !important;
-        height: 4px !important;
-        background: rgba(255, 255, 255, 0.3) !important;
-        border-radius: 2px !important;
-        cursor: pointer !important;
-        position: relative !important;
-        margin: 0 10px !important;
-    }
-    
-    .progress-fill {
-        height: 100% !important;
-        background: #ff6b6b !important;
-        border-radius: 2px !important;
-        width: 0% !important;
-        transition: width 0.1s ease !important;
-    }
-    
-    .time-display {
-        color: white !important;
-        font-size: 12px !important;
-        font-weight: 500 !important;
-        min-width: 80px !important;
-        text-align: center !important;
-    }
-    
-    /* Ensure clips section is always visible and properly styled */
-    #clipsSection {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-    
-    /* Enhanced clips grid styling */
-    .clips-grid {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
-        gap: 1.5rem !important;
-        width: 100% !important;
-        margin-top: 1rem !important;
-    }
-    
-    /* Enhanced clip card styling */
-    .clip-card {
-        background: rgba(255, 255, 255, 0.95) !important;
-        border-radius: 12px !important;
-        overflow: hidden !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
-        transition: all 0.3s ease !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        min-height: 400px !important;
-        position: relative !important;
-    }
-    
-    .clip-card:hover {
-        transform: translateY(-5px) !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
-    }
-    
-    /* Clip preview styling */
-    .clip-preview {
-        position: relative !important;
-        width: 100% !important;
-        height: 200px !important;
-        background: #000 !important;
-        overflow: hidden !important;
-    }
-    
-    /* Duration and category badges */
-    .clip-duration {
-        position: absolute !important;
-        bottom: 8px !important;
-        right: 8px !important;
-        background: rgba(0, 0, 0, 0.8) !important;
-        color: white !important;
-        padding: 4px 8px !important;
-        border-radius: 4px !important;
-        font-size: 0.8rem !important;
-        font-weight: 500 !important;
-        z-index: 25 !important;
-    }
-    
-    .clip-category {
-        position: absolute !important;
-        top: 8px !important;
-        left: 8px !important;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        padding: 4px 12px !important;
-        border-radius: 12px !important;
-        font-size: 0.7rem !important;
-        font-weight: 600 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
-        z-index: 25 !important;
-    }
-    
-    /* Clip details styling */
-    .clip-details {
-        padding: 1rem !important;
-        background: white !important;
-    }
-    
-    .clip-title {
-        font-size: 1rem !important;
-        font-weight: 600 !important;
-        margin-bottom: 0.75rem !important;
-        line-height: 1.4 !important;
-        color: #333 !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
-    }
-    
-    .clip-metrics {
-        display: flex !important;
-        gap: 1rem !important;
-        margin-bottom: 1rem !important;
-        flex-wrap: wrap !important;
-    }
-    
-    .metric {
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.25rem !important;
-        font-size: 0.8rem !important;
-        font-weight: 500 !important;
-        padding: 0.25rem 0.5rem !important;
-        background: #f8f9fa !important;
-        border-radius: 12px !important;
-        color: #666 !important;
-    }
-    
-    .metric i {
-        font-size: 0.7rem !important;
-    }
-    
-    /* Confidence colors */
-    .high-confidence {
-        color: #28a745 !important;
-        background: #e8f5e8 !important;
-    }
-    
-    .medium-confidence {
-        color: #ffc107 !important;
-        background: #fff3cd !important;
-    }
-    
-    .low-confidence {
-        color: #dc3545 !important;
-        background: #f8d7da !important;
-    }
-    
-    /* Action buttons */
-    .clip-actions {
-        display: flex !important;
-        gap: 0.5rem !important;
-        justify-content: center !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .action-btn {
-        width: 36px !important;
-        height: 36px !important;
-        border-radius: 50% !important;
-        border: none !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        font-size: 0.9rem !important;
-    }
-    
-    .action-btn.primary {
-        background: rgba(0, 123, 255, 0.1) !important;
-        color: #007bff !important;
-    }
-    
-    .action-btn.primary:hover {
-        background: #007bff !important;
-        color: white !important;
-        transform: scale(1.1) !important;
-    }
-    
-    .action-btn.success {
-        background: rgba(40, 167, 69, 0.1) !important;
-        color: #28a745 !important;
-    }
-    
-    .action-btn.success:hover {
-        background: #28a745 !important;
-        color: white !important;
-        transform: scale(1.1) !important;
-    }
-    
-    .action-btn.info {
-        background: rgba(23, 162, 184, 0.1) !important;
-        color: #17a2b8 !important;
-    }
-    
-    .action-btn.info:hover {
-        background: #17a2b8 !important;
-        color: white !important;
-        transform: scale(1.1) !important;
-    }
-    
-    .action-btn.warning {
-        background: rgba(255, 193, 7, 0.1) !important;
-        color: #ffc107 !important;
-    }
-    
-    .action-btn.warning:hover {
-        background: #ffc107 !important;
-        color: #333 !important;
-        transform: scale(1.1) !important;
-    }
-    
-    /* Select button styling */
-    .select-action {
-        text-align: center !important;
-        margin-top: 0.5rem !important;
-    }
-    
-    .select-clip-btn {
-        width: 100% !important;
-        padding: 0.75rem !important;
-        font-weight: 600 !important;
-        border-radius: 8px !important;
-        transition: all 0.3s ease !important;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        border: none !important;
-        color: white !important;
-    }
-    
-    .select-clip-btn:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
-        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
-    }
-    
-    /* Modal styling */
-    .clip-text-modal {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        background: rgba(0, 0, 0, 0.8) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 10000 !important;
-        padding: 2rem !important;
-    }
-    
-    .modal-content {
-        background: white !important;
-        border-radius: 12px !important;
-        max-width: 600px !important;
-        width: 100% !important;
-        max-height: 80vh !important;
-        overflow-y: auto !important;
-    }
-    
-    .modal-header {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 1.5rem !important;
-        border-bottom: 1px solid #eee !important;
-    }
-    
-    .modal-header h5 {
-        margin: 0 !important;
-        font-weight: 600 !important;
-    }
-    
-    .close-btn {
-        background: none !important;
-        border: none !important;
-        font-size: 1.2rem !important;
-        cursor: pointer !important;
-        color: #666 !important;
-        padding: 0.5rem !important;
-        border-radius: 50% !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .close-btn:hover {
-        background: #f0f0f0 !important;
-        color: #333 !important;
-    }
-    
-    .modal-body {
-        padding: 1.5rem !important;
-    }
-    
-    .modal-body p {
-        margin: 0 !important;
-        line-height: 1.6 !important;
-        color: #333 !important;
-    }
-    
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .clips-grid {
-            grid-template-columns: 1fr !important;
-            gap: 1rem !important;
+    // Toast CSS animations
+    const toastCSS = document.createElement('style');
+    toastCSS.textContent = `
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
-        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(toastCSS);
+
+    console.log('🚀 Custom Video Player System Loaded!');
+    console.log('🎮 Features: Play/Pause, Volume Control, Fullscreen, Skip, Auto-Pause Others');
+    console.log('⌨️ Keyboard shortcuts: Space=Play/Pause, ←/→=Skip, ↑/↓=Volume, F=Fullscreen, M=Mute');
+
+    // Add smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Add floating animation to hero badge
+    setInterval(() => {
+        const badge = document.querySelector('.hero-badge');
+        if (badge) {
+            badge.style.transform = 'translateY(-5px)';
+            setTimeout(() => {
+                badge.style.transform = 'translateY(0)';
+            }, 1000);
+        }
+    }, 3000);
+    </script>
+
+    <style>
+        /* Custom Video Player Styles */
         .video-container {
-            height: 180px !important;
+            position: relative !important;
+            width: 100% !important;
+            height: 200px !important;
+            background: #000 !important;
+            overflow: hidden !important;
+            border-radius: 8px !important;
         }
         
-        .clip-actions .action-btn {
-            width: 32px !important;
-            height: 32px !important;
-            font-size: 0.8rem !important;
+        .custom-video-player {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            outline: none !important;
+        }
+        
+        .video-overlay {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: rgba(0, 0, 0, 0.4) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .video-overlay:hover {
+            background: rgba(0, 0, 0, 0.6) !important;
         }
         
         .play-button-large {
-            width: 60px !important;
-            height: 60px !important;
-            font-size: 20px !important;
+            width: 70px !important;
+            height: 70px !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            color: #333 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
         }
         
-        .clip-text-modal {
-            padding: 1rem !important;
+        .play-button-large:hover {
+            background: white !important;
+            transform: scale(1.1) !important;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4) !important;
+        }
+        
+        .play-button-large i {
+            margin-left: 4px !important; /* Center the play icon visually */
+        }
+        
+        /* Video Controls */
+        .video-controls {
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)) !important;
+            padding: 10px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+            z-index: 20 !important;
+        }
+        
+        .video-container:hover .video-controls {
+            opacity: 1 !important;
         }
         
         .control-button {
-            width: 28px !important;
-            height: 28px !important;
-            font-size: 12px !important;
+            width: 32px !important;
+            height: 32px !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-size: 14px !important;
+        }
+        
+        .control-button:hover {
+            background: rgba(255, 255, 255, 0.3) !important;
+            transform: scale(1.1) !important;
+        }
+        
+        .volume-control {
+            display: flex !important;
+            align-items: center !important;
+            gap: 5px !important;
         }
         
         .volume-slider {
-            width: 40px !important;
+            width: 60px !important;
+            height: 4px !important;
+            background: rgba(255, 255, 255, 0.3) !important;
+            border: none !important;
+            border-radius: 2px !important;
+            outline: none !important;
+            cursor: pointer !important;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            width: 12px !important;
+            height: 12px !important;
+            background: white !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            -webkit-appearance: none !important;
+        }
+        
+        .progress-bar {
+            flex: 1 !important;
+            height: 4px !important;
+            background: rgba(255, 255, 255, 0.3) !important;
+            border-radius: 2px !important;
+            cursor: pointer !important;
+            position: relative !important;
+            margin: 0 10px !important;
+        }
+        
+        .progress-fill {
+            height: 100% !important;
+            background: #ff6b6b !important;
+            border-radius: 2px !important;
+            width: 0% !important;
+            transition: width 0.1s ease !important;
         }
         
         .time-display {
-            font-size: 10px !important;
-            min-width: 60px !important;
+            color: white !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            min-width: 80px !important;
+            text-align: center !important;
         }
-    }
-    
-    /* Loading and no-clips states */
-    .no-clips-message {
-        text-align: center !important;
-        color: #666 !important;
-        padding: 2rem !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        border-radius: 12px !important;
-        margin: 1rem 0 !important;
-        font-size: 1.1rem !important;
-    }
-    
-    .clips-loading {
-        text-align: center !important;
-        padding: 3rem !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(10px) !important;
-    }
-    
-    .clips-loading .loading-text {
-        color: #fff !important;
-        font-size: 1.1rem !important;
-        font-weight: 500 !important;
-        margin: 0 !important;
-    }
-    
-    /* Animation for clip cards */
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
+        
+        /* Ensure clips section is always visible and properly styled */
+        #clipsSection {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        
+        /* Enhanced clips grid styling */
+        .clips-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+            gap: 1.5rem !important;
+            width: 100% !important;
+            margin-top: 1rem !important;
         }
-    }
-    
-    .clip-card.animate-slide-in {
-        animation: slideInUp 0.5s ease-out forwards !important;
-    }
-    
-    /* Fullscreen styles */
-    .video-container:fullscreen {
-        background: black !important;
-    }
-    
-    .video-container:fullscreen .custom-video-player {
-        object-fit: contain !important;
-    }
-    
-    /* Focus styles for accessibility */
-    .control-button:focus,
-    .select-clip-btn:focus {
-        outline: 2px solid #667eea !important;
-        outline-offset: 2px !important;
-    }
-</style>
+        
+        /* Enhanced clip card styling */
+        .clip-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.3s ease !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            min-height: 400px !important;
+            position: relative !important;
+        }
+        
+        .clip-card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        /* Clip preview styling */
+        .clip-preview {
+            position: relative !important;
+            width: 100% !important;
+            height: 200px !important;
+            background: #000 !important;
+            overflow: hidden !important;
+        }
+        
+        /* Duration and category badges */
+        .clip-duration {
+            position: absolute !important;
+            bottom: 8px !important;
+            right: 8px !important;
+            background: rgba(0, 0, 0, 0.8) !important;
+            color: white !important;
+            padding: 4px 8px !important;
+            border-radius: 4px !important;
+            font-size: 0.8rem !important;
+            font-weight: 500 !important;
+            z-index: 25 !important;
+        }
+        
+        .clip-category {
+            position: absolute !important;
+            top: 8px !important;
+            left: 8px !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            padding: 4px 12px !important;
+            border-radius: 12px !important;
+            font-size: 0.7rem !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            z-index: 25 !important;
+        }
+        
+        /* Clip details styling */
+        .clip-details {
+            padding: 1rem !important;
+            background: white !important;
+        }
+        
+        .clip-title {
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            margin-bottom: 0.75rem !important;
+            line-height: 1.4 !important;
+            color: #333 !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
+        }
+        
+        .clip-metrics {
+            display: flex !important;
+            gap: 1rem !important;
+            margin-bottom: 1rem !important;
+            flex-wrap: wrap !important;
+        }
+        
+        .metric {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.25rem !important;
+            font-size: 0.8rem !important;
+            font-weight: 500 !important;
+            padding: 0.25rem 0.5rem !important;
+            background: #f8f9fa !important;
+            border-radius: 12px !important;
+            color: #666 !important;
+        }
+        
+        .metric i {
+            font-size: 0.7rem !important;
+        }
+        
+        /* Confidence colors */
+        .high-confidence {
+            color: #28a745 !important;
+            background: #e8f5e8 !important;
+        }
+        
+        .medium-confidence {
+            color: #ffc107 !important;
+            background: #fff3cd !important;
+        }
+        
+        .low-confidence {
+            color: #dc3545 !important;
+            background: #f8d7da !important;
+        }
+        
+        /* Action buttons */
+        .clip-actions {
+            display: flex !important;
+            gap: 0.5rem !important;
+            justify-content: center !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .action-btn {
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-size: 0.9rem !important;
+        }
+        
+        .action-btn.primary {
+            background: rgba(0, 123, 255, 0.1) !important;
+            color: #007bff !important;
+        }
+        
+        .action-btn.primary:hover {
+            background: #007bff !important;
+            color: white !important;
+            transform: scale(1.1) !important;
+        }
+        
+        .action-btn.success {
+            background: rgba(40, 167, 69, 0.1) !important;
+            color: #28a745 !important;
+        }
+        
+        .action-btn.success:hover {
+            background: #28a745 !important;
+            color: white !important;
+            transform: scale(1.1) !important;
+        }
+        
+        .action-btn.info {
+            background: rgba(23, 162, 184, 0.1) !important;
+            color: #17a2b8 !important;
+        }
+        
+        .action-btn.info:hover {
+            background: #17a2b8 !important;
+            color: white !important;
+            transform: scale(1.1) !important;
+        }
+        
+        .action-btn.warning {
+            background: rgba(255, 193, 7, 0.1) !important;
+            color: #ffc107 !important;
+        }
+        
+        .action-btn.warning:hover {
+            background: #ffc107 !important;
+            color: #333 !important;
+            transform: scale(1.1) !important;
+        }
+        
+        /* Select button styling */
+        .select-action {
+            text-align: center !important;
+            margin-top: 0.5rem !important;
+        }
+        
+        .select-clip-btn {
+            width: 100% !important;
+            padding: 0.75rem !important;
+            font-weight: 600 !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border: none !important;
+            color: white !important;
+        }
+        
+        .select-clip-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+        }
+        
+        /* Modal styling */
+        .clip-text-modal {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: rgba(0, 0, 0, 0.8) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 10000 !important;
+            padding: 2rem !important;
+        }
+        
+        .modal-content {
+            background: white !important;
+            border-radius: 12px !important;
+            max-width: 600px !important;
+            width: 100% !important;
+            max-height: 80vh !important;
+            overflow-y: auto !important;
+        }
+        
+        .modal-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 1.5rem !important;
+            border-bottom: 1px solid #eee !important;
+        }
+        
+        .modal-header h5 {
+            margin: 0 !important;
+            font-weight: 600 !important;
+        }
+        
+        .close-btn {
+            background: none !important;
+            border: none !important;
+            font-size: 1.2rem !important;
+            cursor: pointer !important;
+            color: #666 !important;
+            padding: 0.5rem !important;
+            border-radius: 50% !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .close-btn:hover {
+            background: #f0f0f0 !important;
+            color: #333 !important;
+        }
+        
+        .modal-body {
+            padding: 1.5rem !important;
+        }
+        
+        .modal-body p {
+            margin: 0 !important;
+            line-height: 1.6 !important;
+            color: #333 !important;
+        }
 
-{% endblock %}
+        /* Empty State Styles */
+        .clips-empty-state {
+            padding: 2rem !important;
+            text-align: center !important;
+        }
+
+        .empty-state-hero {
+            margin-bottom: 3rem !important;
+        }
+
+        .empty-state-icon {
+            position: relative !important;
+            display: inline-block !important;
+            margin-bottom: 1.5rem !important;
+        }
+
+        .empty-state-icon i {
+            font-size: 4rem !important;
+            color: #667eea !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            animation: pulse 2s ease-in-out infinite !important;
+        }
+
+        .icon-particles {
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 100px !important;
+            height: 100px !important;
+            pointer-events: none !important;
+        }
+
+        .particle {
+            position: absolute !important;
+            width: 6px !important;
+            height: 6px !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border-radius: 50% !important;
+            animation: float 3s ease-in-out infinite !important;
+        }
+
+        .particle:nth-child(1) {
+            top: 10px !important;
+            left: 20px !important;
+            animation-delay: 0s !important;
+        }
+
+        .particle:nth-child(2) {
+            top: 20px !important;
+            right: 15px !important;
+            animation-delay: 0.5s !important;
+        }
+
+        .particle:nth-child(3) {
+            bottom: 15px !important;
+            left: 15px !important;
+            animation-delay: 1s !important;
+        }
+
+        .particle:nth-child(4) {
+            bottom: 20px !important;
+            right: 20px !important;
+            animation-delay: 1.5s !important;
+        }
+
+        .empty-state-title {
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: #333 !important;
+            margin-bottom: 1rem !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+
+        .empty-state-subtitle {
+            font-size: 1.1rem !important;
+            color: #666 !important;
+            line-height: 1.6 !important;
+            margin-bottom: 0 !important;
+            max-width: 500px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 16px !important;
+            padding: 2rem !important;
+            margin-bottom: 2rem !important;
+            backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .how-it-works-title {
+            font-size: 1.3rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            margin-bottom: 1.5rem !important;
+            text-align: center !important;
+        }
+
+        .steps-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+            gap: 1.5rem !important;
+            margin-top: 1rem !important;
+        }
+
+        .step-item {
+            text-align: center !important;
+            padding: 1rem !important;
+        }
+
+        .step-number {
+            width: 50px !important;
+            height: 50px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 auto 1rem auto !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+            animation: bounce 2s ease-in-out infinite !important;
+        }
+
+        .step-number:nth-child(1) {
+            animation-delay: 0s !important;
+        }
+
+        .step-number:nth-child(2) {
+            animation-delay: 0.2s !important;
+        }
+
+        .step-number:nth-child(3) {
+            animation-delay: 0.4s !important;
+        }
+
+        .step-content h6 {
+            font-size: 1.1rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .step-content p {
+            font-size: 0.95rem !important;
+            color: #666 !important;
+            margin: 0 !important;
+            line-height: 1.4 !important;
+        }
+
+        /* Sample Clips Section */
+        .sample-clips {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 16px !important;
+            padding: 2rem !important;
+            margin-bottom: 2rem !important;
+            backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .sample-clips-title {
+            font-size: 1.3rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            margin-bottom: 1.5rem !important;
+            text-align: center !important;
+        }
+
+        .sample-clips-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+            gap: 1rem !important;
+            margin-top: 1rem !important;
+        }
+
+        .sample-clip-card {
+            background: white !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.3s ease !important;
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .sample-clip-card:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .sample-video-placeholder {
+            height: 100px !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important;
+            color: white !important;
+        }
+
+        .sample-video-placeholder i {
+            font-size: 2rem !important;
+            opacity: 0.8 !important;
+        }
+
+        .video-duration {
+            position: absolute !important;
+            bottom: 5px !important;
+            right: 5px !important;
+            background: rgba(0, 0, 0, 0.7) !important;
+            color: white !important;
+            padding: 2px 6px !important;
+            border-radius: 4px !important;
+            font-size: 0.7rem !important;
+            font-weight: 500 !important;
+        }
+
+        .sample-clip-info {
+            padding: 1rem !important;
+        }
+
+        .sample-clip-info h6 {
+            font-size: 0.9rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            margin-bottom: 0.5rem !important;
+            line-height: 1.3 !important;
+        }
+
+        .sample-metrics {
+            display: flex !important;
+            justify-content: center !important;
+        }
+
+        /* Popular Types Section */
+        .popular-types {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 16px !important;
+            padding: 2rem !important;
+            backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .popular-types-title {
+            font-size: 1.3rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            margin-bottom: 1.5rem !important;
+            text-align: center !important;
+        }
+
+        .video-types-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 1rem !important;
+            margin-top: 1rem !important;
+        }
+
+        .video-type-item {
+            background: white !important;
+            padding: 1rem !important;
+            border-radius: 12px !important;
+            text-align: center !important;
+            transition: all 0.3s ease !important;
+            border: 2px solid transparent !important;
+            cursor: pointer !important;
+        }
+
+        .video-type-item:hover {
+            border-color: #667eea !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2) !important;
+        }
+
+        .video-type-item i {
+            font-size: 1.5rem !important;
+            color: #667eea !important;
+            margin-bottom: 0.5rem !important;
+            display: block !important;
+        }
+
+        .video-type-item span {
+            font-size: 0.9rem !important;
+            font-weight: 500 !important;
+            color: #333 !important;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1) !important;
+                opacity: 1 !important;
+            }
+            50% {
+                transform: scale(1.05) !important;
+                opacity: 0.8 !important;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) !important;
+                opacity: 0.7 !important;
+            }
+            50% {
+                transform: translateY(-10px) !important;
+                opacity: 1 !important;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0px) !important;
+            }
+            50% {
+                transform: translateY(-5px) !important;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .clip-card.animate-slide-in {
+            animation: slideInUp 0.5s ease-out forwards !important;
+        }
+
+        /* Loading and no-clips states */
+        .no-clips-message {
+            text-align: center !important;
+            color: #666 !important;
+            padding: 2rem !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+            margin: 1rem 0 !important;
+            font-size: 1.1rem !important;
+        }
+
+        .clips-loading {
+            text-align: center !important;
+            padding: 3rem !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-radius: 12px !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        .clips-loading .loading-text {
+            color: #fff !important;
+            font-size: 1.1rem !important;
+            font-weight: 500 !important;
+            margin: 0 !important;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .clips-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+
+            .video-container {
+                height: 180px !important;
+            }
+
+            .clip-actions .action-btn {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.8rem !important;
+            }
+
+            .play-button-large {
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 20px !important;
+            }
+
+            .clip-text-modal {
+                padding: 1rem !important;
+            }
+
+            .control-button {
+                width: 28px !important;
+                height: 28px !important;
+                font-size: 12px !important;
+            }
+
+            .volume-slider {
+                width: 40px !important;
+            }
+
+            .time-display {
+                font-size: 10px !important;
+                min-width: 60px !important;
+            }
+
+            .empty-state-title {
+                font-size: 1.5rem !important;
+            }
+
+            .empty-state-subtitle {
+                font-size: 1rem !important;
+            }
+
+            .empty-state-icon i {
+                font-size: 3rem !important;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+
+            .sample-clips-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            .video-types-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            .how-it-works,
+            .sample-clips,
+            .popular-types {
+                padding: 1.5rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sample-clips-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .video-types-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            .clips-empty-state {
+                padding: 1rem !important;
+            }
+        }
+
+        /* Fullscreen styles */
+        .video-container:fullscreen {
+            background: black !important;
+        }
+
+        .video-container:fullscreen .custom-video-player {
+            object-fit: contain !important;
+        }
+
+        /* Focus styles for accessibility */
+        .control-button:focus,
+        .select-clip-btn:focus,
+        .video-type-item:focus {
+            outline: 2px solid #667eea !important;
+            outline-offset: 2px !important;
+        }
+
+        /* Additional hover effects */
+        .how-it-works:hover,
+        .sample-clips:hover,
+        .popular-types:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+        }
+
+
+        /* Grid and List View Toggle Styles */
+        .clips-grid.grid-view {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+            gap: 1.5rem !important;
+        }
+
+        .clips-grid.list-view {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+        }
+
+        .clips-grid.list-view .clip-card {
+            display: flex !important;
+            flex-direction: row !important;
+            max-height: 200px !important;
+            overflow: hidden !important;
+        }
+
+        .clips-grid.list-view .clip-preview {
+            width: 300px !important;
+            flex-shrink: 0 !important;
+            height: 200px !important;
+        }
+
+        .clips-grid.list-view .clip-details {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            padding: 1rem !important;
+        }
+
+        .clips-grid.list-view .clip-actions {
+            margin-bottom: 0 !important;
+        }
+
+        .clips-grid.list-view .select-action {
+            margin-top: 0.5rem !important;
+        }
+
+        /* View Controls Active State */
+        .view-controls .btn.active {
+            background-color: #0d6efd !important;
+            color: white !important;
+            border-color: #0d6efd !important;
+        }
+
+        .view-controls .btn:not(.active) {
+            background-color: transparent !important;
+            color: #0d6efd !important;
+        }
+
+        /* Professional List View Design */
+.clips-grid.list-view .clip-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    max-height: none !important;
+    min-height: 120px !important;
+    padding: 0 !important;
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+}
+
+.clips-grid.list-view .clip-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+}
+
+.clips-grid.list-view .clip-preview {
+    width: 200px !important;
+    min-width: 200px !important;
+    height: 120px !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    background: #000 !important;
+}
+
+.clips-grid.list-view .video-container {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+}
+
+.clips-grid.list-view .clip-duration {
+    bottom: 4px !important;
+    right: 4px !important;
+    font-size: 0.7rem !important;
+    padding: 2px 6px !important;
+}
+
+.clips-grid.list-view .clip-category {
+    top: 4px !important;
+    left: 4px !important;
+    font-size: 0.6rem !important;
+    padding: 2px 8px !important;
+}
+
+.clips-grid.list-view .clip-details {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 1rem !important;
+    background: white !important;
+}
+
+.clips-grid.list-view .clip-title {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.5rem !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    color: #333 !important;
+}
+
+.clips-grid.list-view .clip-metrics {
+    display: flex !important;
+    gap: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+    flex-wrap: wrap !important;
+}
+
+.clips-grid.list-view .metric {
+    font-size: 0.75rem !important;
+    padding: 0.2rem 0.4rem !important;
+}
+
+.clips-grid.list-view .clip-actions {
+    display: flex !important;
+    gap: 0.5rem !important;
+    justify-content: flex-start !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.clips-grid.list-view .action-btn {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.75rem !important;
+}
+
+.clips-grid.list-view .select-action {
+    margin-top: auto !important;
+}
+
+.clips-grid.list-view .select-clip-btn {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    width: 100% !important;
+}
+
+/* Responsive adjustments for list view */
+@media (max-width: 768px) {
+    .clips-grid.list-view .clip-card {
+        flex-direction: column !important;
+        min-height: auto !important;
+    }
+    
+    .clips-grid.list-view .clip-preview {
+        width: 100% !important;
+        min-width: 100% !important;
+        height: 160px !important;
+    }
+    
+    .clips-grid.list-view .clip-details {
+        padding: 0.75rem !important;
+    }
+    
+    .clips-grid.list-view .clip-actions {
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .clips-grid.list-view .clip-preview {
+        height: 140px !important;
+    }
+    
+    .clips-grid.list-view .clip-details {
+        padding: 0.5rem !important;
+    }
+    
+    .clips-grid.list-view .clip-title {
+        font-size: 0.9rem !important;
+        -webkit-line-clamp: 1 !important;
+    }
+}
+
+/* Enhanced hover effects for list view */
+.clips-grid.list-view .clip-card:hover .clip-title {
+    color: #667eea !important;
+}
+
+.clips-grid.list-view .clip-card:hover .select-clip-btn {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Better spacing in list view */
+.clips-grid.list-view {
+    gap: 0.75rem !important;
+}
+
+    </style>
+
+    {% endblock %}
